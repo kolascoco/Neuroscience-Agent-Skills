@@ -14,7 +14,7 @@ Think of this repo as a field kit for research agents.
 
 | Skill | What it helps with | Status |
 |---|---|---|
-| `neuroscience-database-lookup` | Search public neuroscience datasets and educational anatomy resources across OpenNeuro, OSF, BRAVA, NITRC, Oliva Lab, TEMCA2/FAFB, and BrainFacts 3D Brain. | Ready |
+| `neuroscience-database-lookup` | Search public neuroscience datasets and educational anatomy resources across OpenNeuro, OSF, TDBRAIN, HCP, BRAVA, NITRC, Oliva Lab, visual stimulus/eye-tracking resources, TEMCA2/FAFB, and BrainFacts 3D Brain. | Ready |
 
 ## First Skill: Neuroscience Database Lookup
 
@@ -22,14 +22,17 @@ The included `neuroscience-database-lookup` skill helps agents retrieve and summ
 
 - BIDS datasets from OpenNeuro
 - EEG, MEG, fMRI, MRI, PET, iEEG, and MRA datasets
+- Clinical EEG resources including TDBRAIN, MSU EEG links, and Parkinson/cognition datasets from Narayanan Lab
+- Human Connectome Project access routes and connectomics resources
 - OSF neuroscience projects, files, registrations, and protocols
 - Brain arterial reconstruction and vascular morphology resources
 - Human magnetic resonance angiography atlas data
 - Visual cognition and neuroimaging datasets from the Oliva Lab
+- Standardized visual stimuli, emotional face/task materials, image memorability data, and eye-tracking/fixation datasets
 - Drosophila EM/connectomics resources including TEMCA2/FAFB
 - BrainFacts 3D Brain anatomy pages for teaching and region lookup
 
-The skill emphasizes exact source links, API endpoints, access notes, licensing, citations, and clear output formatting.
+The skill emphasizes exact source links, API endpoints, access notes, licensing, citations, clear output formatting, and a compact "Big Data Fit" check for volume, variety, velocity, veracity, and scientific value.
 
 ## Repository Layout
 
@@ -42,11 +45,14 @@ The skill emphasizes exact source links, API endpoints, access notes, licensing,
     └── references/
         ├── brainfacts-3d-brain.md
         ├── brava.md
+        ├── clinical-eeg-and-big-data.md
+        ├── human-connectome-project.md
         ├── nitrc-icbmmra.md
         ├── oliva-lab.md
         ├── openneuro.md
         ├── osf.md
-        └── temca2-fafb.md
+        ├── temca2-fafb.md
+        └── visual-stimulus-and-eyetracking.md
 ```
 
 ## Roadmap
