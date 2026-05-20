@@ -15,6 +15,7 @@ Think of this repo as a field kit for research agents.
 | Skill | What it helps with | Status |
 |---|---|---|
 | `neuroscience-database-lookup` | Search public neuroscience datasets and educational anatomy resources across OpenNeuro, OSF, TDBRAIN, HCP, BRAVA, NITRC, Oliva Lab, visual stimulus/eye-tracking resources, TEMCA2/FAFB, and BrainFacts 3D Brain. | Ready |
+| `tms-eeg-preprocessing-consultant` | Plan, explain, and code TMS-EEG preprocessing workflows for TEP/GMFA/LMFP and immediate TEP/i-TEP analysis, with Context7-first/GitHub-fallback software lookup and artifact-aware QC cards. | Draft |
 
 ## First Skill: Neuroscience Database Lookup
 
@@ -65,6 +66,8 @@ Future skills could include:
 - `connectomics-resource-finder` - navigate connectome datasets, viewers, skeletons, and annotations
 - `neuroanatomy-tutor` - explain structures, pathways, functions, and lesion associations
 - `paper-to-protocol` - convert neuroscience papers into reproducible experiment or analysis checklists
+- `tms-eeg-experiment-planner` - support TMS target selection, sham/control planning, neuronavigation, E-field modeling, and state-dependent designs
+- `tms-eeg-interpretation-critic` - critique TEP/GMFA/LMFP/PCIst claims and separate physiological interpretation from sensory/artifact confounds
 
 ## Design Principles
 

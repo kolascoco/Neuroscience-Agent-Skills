@@ -16,3 +16,6 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# Local raw source corpus used to author distilled TMS-EEG skill cards
+TMS-EEG-artifacts/
