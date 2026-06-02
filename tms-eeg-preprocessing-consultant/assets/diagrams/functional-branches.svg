@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-labelledby="title desc">
+  <title id="title">Functional Branches of the TMS-EEG Preprocessing Consultant Skill</title>
+  <desc id="desc">Hub-and-spoke diagram showing branches for Python/MNE, MATLAB/EEGLAB/TESA, ARTIST/AARATEP automation, SOUND/SSP-SIR cleaning, immediate TEP analysis, and PyTepFit network modeling.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f3a45"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .hub { fill: #e8f1ff; stroke: #315f9f; stroke-width: 1.8; rx: 10; }
+      .branch { fill: #ffffff; stroke: #667085; stroke-width: 1.6; rx: 8; }
+      .branchA { fill: #eef8f1; stroke: #3f7f55; }
+      .branchB { fill: #fff4e5; stroke: #a86616; }
+      .branchC { fill: #f3edff; stroke: #6d4bb3; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 18px; fill: #1f2937; text-anchor: middle; dominant-baseline: middle; }
+      .heading { font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 700; fill: #111827; text-anchor: middle; }
+      .line { fill: none; stroke: #2f3a45; stroke-width: 1.8; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="1280" height="520"/>
+  <text class="heading" x="640" y="44">Functional Branches</text>
+
+  <rect class="hub" x="490" y="220" width="300" height="80"/>
+  <text class="label" x="640" y="250">TMS-EEG Preprocessing</text>
+  <text class="label" x="640" y="274">Consultant</text>
+
+  <rect class="branch branchA" x="70" y="100" width="250" height="64"/>
+  <text class="label" x="195" y="132">Python / MNE pipeline</text>
+
+  <rect class="branch branchB" x="70" y="350" width="250" height="64"/>
+  <text class="label" x="195" y="372">MATLAB / EEGLAB</text>
+  <text class="label" x="195" y="394">TESA pipeline</text>
+
+  <rect class="branch branchB" x="515" y="90" width="250" height="64"/>
+  <text class="label" x="640" y="112">ARTIST / AARATEP</text>
+  <text class="label" x="640" y="134">automation</text>
+
+  <rect class="branch branchC" x="960" y="100" width="250" height="64"/>
+  <text class="label" x="1085" y="122">SOUND / SSP-SIR</text>
+  <text class="label" x="1085" y="144">cleaning</text>
+
+  <rect class="branch branchC" x="960" y="350" width="250" height="64"/>
+  <text class="label" x="1085" y="372">Immediate TEP /</text>
+  <text class="label" x="1085" y="394">i-TEP analysis</text>
+
+  <rect class="branch branchA" x="515" y="370" width="250" height="64"/>
+  <text class="label" x="640" y="392">PyTepFit network</text>
+  <text class="label" x="640" y="414">modeling</text>
+
+  <path class="line" d="M490 244 C405 210, 360 155, 320 132"/>
+  <path class="line" d="M490 286 C405 320, 360 360, 320 382"/>
+  <path class="line" d="M640 220 L640 154"/>
+  <path class="line" d="M790 244 C875 210, 920 155, 960 132"/>
+  <path class="line" d="M790 286 C875 320, 920 360, 960 382"/>
+  <path class="line" d="M640 300 L640 370"/>
+</svg>

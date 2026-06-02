@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="760" viewBox="0 0 1180 760" role="img" aria-labelledby="title desc">
+  <title id="title">Knowledge Layers of the TMS-EEG Preprocessing Consultant Skill</title>
+  <desc id="desc">Flow diagram showing how a user question is routed through SKILL.md, routing cards, pipeline cards, step cards, artifact cards, repository cards, paper cards, recipes, QC caveats, software fallback, and source-grounded rules.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f3a45"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .box { fill: #ffffff; stroke: #667085; stroke-width: 1.6; rx: 8; }
+      .primary { fill: #e8f1ff; stroke: #315f9f; }
+      .secondary { fill: #eef8f1; stroke: #3f7f55; }
+      .caution { fill: #fff4e5; stroke: #a86616; }
+      .source { fill: #f3edff; stroke: #6d4bb3; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 18px; fill: #1f2937; text-anchor: middle; dominant-baseline: middle; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 15px; fill: #475467; text-anchor: middle; dominant-baseline: middle; }
+      .heading { font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 700; fill: #111827; text-anchor: middle; }
+      .line { fill: none; stroke: #2f3a45; stroke-width: 1.8; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="1180" height="760"/>
+  <text class="heading" x="590" y="44">Knowledge Layers</text>
+
+  <rect class="box primary" x="465" y="80" width="250" height="58"/>
+  <text class="label" x="590" y="109">User question</text>
+
+  <rect class="box primary" x="465" y="178" width="250" height="58"/>
+  <text class="label" x="590" y="207">SKILL.md</text>
+
+  <rect class="box primary" x="465" y="276" width="250" height="58"/>
+  <text class="label" x="590" y="305">Routing cards</text>
+
+  <rect class="box primary" x="465" y="374" width="250" height="58"/>
+  <text class="label" x="590" y="403">Pipeline cards</text>
+
+  <path class="line" d="M590 138 L590 178"/>
+  <path class="line" d="M590 236 L590 276"/>
+  <path class="line" d="M590 334 L590 374"/>
+
+  <rect class="box secondary" x="75" y="500" width="210" height="58"/>
+  <text class="label" x="180" y="529">Step cards</text>
+
+  <rect class="box caution" x="335" y="500" width="210" height="58"/>
+  <text class="label" x="440" y="529">Artifact cards</text>
+
+  <rect class="box source" x="635" y="500" width="210" height="58"/>
+  <text class="label" x="740" y="529">Repository cards</text>
+
+  <rect class="box source" x="895" y="500" width="210" height="58"/>
+  <text class="label" x="1000" y="529">Paper cards</text>
+
+  <path class="line" d="M545 432 C440 465, 285 465, 180 500"/>
+  <path class="line" d="M570 432 C520 465, 490 465, 440 500"/>
+  <path class="line" d="M610 432 C660 465, 690 465, 740 500"/>
+  <path class="line" d="M635 432 C740 465, 895 465, 1000 500"/>
+
+  <rect class="box secondary" x="75" y="640" width="210" height="58"/>
+  <text class="label" x="180" y="669">Code recipes</text>
+
+  <rect class="box caution" x="335" y="640" width="210" height="58"/>
+  <text class="label" x="440" y="660">QC and</text>
+  <text class="label" x="440" y="682">caveats</text>
+
+  <rect class="box source" x="635" y="640" width="210" height="58"/>
+  <text class="label" x="740" y="660">Context7 or</text>
+  <text class="label" x="740" y="682">GitHub fallback</text>
+
+  <rect class="box source" x="895" y="640" width="210" height="58"/>
+  <text class="label" x="1000" y="660">Source-grounded</text>
+  <text class="label" x="1000" y="682">method rules</text>
+
+  <path class="line" d="M180 558 L180 640"/>
+  <path class="line" d="M440 558 L440 640"/>
+  <path class="line" d="M740 558 L740 640"/>
+  <path class="line" d="M1000 558 L1000 640"/>
+</svg>

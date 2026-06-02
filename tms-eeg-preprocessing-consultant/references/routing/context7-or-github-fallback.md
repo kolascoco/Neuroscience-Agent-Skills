@@ -23,7 +23,7 @@ tags:
 |---|---|---|
 | MNE-Python | Context7 `MNE-Python` | `https://github.com/mne-tools/mne-python` |
 | tmseegpy | Context7 `tmseegpy` | `https://github.com/LazyCyborg/tmseegpy` |
-| TESA | Context7 `TESA` | `https://github.com/nigelrogasch/TESA` |
+| TESA | Context7 `/nigelrogasch/tesa` | `https://github.com/nigelrogasch/TESA` |
 | AARATEP Pipeline | Context7 `AARATEPPipeline` | `https://github.com/chriscline/AARATEPPipeline` |
 | PyTEP-SOUND-SSP-SIR | Context7 `PyTEP-SOUND-SSP-SIR` | `https://github.com/MarcioCamposJr/PyTEP-SOUND-SSP-SIR` |
 | PyTepFit | Context7 `PyTepFit` if available; no Context7 match observed on 2026-05-19 | `https://github.com/GriffithsLab/PyTepFit` |

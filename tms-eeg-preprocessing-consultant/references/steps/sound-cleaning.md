@@ -24,7 +24,7 @@ EEG data, electrode locations, model assumptions, and method parameters from ver
 
 ## Decision Rules
 
-Do not recommend SOUND as a black-box default. Confirm assumptions and compare before/after outputs.
+Do not recommend SOUND as a black-box default. Confirm montage/channel coordinates and compare before/after outputs. Start with `lambda_val=0.1` and `iter_num=5` only as a local guide, then tune from diagnostics.
 
 ## Method Options
 
@@ -40,7 +40,7 @@ Query Context7 first; otherwise inspect the GitHub fallback repo.
 
 ## QC Checks
 
-Noise reduction, rank/model warnings, topographies, evoked waveforms, and condition-specific changes.
+Noise reduction, channel RMS/peak-to-peak diagnostics, rank/model warnings, topographies, evoked waveforms, and condition-specific changes.
 
 ## Failure Modes
 

@@ -29,6 +29,7 @@ repo_cards:
   - repos/mne-python.md
 paper_cards:
   - papers/methodological-choices-matter.md
+  - papers/mutanen-2022-source-based-artifact-rejection.md
 ---
 
 ## Use When
@@ -41,11 +42,14 @@ Raw or epoched data, montage/electrode locations, event timing, target, artifact
 
 ## Workflow Order
 
-1. Load data and verify metadata.
-2. Handle pulse artifact before model-based denoising.
-3. Apply SOUND where appropriate for sensor noise suppression.
-4. Apply SSP-SIR or related projection strategy for TMS-related artifact structure when justified.
-5. Compute TEP/GMFA/LMFP and QC before/after each major cleaning stage.
+1. Load data, verify montage/channel coordinates, and reject missing/zero coordinate setups before SOUND/SSP-SIR.
+2. Handle pulse artifact before filtering or model-based denoising.
+3. Apply basic preprocessing with cautious filters and a clean pre-TMS baseline.
+4. Apply SOUND where appropriate for channel-level noise suppression.
+5. Inspect SSP-SIR components before choosing the number of PCs.
+6. Apply SSP-SIR to early TMS-evoked muscle artifact when justified.
+7. Run ICA after SSP-SIR for residual ocular, blink, decay, and non-early artifacts.
+8. Compute TEP/GMFA/LMFP and QC before/after each major cleaning stage.
 
 ## Step Cards To Load
 
@@ -53,15 +57,15 @@ Load SOUND and SSP-SIR step cards plus pulse, TEP, metrics, and QC cards.
 
 ## Parameter Defaults To Consider
 
-Require verified repo/API details. Do not guess model parameters or geometry assumptions.
+Use the starting values in `steps/ssp-sir-cleaning.md`, including pulse interpolation windows, cautious filter/baseline settings, SOUND `iter_num`/`lambda_val`, and SSP-SIR `art_scale`, `time_range`, `pc`, and `M`. Treat them as starting values requiring dataset QC, not universal defaults.
 
 ## QC Checkpoints
 
-Show before/after signal variance, spatial maps, evoked responses, retained rank if projections are used, and condition-specific effects.
+Show before/after butterfly plots around `0-100 ms`, GMFA/GFP, channel RMS/peak-to-peak diagnostics, topographies at TEP peaks, early TEP amplitude/latency, retained rank if projections are used, and condition-specific effects.
 
 ## Common Failure Modes
 
-Applying model-based cleaning with missing geometry, rank loss, removing real evoked structure, and poor documentation of assumptions.
+Applying model-based cleaning with missing geometry, using too aggressive `lambda_val` or `pc`, flattening early TEPs, rank loss, removing real evoked structure, and poor documentation of assumptions.
 
 ## Learning Mode Response
 

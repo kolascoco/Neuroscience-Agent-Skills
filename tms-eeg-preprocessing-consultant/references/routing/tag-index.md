@@ -14,6 +14,9 @@ tags:
 - `artifact:*`: `pulse`, `muscle`, `decay`, `recharge`, `auditory`, `somatosensory`, `lead-configuration`, `sampling-sync`
 - `metric:*`: `tep`, `gmfa`, `lmfp`, `itep`, `pci`, `svd-component`
 - `model:*`: `jansen-rit`, `connectome`, `recurrent-network`, `neural-mass`
+- `topic:*`: `natural-frequency`, `effective-connectivity`, `reproducibility`, `neuronavigation`, `source-analysis`, `good-practice`
+- `language:*`: `python`, `matlab`
+- `ecosystem:*`: `mne`, `eeglab`, `tesa`, `tmseegpy`
 - `target:*`: `m1`, `dlpfc`, `parietal`, `other`
 - `mode:*`: `learning`, `code-engineer`, `qc`
 - `caution:*`: `early-latency`, `overcleaning`, `sensory-confounds`, `causal-interpretation`, `api-unverified`

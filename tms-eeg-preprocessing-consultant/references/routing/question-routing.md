@@ -13,11 +13,16 @@ tags:
 |---|---|---|
 | First-pass TEP/GMFA/LMFP preprocessing in Python | `pipelines/conservative-mne-python.md` | `repos/mne-python.md`, `repos/tmseegpy.md`, `recipes/compute_teps_gmfa_lmfp.md` |
 | TESA-style cleaning or two ICA passes | `pipelines/tesa-inspired-two-pass-ica.md` | `repos/tesa.md`, `artifacts/overcleaning-and-ica-risk.md` |
+| MATLAB, EEGLAB, TESA, `.set` files, FastICA | `routing/code-language-selection.md` | `pipelines/tesa-inspired-two-pass-ica.md`, `recipes/tesa_matlab_preprocessing.md`, `repos/tesa.md` |
 | Automated artifact rejection, ARTIST, or AARATEP | `pipelines/automated-artist-aaratep.md` | `repos/aaratep-pipeline.md`, `papers/wu-2018-artist.md`, `steps/automated-artifact-rejection.md` |
 | SOUND, SSP, SIR, source-space signal cleaning | `pipelines/sound-ssp-sir-enhanced.md` | `repos/pytep-sound-ssp-sir.md`, `steps/sound-cleaning.md`, `steps/ssp-sir-cleaning.md` |
 | TEP modeling, recurrent network dynamics, PyTepFit | `pipelines/tepfit-network-modeling-analysis.md` | `repos/pytepfit.md`, `papers/momi-2023-recurrent-network-dynamics.md`, `steps/tepfit-modeling-analysis.md` |
 | Immediate TEPs, i-TEPs, early responses | `pipelines/itep-early-response-analysis.md` | `artifacts/early-pulse-residual-risk.md`, `artifacts/lead-configuration-early-artifacts.md`, `artifacts/sampling-sync-early-artifacts.md` |
-| Only code | Relevant pipeline card | Relevant `recipes/*.md`, repo card, software lookup policy |
+| Good practice, recommendations, acquisition QC | `guidelines/recommendations-good-practice.md` | `papers/hernandez-pavon-2023-recommendations-open-issues.md` |
+| DLPFC TEP reliability or excitability mapping | `papers/gogulski-2024-dlpfc-tep-reliability.md` | `papers/gogulski-2024-dlpfc-excitability-mapping.md`, `papers/gogulski-2025-dlpfc-methodological-considerations.md` |
+| Sensory confounds or auditory/somatosensory controls | `artifacts/auditory-somatosensory-confounds.md` | `papers/biabani-2019-sensory-inputs.md`, `papers/gordon-2018-realistic-sham.md` |
+| Natural frequencies, oscillatory TEPs, effective connectivity | `papers/rosanova-2009-natural-frequencies.md` | `papers/massimini-2005-breakdown-effective-connectivity-sleep.md`, `papers/casali-2012-consciousness-effective-connectivity.md` |
+| Only code | `routing/code-language-selection.md` | Relevant pipeline card, `recipes/*.md`, repo card, software lookup policy |
 | Beginner explanation | Relevant pipeline card | Step cards named by that pipeline |
 | Artifact risk or interpretation caveat | Relevant artifact card | Related paper cards |
 | Context7 unavailable | `routing/context7-or-github-fallback.md` | Relevant repo card |

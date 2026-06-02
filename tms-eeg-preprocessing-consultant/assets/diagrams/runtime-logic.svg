@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="860" viewBox="0 0 1180 860" role="img" aria-labelledby="title desc">
+  <title id="title">Runtime Logic of the TMS-EEG Preprocessing Consultant Skill</title>
+  <desc id="desc">Vertical flow diagram showing the runtime process from input question through intent classification, metadata collection, pipeline selection, code language selection, card loading, software lookup, and final response generation.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f3a45"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .box { fill: #ffffff; stroke: #667085; stroke-width: 1.6; rx: 8; }
+      .start { fill: #e8f1ff; stroke: #315f9f; }
+      .decision { fill: #fff4e5; stroke: #a86616; }
+      .context { fill: #eef8f1; stroke: #3f7f55; }
+      .output { fill: #f3edff; stroke: #6d4bb3; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 18px; fill: #1f2937; text-anchor: middle; dominant-baseline: middle; }
+      .heading { font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 700; fill: #111827; text-anchor: middle; }
+      .line { fill: none; stroke: #2f3a45; stroke-width: 1.8; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="1180" height="860"/>
+  <text class="heading" x="590" y="44">Runtime Logic</text>
+
+  <rect class="box start" x="400" y="80" width="380" height="58"/>
+  <text class="label" x="590" y="109">Input question</text>
+
+  <rect class="box" x="400" y="170" width="380" height="58"/>
+  <text class="label" x="590" y="199">Classify intent</text>
+
+  <rect class="box context" x="400" y="260" width="380" height="58"/>
+  <text class="label" x="590" y="289">Collect required metadata</text>
+
+  <rect class="box decision" x="400" y="350" width="380" height="58"/>
+  <text class="label" x="590" y="379">Choose pipeline branch</text>
+
+  <rect class="box decision" x="400" y="440" width="380" height="58"/>
+  <text class="label" x="590" y="469">Choose code language if needed</text>
+
+  <rect class="box context" x="400" y="530" width="380" height="58"/>
+  <text class="label" x="590" y="559">Load step + artifact cards</text>
+
+  <rect class="box context" x="400" y="620" width="380" height="58"/>
+  <text class="label" x="590" y="649">Load repo + paper cards</text>
+
+  <rect class="box decision" x="400" y="710" width="380" height="58"/>
+  <text class="label" x="590" y="739">Use Context7 or GitHub fallback</text>
+
+  <rect class="box output" x="280" y="800" width="620" height="42"/>
+  <text class="label" x="590" y="821">Return pipeline, explanation, code, QC, caveats</text>
+
+  <path class="line" d="M590 138 L590 170"/>
+  <path class="line" d="M590 228 L590 260"/>
+  <path class="line" d="M590 318 L590 350"/>
+  <path class="line" d="M590 408 L590 440"/>
+  <path class="line" d="M590 498 L590 530"/>
+  <path class="line" d="M590 588 L590 620"/>
+  <path class="line" d="M590 678 L590 710"/>
+  <path class="line" d="M590 768 L590 800"/>
+</svg>

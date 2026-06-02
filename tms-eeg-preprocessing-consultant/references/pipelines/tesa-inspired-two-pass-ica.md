@@ -8,6 +8,8 @@ tags:
   - step:ica
 default_for:
   - TESA-style preprocessing explanations
+  - MATLAB/EEGLAB code generation
+  - EEGLAB .set teaching workflows
   - two-stage component cleaning
   - comparison with Python workflows
 avoid_when:
@@ -19,6 +21,8 @@ step_cards:
   - steps/muscle-artifact-handling.md
   - steps/filtering.md
   - steps/ica-component-rejection.md
+  - steps/sound-cleaning.md
+  - steps/ssp-sir-cleaning.md
   - steps/ocular-cardiac-auditory-components.md
   - steps/tep-averaging.md
   - steps/qc-plots-and-reporting.md
@@ -40,32 +44,39 @@ Use when the user asks for TESA logic, MATLAB/EEGLAB style preprocessing, two IC
 
 ## Required Inputs
 
-Sampling rate, event timing, artifact removal windows, target, number of trials, channel count, reference, and whether the user wants MATLAB/TESA or a Python approximation.
+Sampling rate, event timing, artifact removal windows, target, number of trials, channel count, reference, EEGLAB `.set` path, channel locations, whether data are continuous or already epoched, and whether the user wants MATLAB/TESA or a Python approximation.
 
 ## Workflow Order
 
-1. Remove/interpolate pulse artifact.
-2. Inspect decay/recharge artifacts.
-3. First ICA or artifact-focused decomposition to reduce muscle/noise components.
-4. Filter after gross pulse handling.
-5. Second ICA to remove ocular, auditory/sensory, and residual components.
-6. Trial rejection, averaging, TEP metrics, and QC.
+1. Initialize MATLAB paths, EEGLAB, TESA, and FastICA.
+2. Load EEGLAB `.set` data and prepare events; epoch early if data are continuous.
+3. Baseline correct and visualize raw/common-reference plus average-reference TEPs.
+4. Inspect the pulse artifact, remove a window such as `[-2 12] ms`, and cubic-interpolate with TESA.
+5. Save a full-channel-location reference dataset before bad-channel removal if SOUND will replace channels later.
+6. Inspect/remove bad channels and bad trials.
+7. Run PCA compression and FastICA; inspect components with TESA component plots.
+8. Run SOUND when channel locations/lead field assumptions are acceptable.
+9. Run SSP-SIR for remaining early TMS-evoked muscle artifact when justified.
+10. Optionally remove/interpolate a second artifact window.
+11. Filter after pulse/gross artifact handling; avoid unreliable high-pass filtering on short epochs.
+12. Downsample/trim edges, reject remaining bad trials, visualize final TEPs, and save.
+13. Compare cleaned data with minimally preprocessed data to detect preprocessing distortion.
 
 ## Step Cards To Load
 
-Load pulse, decay/recharge, muscle, filtering, ICA, ocular/auditory, TEP, and QC step cards.
+Load pulse, decay/recharge, muscle, filtering, ICA, SOUND, SSP-SIR, ocular/auditory, TEP, and QC step cards. For MATLAB code, load `recipes/tesa_matlab_preprocessing.md` and `guidelines/matlab-tesa-lesson-pipeline.md`.
 
 ## Parameter Defaults To Consider
 
-Artifact windows and ICA settings must follow the dataset and verified TESA/tmseegpy documentation. Use placeholders if not confirmed.
+Artifact windows and ICA settings must follow the dataset and verified TESA documentation. Lesson-script starting examples include baseline `[-50 -10] ms`, first pulse removal `[-2 12] ms` with cubic `[1 1]`, PCA compression `compVal=20`, SOUND `lambda=0.02`, SSP-SIR manual `timeRange=[-2 35]`, second removal `[-3 10]` with cubic `[5 5]`, low-pass `80 Hz`, notch `48-52 Hz`, downsample `1000 Hz`, and final time range `[-1 1] s`. Use as teaching-script examples, not universal defaults.
 
 ## QC Checkpoints
 
-Compare pre-cleaning and post-cleaning averages, component topographies/time courses, retained components, retained trials, and whether active/sham artifacts were affected differently.
+Compare pre-cleaning and post-cleaning averages, average-reference topographies, pulse-window traces, component topographies/time courses/frequencies, SOUND/SSP-SIR outputs, retained components, retained trials, and whether cleaned data match minimally preprocessed data in artifact-free windows.
 
 ## Common Failure Modes
 
-ICA instability, component misclassification, overcorrection of early TEPs, insufficient trials, and treating TESA workflow order as universally optimal.
+ICA instability, component misclassification, SOUND overcorrection, SSP-SIR overprojection, filtering short epochs too aggressively, overcorrection of early TEPs, insufficient trials, and treating lesson-script order as universally optimal.
 
 ## Learning Mode Response
 
@@ -73,7 +84,7 @@ Explain why two passes may be used: one for large TMS-related artifacts and one 
 
 ## Code-Engineer Mode Response
 
-For MATLAB, verify TESA APIs. For Python, describe a TESA-inspired approximation and label it as such.
+For MATLAB, use verified TESA/EEGLAB calls and state dependencies. For Python, describe a TESA-inspired approximation and label it as such.
 
 ## Claims And Caveats
 
