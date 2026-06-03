@@ -15,8 +15,8 @@ Think of this repo as a field kit for research agents.
 | Skill | What it helps with | Status |
 |---|---|---|
 | `neuroscience-database-lookup` | Search public neuroscience datasets and educational anatomy resources across OpenNeuro, OSF, Figshare, Dryad, Harvard Dataverse, Science Data Bank, Zenodo, TDBRAIN, HCP, BRAVA, NITRC, Oliva Lab, visual stimulus/eye-tracking resources, TEMCA2/FAFB, and BrainFacts 3D Brain. | Ready |
-| `tms-eeg-preprocessing-consultant` | Plan, explain, and code TMS-EEG preprocessing workflows for TEP/GMFA/LMFP and immediate TEP/i-TEP analysis, with Context7-first/GitHub-fallback software lookup and artifact-aware QC cards. | Draft |
-| `tms-eeg-experiment-planner` | Design TMS-EEG studies before data collection: target choice, coil orientation/intensity, RMT versus TEP threshold, sham/sensory controls, rt-TEP monitoring, acquisition QC, neuronavigation, E-field modeling, SlicerTMS, and session checklists. | Draft |
+| `tms-eeg-skills-bundle/tms-eeg-experiment-planner` | Design TMS-EEG studies before data collection: target choice, coil orientation/intensity, RMT versus TEP threshold, sham/sensory controls, rt-TEP monitoring, acquisition QC, neuronavigation, E-field modeling, SlicerTMS, and session checklists. | Draft |
+| `tms-eeg-skills-bundle/tms-eeg-preprocessing-consultant` | Plan, explain, and code TMS-EEG preprocessing workflows for TEP/GMFA/LMFP and immediate TEP/i-TEP analysis, with Context7-first/GitHub-fallback software lookup and artifact-aware QC cards. | Draft |
 
 ## First Skill: Neuroscience Database Lookup
 
@@ -44,20 +44,31 @@ The skill emphasizes exact source links, API endpoints, access notes, licensing,
 .
 ├── README.md
 ├── .gitignore
-└── neuroscience-database-lookup/
-    ├── SKILL.md
-    └── references/
-        ├── brainfacts-3d-brain.md
-        ├── brava.md
-        ├── clinical-eeg-and-big-data.md
-        ├── general-data-repositories-and-data-articles.md
-        ├── human-connectome-project.md
-        ├── nitrc-icbmmra.md
-        ├── oliva-lab.md
-        ├── openneuro.md
-        ├── osf.md
-        ├── temca2-fafb.md
-        └── visual-stimulus-and-eyetracking.md
+├── neuroscience-database-lookup/
+│   ├── SKILL.md
+│   └── references/
+│       ├── brainfacts-3d-brain.md
+│       ├── brava.md
+│       ├── clinical-eeg-and-big-data.md
+│       ├── general-data-repositories-and-data-articles.md
+│       ├── human-connectome-project.md
+│       ├── nitrc-icbmmra.md
+│       ├── oliva-lab.md
+│       ├── openneuro.md
+│       ├── osf.md
+│       ├── temca2-fafb.md
+│       └── visual-stimulus-and-eyetracking.md
+└── tms-eeg-skills-bundle/
+    ├── README.md
+    ├── tms-eeg-experiment-planner/
+    │   ├── SKILL.md
+    │   ├── references/
+    │   └── templates/
+    └── tms-eeg-preprocessing-consultant/
+        ├── SKILL.md
+        ├── assets/
+        ├── recipes/
+        └── references/
 ```
 
 ## Roadmap
@@ -70,7 +81,6 @@ Future skills could include:
 - `connectomics-resource-finder` - navigate connectome datasets, viewers, skeletons, and annotations
 - `neuroanatomy-tutor` - explain structures, pathways, functions, and lesion associations
 - `paper-to-protocol` - convert neuroscience papers into reproducible experiment or analysis checklists
-- `tms-eeg-experiment-planner` - support TMS target selection, sham/control planning, neuronavigation, E-field modeling, and state-dependent designs
 - `tms-eeg-interpretation-critic` - critique TEP/GMFA/LMFP/PCIst claims and separate physiological interpretation from sensory/artifact confounds
 
 ## Design Principles
@@ -83,4 +93,4 @@ Future skills could include:
 
 ## Contributing
 
-Add each new skill as its own directory with a `SKILL.md` file and any supporting references in a local `references/` folder. Keep examples concrete, cite source URLs where possible, and include error-recovery notes for fragile APIs or older academic websites.
+Add each new skill as its own directory with a `SKILL.md` file and any supporting references in a local `references/` folder. Domain-specific families, such as TMS-EEG, can be grouped in a bundle folder with a bundle README. Keep examples concrete, cite source URLs where possible, and include error-recovery notes for fragile APIs or older academic websites.
