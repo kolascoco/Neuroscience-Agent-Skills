@@ -16,6 +16,7 @@ Think of this repo as a field kit for research agents.
 |---|---|---|
 | `neuroscience-database-lookup` | Search public neuroscience datasets and educational anatomy resources across OpenNeuro, OSF, Figshare, Dryad, Harvard Dataverse, Science Data Bank, Zenodo, TDBRAIN, HCP, BRAVA, NITRC, Oliva Lab, visual stimulus/eye-tracking resources, TEMCA2/FAFB, and BrainFacts 3D Brain. | Ready |
 | `tms-eeg-preprocessing-consultant` | Plan, explain, and code TMS-EEG preprocessing workflows for TEP/GMFA/LMFP and immediate TEP/i-TEP analysis, with Context7-first/GitHub-fallback software lookup and artifact-aware QC cards. | Draft |
+| `tms-eeg-experiment-planner` | Design TMS-EEG studies before data collection: target choice, coil orientation/intensity, RMT versus TEP threshold, sham/sensory controls, rt-TEP monitoring, acquisition QC, neuronavigation, E-field modeling, SlicerTMS, and session checklists. | Draft |
 
 ## First Skill: Neuroscience Database Lookup
 
