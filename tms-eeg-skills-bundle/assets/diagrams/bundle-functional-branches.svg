@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">TMS-EEG Bundle Functional Branches</title>
+  <desc id="desc">Functional branch diagram connecting experiment planning and preprocessing capabilities in the TMS-EEG skills bundle.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 28px Arial, sans-serif; fill: #111827; }
+      .hub { fill: #e0f2fe; stroke: #075985; stroke-width: 1.8; rx: 12; }
+      .planner { fill: #ecfdf5; stroke: #047857; stroke-width: 1.4; rx: 10; }
+      .prep { fill: #fff7ed; stroke: #c2410c; stroke-width: 1.4; rx: 10; }
+      .shared { fill: #f5f3ff; stroke: #6d28d9; stroke-width: 1.4; rx: 10; }
+      .label { font: 700 15px Arial, sans-serif; fill: #111827; }
+      .text { font: 400 12px Arial, sans-serif; fill: #374151; }
+      .arrow { stroke: #374151; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="780"/>
+  <text class="title" x="60" y="55">Functional Branches</text>
+
+  <rect class="hub" x="455" y="95" width="290" height="88"/>
+  <text class="label" x="500" y="132">TMS-EEG Skills Bundle</text>
+  <text class="text" x="500" y="154">planning + preprocessing</text>
+
+  <rect class="planner" x="80" y="245" width="285" height="80"/>
+  <text class="label" x="108" y="278">Study Design</text>
+  <text class="text" x="108" y="300">protocol, trial count, endpoints</text>
+
+  <rect class="planner" x="80" y="365" width="285" height="80"/>
+  <text class="label" x="108" y="398">Targeting</text>
+  <text class="text" x="108" y="420">target, coil orientation, intensity</text>
+
+  <rect class="planner" x="80" y="485" width="285" height="80"/>
+  <text class="label" x="108" y="518">Controls And Masking</text>
+  <text class="text" x="108" y="540">sham, auditory, somatosensory</text>
+
+  <rect class="planner" x="80" y="605" width="285" height="80"/>
+  <text class="label" x="108" y="638">Online QC</text>
+  <text class="text" x="108" y="660">rt-TEP, artifact checks, go/no-go</text>
+
+  <rect class="prep" x="835" y="245" width="285" height="80"/>
+  <text class="label" x="863" y="278">Pipeline Selection</text>
+  <text class="text" x="863" y="300">MNE, TESA, SOUND, SSP-SIR</text>
+
+  <rect class="prep" x="835" y="365" width="285" height="80"/>
+  <text class="label" x="863" y="398">Artifact Cleaning</text>
+  <text class="text" x="863" y="420">pulse, decay, muscle, sensory</text>
+
+  <rect class="prep" x="835" y="485" width="285" height="80"/>
+  <text class="label" x="863" y="518">TEP Analysis</text>
+  <text class="text" x="863" y="540">TEPs, GMFA, LMFP, i-TEPs</text>
+
+  <rect class="prep" x="835" y="605" width="285" height="80"/>
+  <text class="label" x="863" y="638">Code Generation</text>
+  <text class="text" x="863" y="660">Python/MNE or MATLAB/TESA</text>
+
+  <rect class="shared" x="455" y="365" width="290" height="92"/>
+  <text class="label" x="492" y="398">Shared Evidence Layer</text>
+  <text class="text" x="492" y="420">papers, guidelines, repo cards</text>
+  <text class="text" x="492" y="438">Context7/GitHub fallback</text>
+
+  <path class="arrow" d="M455 139 C350 160, 280 210, 222 245"/>
+  <path class="arrow" d="M455 139 C340 210, 285 315, 222 365"/>
+  <path class="arrow" d="M455 139 C340 255, 285 440, 222 485"/>
+  <path class="arrow" d="M455 139 C345 310, 285 560, 222 605"/>
+
+  <path class="arrow" d="M745 139 C850 160, 920 210, 978 245"/>
+  <path class="arrow" d="M745 139 C860 210, 915 315, 978 365"/>
+  <path class="arrow" d="M745 139 C860 255, 915 440, 978 485"/>
+  <path class="arrow" d="M745 139 C855 310, 915 560, 978 605"/>
+
+  <path class="arrow" d="M365 405 L455 405"/>
+  <path class="arrow" d="M745 405 L835 405"/>
+  <path class="arrow" d="M365 645 C520 715, 680 715, 835 645"/>
+</svg>

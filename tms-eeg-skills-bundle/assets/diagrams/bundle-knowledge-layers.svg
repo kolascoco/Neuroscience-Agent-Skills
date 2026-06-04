@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">TMS-EEG Bundle Knowledge Layers</title>
+  <desc id="desc">Layered knowledge architecture for the TMS-EEG bundle from user intent through cards, templates, recipes, and source grounding.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 28px Arial, sans-serif; fill: #111827; }
+      .node { fill: #ffffff; stroke: #1f2937; stroke-width: 1.4; rx: 10; }
+      .intent { fill: #e0f2fe; stroke: #075985; }
+      .route { fill: #eef2ff; stroke: #4338ca; }
+      .method { fill: #ecfdf5; stroke: #047857; }
+      .risk { fill: #fff7ed; stroke: #c2410c; }
+      .source { fill: #fdf2f8; stroke: #be185d; }
+      .output { fill: #fef9c3; stroke: #a16207; }
+      .label { font: 700 15px Arial, sans-serif; fill: #111827; }
+      .text { font: 400 12px Arial, sans-serif; fill: #374151; }
+      .arrow { stroke: #374151; stroke-width: 1.6; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="760"/>
+  <text class="title" x="60" y="55">Knowledge Layers</text>
+
+  <rect class="node intent" x="90" y="100" width="260" height="78"/>
+  <text class="label" x="116" y="132">User Intent</text>
+  <text class="text" x="116" y="154">plan experiment, inspect artifact,</text>
+  <text class="text" x="116" y="170">write code, explain method</text>
+
+  <rect class="node route" x="430" y="90" width="300" height="98"/>
+  <text class="label" x="456" y="124">SKILL.md + Routing Cards</text>
+  <text class="text" x="456" y="146">choose planner or preprocessing</text>
+  <text class="text" x="456" y="164">load only relevant cards</text>
+
+  <rect class="node method" x="820" y="70" width="300" height="80"/>
+  <text class="label" x="846" y="102">Design / Pipeline Cards</text>
+  <text class="text" x="846" y="124">overall workflow and decisions</text>
+
+  <rect class="node method" x="820" y="180" width="300" height="80"/>
+  <text class="label" x="846" y="212">Step / Target Cards</text>
+  <text class="text" x="846" y="234">reusable operations and target risks</text>
+
+  <rect class="node risk" x="820" y="290" width="300" height="80"/>
+  <text class="label" x="846" y="322">Artifact Cards</text>
+  <text class="text" x="846" y="344">pulse, decay, muscle, sensory, overcleaning</text>
+
+  <rect class="node risk" x="820" y="400" width="300" height="80"/>
+  <text class="label" x="846" y="432">Appearance Cards</text>
+  <text class="text" x="846" y="454">what artifacts look like online/offline</text>
+
+  <rect class="node source" x="430" y="300" width="300" height="92"/>
+  <text class="label" x="456" y="332">Paper / Guideline Cards</text>
+  <text class="text" x="456" y="354">source-grounded methodological rules</text>
+  <text class="text" x="456" y="372">claims to avoid and caveats</text>
+
+  <rect class="node source" x="430" y="430" width="300" height="92"/>
+  <text class="label" x="456" y="462">Repo / Software Cards</text>
+  <text class="text" x="456" y="484">Context7 first</text>
+  <text class="text" x="456" y="502">GitHub fallback if needed</text>
+
+  <rect class="node output" x="90" y="520" width="260" height="92"/>
+  <text class="label" x="116" y="552">Templates / Recipes</text>
+  <text class="text" x="116" y="574">protocols, checklists, methods text,</text>
+  <text class="text" x="116" y="592">Python/MATLAB code templates</text>
+
+  <rect class="node output" x="430" y="600" width="690" height="72"/>
+  <text class="label" x="456" y="632">Agent Output</text>
+  <text class="text" x="456" y="654">session-ready plan, preprocessing pipeline, code, QC checklist, or cautious methodological explanation</text>
+
+  <path class="arrow" d="M350 139 L430 139"/>
+  <path class="arrow" d="M730 139 C760 120, 780 110, 820 110"/>
+  <path class="arrow" d="M730 139 C770 180, 780 210, 820 220"/>
+  <path class="arrow" d="M730 139 C780 250, 785 320, 820 330"/>
+  <path class="arrow" d="M730 139 C790 330, 790 430, 820 440"/>
+  <path class="arrow" d="M580 188 L580 300"/>
+  <path class="arrow" d="M580 392 L580 430"/>
+  <path class="arrow" d="M430 476 C350 490, 310 520, 350 560"/>
+  <path class="arrow" d="M350 566 C390 590, 410 615, 430 636"/>
+</svg>

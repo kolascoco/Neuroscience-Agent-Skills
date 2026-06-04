@@ -24,14 +24,18 @@ Variable pulse sample index, inconsistent trigger delay, sampling-rate-dependent
 
 Verify triggers, avoid unverified resampling before pulse handling, document sampling rate, and align events carefully.
 
+If downsampling is needed, first confirm that the pulse artifact and interpolation/removal windows are handled and that the resampling method applies anti-alias filtering. Then inspect whether the anti-alias filter introduced ringing or latency changes around the pulse.
+
 ## Pipeline Implications
 
 Early analysis must report sampling and synchronization details.
 
+For i-TEPs, keep a native high-sampling copy for pulse/decay QC and justify any downsampling before early-window analysis.
+
 ## Interpretation Caveats
 
-An early latency shift can be technical, not physiological.
+An early latency shift can be technical, not physiological. A new early oscillation after resampling or filtering may be filter-induced ringing, not a cortical response.
 
 ## Sources
 
-Jamil et al. 2024.
+Jamil et al. 2024; filtering and downsampling step cards.

@@ -22,6 +22,7 @@ step_cards:
   - steps/pulse-artifact-removal-or-interpolation.md
   - steps/bad-channel-detection-and-interpolation.md
   - steps/filtering.md
+  - steps/downsampling-and-resampling.md
   - steps/epoching-and-baseline.md
   - steps/ica-component-rejection.md
   - steps/trial-rejection.md
@@ -77,7 +78,7 @@ Raw pulse alignment, pre/post interpolation traces, bad-channel map, ICA compone
 
 ## Common Failure Modes
 
-Filtering across unhandled pulse artifacts, ICA fitted on dominated artifact periods, condition-specific trial loss, overcleaning cortical signal, event timing shifts, and interpreting sensory responses as cortical excitability.
+Filtering across unhandled pulse artifacts, downsampling before pulse/timing QC, anti-alias/filter ringing, ICA fitted on dominated artifact periods, condition-specific trial loss, overcleaning cortical signal, event timing shifts, and interpreting sensory responses as cortical excitability.
 
 ## Learning Mode Response
 

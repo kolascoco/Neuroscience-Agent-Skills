@@ -1,6 +1,6 @@
 ---
 name: tms-eeg-experiment-planner
-description: Design and troubleshoot TMS-EEG experiments before data collection. Use for target choice, coil position/orientation, stimulation intensity, RMT versus TEP-threshold reasoning, trial count, sham/control design, auditory and somatosensory masking, online rt-TEP monitoring, acquisition QC, channel/lead preparation, neuronavigation, SimNIBS/SlicerTMS/NaviNIBS planning, and i-TEP practice.
+description: Design and troubleshoot TMS-EEG experiments before data collection. Use for target choice, coil position/orientation, stimulation intensity, RMT versus TEP-threshold reasoning, trial count, sham/control design, auditory and somatosensory masking, online rt-TEP monitoring, acquisition QC, channel/lead preparation, neuronavigation, SimNIBS/Nexstim/SlicerTMS/NaviNIBS planning, and i-TEP practice.
 metadata:
   skill-author: local
 ---
@@ -16,7 +16,7 @@ Use this skill when a user asks how to design, prepare, or run a TMS-EEG experim
 3. **Load target-risk card** from `references/routing/target-risk-routing.md` when target is known.
 4. **Load relevant planning cards** from `references/design/`, `references/targeting/`, `references/online-qc/`, and `references/artifacts/`.
 5. **Load the good-practice card** (`references/guidelines/recommendations-good-practice.md`) for practical setup questions, go/no-go decisions, or session checklists.
-6. **Use repo cards** for software/tooling context: SimNIBS, SlicerTMS, NaviNIBS, rt-TEP, and related navigation/E-field workflows.
+6. **Use repo cards** for software/tooling context: SimNIBS, Nexstim NBS/SmartFocus/Eximia-style E-field navigation, SlicerTMS, NaviNIBS, rt-TEP, and related navigation/E-field workflows.
 7. **Return a session-ready plan**: protocol decisions, risks, online QC steps, go/no-go criteria, and a checklist.
 
 ## Planning Branches

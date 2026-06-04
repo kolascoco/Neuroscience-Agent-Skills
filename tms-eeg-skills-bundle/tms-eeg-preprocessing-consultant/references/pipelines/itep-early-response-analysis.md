@@ -16,6 +16,7 @@ avoid_when:
   - user wants only late TEP components
 step_cards:
   - steps/itep-analysis-window-selection.md
+  - steps/downsampling-and-resampling.md
   - steps/early-response-baseline-and-reference.md
   - steps/early-tep-topography-and-roi.md
   - steps/early-latency-qc.md
@@ -48,7 +49,7 @@ Sampling frequency, TMS hardware synchronization, pulse timestamp method, interp
 1. Verify acquisition metadata and pulse timing precision.
 2. Define early window only after pulse/recovery artifacts are characterized.
 3. Inspect single-trial and averaged traces around the pulse at high temporal resolution.
-4. Evaluate lead-configuration and sampling/synchronization risks.
+4. Evaluate lead-configuration and sampling/synchronization risks, including whether downsampling or anti-alias filtering could distort early windows.
 5. Compare active against sham/control and sensory conditions if available.
 6. Analyze topography/ROI with conservative language.
 7. Report all artifact windows and acquisition parameters.
@@ -67,7 +68,7 @@ Overlay raw/interpolated traces, inspect channel-wise early topographies, verify
 
 ## Common Failure Modes
 
-Residual pulse artifact, recharge/decay artifact, lead-loop effects, sampling misalignment, muscle artifact, baseline/reference distortions, and overconfident cortical interpretation.
+Residual pulse artifact, recharge/decay artifact, lead-loop effects, sampling misalignment, anti-alias/filter ringing, muscle artifact, baseline/reference distortions, and overconfident cortical interpretation.
 
 ## Learning Mode Response
 

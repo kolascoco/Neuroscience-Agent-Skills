@@ -68,7 +68,7 @@ Load pulse, decay/recharge, muscle, filtering, ICA, SOUND, SSP-SIR, ocular/audit
 
 ## Parameter Defaults To Consider
 
-Artifact windows and ICA settings must follow the dataset and verified TESA documentation. Lesson-script starting examples include baseline `[-50 -10] ms`, first pulse removal `[-2 12] ms` with cubic `[1 1]`, PCA compression `compVal=20`, SOUND `lambda=0.02`, SSP-SIR manual `timeRange=[-2 35]`, second removal `[-3 10]` with cubic `[5 5]`, low-pass `80 Hz`, notch `48-52 Hz`, downsample `1000 Hz`, and final time range `[-1 1] s`. Use as teaching-script examples, not universal defaults.
+Artifact windows and ICA settings must follow the dataset and verified TESA documentation. Lesson-script starting examples include baseline `[-50 -10] ms`, first pulse removal `[-2 12] ms` with cubic `[1 1]`, PCA compression `compVal=20`, SOUND `lambda=0.02`, SSP-SIR manual `timeRange=[-2 35]`, second removal `[-3 10]` with cubic `[5 5]`, low-pass `80 Hz`, notch `48-52 Hz`, downsample `1000 Hz`, and final time range `[-1 1] s`. Use as teaching-script examples, not universal defaults. If downsampling is used, apply it only after verifying pulse handling and inspect anti-alias/filter ringing around the pulse and interpolation boundaries.
 
 ## QC Checkpoints
 

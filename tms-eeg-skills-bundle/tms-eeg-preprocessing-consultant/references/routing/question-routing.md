@@ -14,6 +14,7 @@ tags:
 | First-pass TEP/GMFA/LMFP preprocessing in Python | `pipelines/conservative-mne-python.md` | `repos/mne-python.md`, `repos/tmseegpy.md`, `recipes/compute_teps_gmfa_lmfp.md` |
 | TESA-style cleaning or two ICA passes | `pipelines/tesa-inspired-two-pass-ica.md` | `repos/tesa.md`, `artifacts/overcleaning-and-ica-risk.md` |
 | MATLAB, EEGLAB, TESA, `.set` files, FastICA | `routing/code-language-selection.md` | `pipelines/tesa-inspired-two-pass-ica.md`, `recipes/tesa_matlab_preprocessing.md`, `repos/tesa.md` |
+| Downsampling, resampling, aliasing, anti-aliasing, or filter ringing | `steps/downsampling-and-resampling.md` | `steps/filtering.md`, `artifacts/sampling-sync-early-artifacts.md` |
 | Automated artifact rejection, ARTIST, or AARATEP | `pipelines/automated-artist-aaratep.md` | `repos/aaratep-pipeline.md`, `papers/wu-2018-artist.md`, `steps/automated-artifact-rejection.md` |
 | SOUND, SSP, SIR, source-space signal cleaning | `pipelines/sound-ssp-sir-enhanced.md` | `repos/pytep-sound-ssp-sir.md`, `steps/sound-cleaning.md`, `steps/ssp-sir-cleaning.md` |
 | TEP modeling, recurrent network dynamics, PyTepFit | `pipelines/tepfit-network-modeling-analysis.md` | `repos/pytepfit.md`, `papers/momi-2023-recurrent-network-dynamics.md`, `steps/tepfit-modeling-analysis.md` |

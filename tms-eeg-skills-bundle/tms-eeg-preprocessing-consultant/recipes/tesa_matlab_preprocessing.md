@@ -132,6 +132,8 @@ EEG = pop_tesa_interpdata(EEG, 'cubic', [5 5]);
 EEG = pop_rmbase(EEG, baseline_time_interval, []);
 
 % Optional downsample/trim. Use verified helper or EEGLAB pop_resample.
+% Do this only after pulse/artifact windows and timing have been checked.
+% Reinspect early post-pulse traces for anti-alias/filter ringing afterward.
 % EEG = downsample_epoched_eeg(EEG, 1000);
 % EEG = pop_resample(EEG, 1000);
 EEG = pop_select(EEG, 'time', [-1 1]);

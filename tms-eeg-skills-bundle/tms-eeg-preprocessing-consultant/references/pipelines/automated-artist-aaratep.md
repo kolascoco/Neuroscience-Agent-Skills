@@ -23,6 +23,7 @@ step_cards:
   - steps/sound-cleaning.md
   - steps/amplifier-decay-and-recharge-artifacts.md
   - steps/filtering.md
+  - steps/downsampling-and-resampling.md
   - steps/ica-component-rejection.md
   - steps/trial-rejection.md
   - steps/tep-averaging.md
@@ -54,7 +55,7 @@ Based on the AARATEP README, the pipeline stages include epoching, artifact inte
 
 ## Step Cards To Load
 
-Load automated artifact rejection, pulse interpolation, SOUND, decay/recharge, ICA, trial rejection, TEP averaging, and QC cards. Load the AARATEP repo card before writing MATLAB code.
+Load automated artifact rejection, pulse interpolation, SOUND, decay/recharge, filtering/downsampling, ICA, trial rejection, TEP averaging, and QC cards. Load the AARATEP repo card before writing MATLAB code.
 
 ## Parameter Defaults To Consider
 
@@ -66,7 +67,7 @@ Automated decisions must be auditable: bad channels, rejected ICs, interpolation
 
 ## Common Failure Modes
 
-Treating automated rejection as ground truth, unreviewed ICLabel/TMS-specific IC decisions, dependency mismatch, and applying AARATEP assumptions to incompatible recordings.
+Treating automated rejection as ground truth, unreviewed ICLabel/TMS-specific IC decisions, dependency mismatch, hidden resampling/filtering assumptions, and applying AARATEP assumptions to incompatible recordings.
 
 ## Learning Mode Response
 

@@ -17,6 +17,14 @@ This folder groups the TMS-EEG agent skills as one methodological bundle while k
 - Share methodological concepts through parallel card formats: routing cards, method cards, artifact cards, repository cards, paper cards, and templates/recipes.
 - Keep raw PDFs and article folders outside the skill bundle. Cards may preserve local provenance paths, but the agent should rely on distilled cards at runtime.
 
+## Article Diagrams
+
+- `assets/diagrams/article-ready-bundle-scheme.md`: article-ready text scheme with Mermaid equivalents.
+- `assets/diagrams/bundle-structure.svg`: bundle folder and sub-skill structure.
+- `assets/diagrams/bundle-knowledge-layers.svg`: layered knowledge architecture.
+- `assets/diagrams/bundle-functional-branches.svg`: functional branches across planning and preprocessing.
+- `assets/diagrams/bundle-runtime-block-logic.svg`: runtime routing/block logic.
+
 ## Future Bundle Candidates
 
 - `tms-eeg-interpretation-critic`: critique physiological claims, sensory confounds, source claims, PCIst/complexity interpretations, and target-specific mechanisms.
