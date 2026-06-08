@@ -41,7 +41,7 @@ Use verified SSP-SIR implementation, MNE projection primitives if applicable, or
 | Pulse window | `[-2, 10] ms` | Conservative default before filtering |
 | Longer pulse/recharge | `[-2, 12] ms` | Use when recovery extends later |
 | Strong artifact | `[-5, 15] ms` | Use carefully; can erase early signal |
-| High-pass | `0.1-1 Hz` | Match analysis goal |
+| Analysis high-pass | `0.1-1 Hz` only if justified | Match analysis goal; do not apply before pulse/high-amplitude artifact handling by default |
 | Low-pass | `80-100 Hz` | Avoid excessive smoothing |
 | Notch | `50/60 Hz` | Local mains |
 | Baseline | `[-500, -50] ms` | Must be clean |
@@ -51,6 +51,8 @@ Use verified SSP-SIR implementation, MNE projection primitives if applicable, or
 | SSP-SIR `time_range` | `[5, 50] ms` | Early TMS-evoked muscle window; for DLPFC, verify against the actual biphasic burst and any samples already interpolated |
 | SSP-SIR `pc` | `2` | `1` mild; `3-5` severe artifact only |
 | SSP-SIR `M` | `None` | Let rank-based estimate handle it unless justified |
+
+SSP-SIR muscle-artifact estimation is different from analysis high-pass filtering. TESA/PyTEP estimates the muscle-artifact subspace from a high-pass-filtered copy of the data, around `100 Hz`, so high-frequency muscle topographies can be identified. This method-internal copy should not be reported as a general instruction to high-pass filter the analysis waveform before pulse handling.
 
 ## Learning Mode Explanation
 

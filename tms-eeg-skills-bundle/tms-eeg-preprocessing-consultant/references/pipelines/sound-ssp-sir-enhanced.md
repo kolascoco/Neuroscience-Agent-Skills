@@ -56,7 +56,7 @@ Raw or epoched data, montage/electrode locations, event timing, target, artifact
 9. Apply low-pass/notch or other analysis filters late, after major TMS-specific cleaning, and inspect ringing.
 10. Apply the final feature reference across all EEG channels, then compute TEP/GMFA/LMFP and QC before/after each major cleaning stage. Select LMFP ROI channels only after full-channel referencing.
 
-Some source-specific SOUND/SSP-SIR summaries place a high-pass filter before epoching and pulse interpolation. Treat this as a reproducibility-specific exception, not as advice. For general advisor/code output, prefer pulse-window handling and major artifact cleaning before analysis filters. If a high-pass-first order is reproduced, require explicit ringing QC and report that filtering was performed before pulse interpolation.
+Do not describe SOUND/SSP-SIR as a high-pass-first pipeline. The PyTEP/TESA SSP-SIR implementation estimates muscle-artifact topographies from an internal high-pass-filtered copy, and some published SOUND/SSP-SIR methods apply a 1 Hz high-pass before SOUND after earlier pulse handling, ICA/QC, and trial cleanup. For general advisor/code output, prefer pulse-window handling and major artifact cleaning before analysis filters. If reproducing a source-specific early high-pass, require explicit ringing QC and report exactly where the high-pass was applied.
 
 ## Step Cards To Load
 
