@@ -18,7 +18,7 @@ Condition the signal for ICA, evoked analysis, and metrics while avoiding artifa
 
 ## When To Apply
 
-For the analysis dataset, apply filters late by default: after pulse artifact handling, bad-channel/bad-trial inspection, major TMS-related artifact cleaning, and optional SOUND/SSP-SIR/ICA decisions. Do not filter across unhandled pulse transients.
+For the analysis dataset, apply filters late by default: after pulse artifact handling, bad-channel/bad-trial inspection, major TMS-related artifact cleaning, and any SOUND/SSP-SIR/ICA decisions. In SOUND/SSP-SIR-style workflows, this usually means after the ocular/movement ICA -> SOUND -> SSP-SIR sequence, plus any optional residual ICA. Do not filter across unhandled pulse transients.
 
 A narrow exception is a separate ICA-training copy: a gentle high-pass or detrending step can sometimes improve ICA stability, but the agent must keep this distinct from the final analysis data and must not let an early high-pass silently define the TEP waveform.
 
@@ -32,7 +32,7 @@ Choose filters based on analysis goals. Preserve transparent reporting of passba
 
 Do not apply filters across unhandled TMS pulse artifacts. Handle or mark/remove/interpolate the pulse window before filtering when the filter could spread the transient into the surrounding TEP window.
 
-Prefer the late-filtering order used in the local MATLAB/TESA lesson for epoched data: pulse removal/interpolation -> bad channel/trial inspection -> ICA/SOUND/SSP-SIR or other major artifact cleaning -> optional second artifact-window handling -> low-pass/notch filtering -> baseline -> downsample/trim -> final trial QC.
+Prefer the late-filtering order used in the local MATLAB/TESA lesson for epoched data: pulse removal/interpolation -> bad channel/trial inspection -> ICA for ocular/movement/background muscle artifacts, avoiding TMS-stimulus-locked component rejection -> SOUND -> SSP-SIR for early TMS-evoked muscle artifact -> optional second artifact-window handling -> low-pass/notch filtering -> baseline -> downsample/trim -> final trial QC.
 
 Use gentler filters when possible. Very steep cutoffs, narrow transition bands, and zero-phase filtering around sharp discontinuities can create ringing that resembles time-locked neural activity.
 

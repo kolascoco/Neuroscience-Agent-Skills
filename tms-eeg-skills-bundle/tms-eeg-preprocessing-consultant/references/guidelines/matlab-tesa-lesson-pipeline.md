@@ -31,7 +31,7 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 5. Inspect pulse artifact, remove a window such as `[-2 12] ms`, and interpolate with `pop_tesa_interpdata(..., 'cubic', [1 1])`.
 6. Save one-trial dataset with full channel locations for later SOUND channel replacement.
 7. Manually inspect and remove bad channels/trials.
-8. Baseline correct and run PCA compression plus FastICA using `pop_tesa_pcacompress`, `pop_tesa_fastica`, and `pop_tesa_compplot`.
+8. Baseline correct and run PCA compression plus FastICA using `pop_tesa_pcacompress`, `pop_tesa_fastica`, and `pop_tesa_compplot`; use this ICA stage for ocular, blink, eye-movement, and non-stimulus-locked/background muscle artifacts.
 9. Run SOUND with `pop_tesa_sound`; the lesson notes SOUND transforms to average reference.
 10. Run SSP-SIR with `pop_tesa_sspsir` for remaining TMS-evoked muscle artifact.
 11. Optionally remove/interpolate a second artifact window.
@@ -44,7 +44,8 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 
 - The source data are already epoched; normally epoching happens early in preprocessing.
 - The lesson uses baseline correction rather than a 1 Hz high-pass on short epochs.
-- The lesson places analysis filtering late, after pulse interpolation, bad channel/trial inspection, ICA, SOUND, SSP-SIR, and optional second artifact-window interpolation.
+- The lesson places analysis filtering late, after pulse interpolation, bad channel/trial inspection, ICA for ocular/movement/background muscle artifacts, SOUND, SSP-SIR for early TMS-evoked muscle artifact, and optional second artifact-window interpolation.
+- Do not use the pre-SOUND ICA stage to remove the early TMS-evoked muscle response or other clear TMS-stimulus-locked components; that artifact target is reserved for interpolation/projection/SSP-SIR or trial/target decisions in this workflow.
 - The script comments that detrending or high-pass filtering can help ICA, but it also warns that filtering can create edge artifacts, remove slow components, and distort signals if applied before high-amplitude artifact removal.
 - SOUND can extrapolate previously removed channels if supplied a full-channel reference dataset.
 - SSP-SIR can use manual or automatic artifact windows; manual windows are preferable when known.

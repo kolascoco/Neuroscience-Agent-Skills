@@ -13,7 +13,7 @@ Template for fitting ICA after pulse artifact handling and appropriate filtering
 
 ## Warning
 
-ICA decisions are methodological decisions. Do not reject components without topography, time course, spectrum, and before/after TEP checks.
+ICA decisions are methodological decisions. Do not reject components without topography, time course, spectrum, and before/after TEP checks. Do not reject components with clear TMS-stimulus-locked activity or TMS-evoked muscle morphology; use explicit artifact-window handling, projection/SSP-SIR, trial rejection, or target/protocol adjustment instead.
 
 ## Template
 

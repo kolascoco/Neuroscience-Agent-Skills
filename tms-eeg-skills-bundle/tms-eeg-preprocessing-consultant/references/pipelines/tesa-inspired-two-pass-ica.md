@@ -54,7 +54,7 @@ Sampling rate, event timing, artifact removal windows, target, number of trials,
 4. Inspect the pulse artifact, remove a window such as `[-2 12] ms`, and cubic-interpolate with TESA.
 5. Save a full-channel-location reference dataset before bad-channel removal if SOUND will replace channels later.
 6. Inspect/remove bad channels and bad trials.
-7. Run PCA compression and FastICA; inspect components with TESA component plots.
+7. Run PCA compression and FastICA; inspect components with TESA component plots. In SOUND/SSP-SIR-style TESA workflows, use this slot for ocular, blink, eye-movement, and non-stimulus-locked/background muscle artifacts, not for the early TMS-evoked muscle response that SSP-SIR will model. Do not reject components with clear TMS-stimulus-locked activity by ordinary ICA review.
 8. Run SOUND when channel locations/lead field assumptions are acceptable.
 9. Run SSP-SIR for remaining early TMS-evoked muscle artifact when justified.
 10. Optionally remove/interpolate a second artifact window.
@@ -82,7 +82,7 @@ ICA instability, component misclassification, SOUND overcorrection, SSP-SIR over
 
 ## Learning Mode Response
 
-Explain why two passes may be used: one for large TMS-related artifacts and one for physiological/sensory artifacts after signal conditioning.
+Explain why two passes may be used, but keep the target of each pass explicit. For SOUND/SSP-SIR workflows, the practical physiological-artifact ICA slot is often before SOUND for ocular/movement artifacts; any later ICA pass should be framed as residual cleanup after signal conditioning, not as a mandatory step.
 
 ## Code-Engineer Mode Response
 

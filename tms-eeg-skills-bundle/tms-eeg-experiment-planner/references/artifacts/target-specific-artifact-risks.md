@@ -17,7 +17,7 @@ Flag likely artifacts before the target is finalized.
 | Target/region | Common risks | Planning response |
 |---|---|---|
 | M1 | MEP/RMT bias, scalp muscle, i-TEP artifact | online TEP/i-TEP QC, orientation search, current-direction controls |
-| DLPFC/frontal | craniofacial muscle, click/sensation, weak early local TEP | target subregion selection, masking, blink template, backup target |
+| DLPFC/frontal | craniofacial muscle, click/sensation, weak early local TEP, unreliable anterior/lateral early windows | target subregion selection, masking, blink template, online check for focal high-frequency biphasic muscle response, backup medial/posterior target |
 | PPC/parietal | target precision, source/topography ambiguity | neuronavigation, source plan, online local TEP check |
 | Occipital | visual state/phosphenes, alpha/natural frequency | control visual state, track alpha, consider natural-frequency endpoint |
 | SMA/medial | subregion specificity, connectivity/excitability ambiguity | precise coordinates, E-field, connectivity/source analysis plan |

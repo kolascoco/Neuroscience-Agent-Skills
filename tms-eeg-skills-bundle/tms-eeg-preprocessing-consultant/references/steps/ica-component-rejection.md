@@ -14,11 +14,11 @@ load_with:
 
 ## Purpose
 
-Remove stereotyped artifacts such as ocular, muscle, auditory/sensory-related, and residual TMS components while preserving neural signal.
+Remove stereotyped artifacts such as ocular, non-stimulus-locked muscle/background EMG, auditory/sensory-related, and residual non-neural components while preserving neural signal.
 
 ## When To Apply
 
-After gross pulse handling, bad-channel/bad-trial inspection, and enough preprocessing to make the decomposition stable. TESA-style workflows may use two ICA passes.
+After gross pulse handling, bad-channel/bad-trial inspection, and enough preprocessing to make the decomposition stable. In SOUND/SSP-SIR-style TESA workflows, place the main physiological ICA for blinks, eye movements, ocular artifacts, and non-stimulus-locked/background muscle before SOUND and SSP-SIR. Do not use ICA to remove TMS-evoked muscle artifacts or components with clear TMS-stimulus-locked activity; those components can contain genuine TEP signal or overlap with it. Use pulse-window interpolation, projection/SSP-SIR, trial rejection, or target adjustment for TMS-evoked muscle. Use any later ICA pass only for residual non-stimulus-locked stereotyped artifacts after SOUND/SSP-SIR, with explicit before/after QC. TESA-style workflows may use two ICA passes, but the artifact target of each pass must be stated.
 
 Do not treat broad analysis filtering as a prerequisite for ICA. If filtering is needed only to improve ICA stability, use a separate ICA-training copy or a clearly documented detrending/high-pass strategy, then apply the learned component rejection to the intended analysis data when supported by the software workflow.
 
@@ -28,15 +28,15 @@ Sufficient trials, channel count, ICA-training data policy, filtering/detrending
 
 ## Decision Rules
 
-Do not reject components by label alone. Require topography, time course, spectrum, and condition-aware QC.
+Do not reject components by label alone. Require topography, time course, spectrum, and condition-aware QC. Do not remove components with clear TMS-stimulus-locked activity unless there is a protocol-specific, documented artifact model and sensitivity analysis; ordinary ICA rejection of such components risks spoiling genuine TEP components.
 
 ## Method Options
 
-Manual ICA review, automated component suggestions plus human verification, two-pass ICA, or alternative cleaning when ICA is unstable.
+Manual ICA review, automated component suggestions plus human verification, two-pass ICA, or alternative cleaning when ICA is unstable. For TMS-evoked muscle, prefer projection/SSP-SIR or explicit artifact-window handling over ICA component rejection.
 
 ## Learning Mode Explanation
 
-ICA can help separate artifacts, but it can also remove real evoked activity if used carelessly.
+ICA can help separate artifacts, but it can also remove real evoked activity if used carelessly. TMS-stimulus-locked components are especially dangerous to reject because true TEPs are also stimulus locked.
 
 ## Code-Engineer Notes
 
@@ -48,7 +48,7 @@ Component maps, explained variance, before/after TEPs, retained components, and 
 
 ## Failure Modes
 
-Too few data points, rank issues, overcleaning, residual artifacts, irreproducible manual decisions, and letting early ICA-preparation filters distort the final TEP waveform.
+Too few data points, rank issues, overcleaning, residual artifacts, irreproducible manual decisions, removing TMS-stimulus-locked or TMS-evoked muscle components as if they were ordinary ICA artifacts, and letting early ICA-preparation filters distort the final TEP waveform.
 
 ## Sources
 

@@ -28,6 +28,7 @@ tags:
 | `PIIS1935861X24003796.pdf` | `gogulski-2025-dlpfc-methodological-considerations.md` | DLPFC reliability abstract |
 | `awr340.pdf` | `casali-2012-consciousness-effective-connectivity.md` | effective connectivity/consciousness |
 | `bhae130.pdf` | `gogulski-2024-dlpfc-tep-reliability.md` | DLPFC TEP reliability |
+| `articles/nature of effects/Kabir_2024_JofNeuroscience_Influence_of_Large_Scale_Brain_Dynamics.pdf` | `kabir-2024-large-scale-brain-state-dynamics.md` | DLPFC state-dependency and preprocessing example |
 | `nihpp-2026.01.30.702764v1.pdf` | `lomi-2026-sma-complex-excitability-connectivity.md` | SMA excitability/connectivity preprint |
 | `science.1117256.pdf` | `massimini-2005-breakdown-effective-connectivity-sleep.md` | effective connectivity/sleep |
 

@@ -26,7 +26,9 @@ Artifact definition windows, projection parameters, rank information, validation
 
 Track rank and compare evoked responses before/after. Do not project away early responses without explicit justification. Use `pc=2`, `time_range=[5, 50] ms`, `art_scale="manual"`, and `M=None` only as starting values from the local guide.
 
-SSP-SIR mainly targets early TMS-evoked muscle artifact. It is not a full replacement for ICA; use ICA afterward for remaining blinks, eye movements, residual muscle, decay, and unrelated components.
+SSP-SIR mainly targets early TMS-evoked muscle artifact. It is not a full replacement for ICA. In TESA SOUND/SSP-SIR-style workflows, ICA for blinks, eye movements, and non-stimulus-locked/background muscle is commonly placed before SOUND and SSP-SIR, after pulse handling and bad-trial/channel cleanup. Do not remove TMS-evoked muscle artifacts with ICA, and do not reject components with clear TMS-stimulus-locked activity by ordinary ICA review. Use an additional post-SSP-SIR ICA pass only when residual non-stimulus-locked stereotyped artifacts remain and QC shows that component removal does not distort the TEP.
+
+For DLPFC muscle artifact, distinguish short-window excision from SSP-SIR recovery. If the pipeline already removes/interpolates `-2` to `10-12 ms`, do not claim physiological interpretability inside that interval. If SSP-SIR is used to recover muscle-masked TEPs, inspect candidate components for strong high-frequency power, focal muscle-like topography, and a brief biphasic/MEP-like time course. Prefer sensitivity checks across `pc` values and artifact windows.
 
 ## Method Options
 
@@ -46,7 +48,7 @@ Use verified SSP-SIR implementation, MNE projection primitives if applicable, or
 | SOUND `lambda_val` | `0.1` | `0.05` less aggressive; `0.2-0.3` for noisier data |
 | SOUND `iter_num` | `5` | Try `10` only if diagnostics justify |
 | SSP-SIR `art_scale` | `manual` | Best controlled default when artifact window is known |
-| SSP-SIR `time_range` | `[5, 50] ms` | Early TMS-evoked muscle window |
+| SSP-SIR `time_range` | `[5, 50] ms` | Early TMS-evoked muscle window; for DLPFC, verify against the actual biphasic burst and any samples already interpolated |
 | SSP-SIR `pc` | `2` | `1` mild; `3-5` severe artifact only |
 | SSP-SIR `M` | `None` | Let rank-based estimate handle it unless justified |
 
@@ -65,6 +67,7 @@ Rank, projection vectors/topographies, pre/post TEPs, early TEP attenuation, res
 Under-cleaning clues:
 
 - Large high-frequency burst remains around `5-50 ms`.
+- Biphasic/MEP-like deflection remains near frontal/temporal/jaw/neck channels.
 - Early post-TMS channels dominate the butterfly plot.
 - RMS/peak-to-peak diagnostics remain high.
 

@@ -86,6 +86,11 @@ pop_eegplot(pop_reref(EEG, []), 1, 1, 1);
 % TODO: reject selected bad trials via EEGLAB GUI or scripted criteria.
 
 % ICA preparation and FastICA.
+% In this SOUND/SSP-SIR order, use ICA for ocular, blink, eye-movement, and
+% non-stimulus-locked/background muscle artifacts. Do not reject components
+% with clear TMS-stimulus-locked activity or TMS-evoked muscle; handle those
+% with artifact-window interpolation, projection/SSP-SIR, trial rejection, or
+% target/protocol adjustment.
 EEG = pop_rmbase(EEG, baseline_time_interval, []);
 EEG = pop_tesa_pcacompress(EEG, 'compVal', 20, 'plot', 'on');
 EEG = pop_tesa_fastica(EEG, 'approach', 'symm', 'g', 'tanh', ...

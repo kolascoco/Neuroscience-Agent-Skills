@@ -24,13 +24,16 @@ This is an early methodological source for projection-based handling of TMS-evok
 
 Muscle artifacts can mask or distort TMS-evoked EEG responses, especially in early windows and target-adjacent channels.
 
+The paper describes cranial-muscle artifacts as potentially orders of magnitude larger than brain signal and lasting tens of milliseconds. In the Broca-area example, the artifact was biphasic, with GMFA deflections around `5 ms` and `10 ms`, and slow decay toward baseline around `40-50 ms`.
+
 ## Methodological Tips And Nuances
 
-Projection can suppress artifact structure, but the agent should require pre/post TEP checks and avoid treating projected data as automatically artifact-free.
+Projection can suppress artifact structure, but the agent should require pre/post TEP checks and avoid treating projected data as automatically artifact-free. The method estimates muscle topographies from data high-pass filtered at about `100 Hz`, uses PCA to find high-frequency muscle-dominated topographies, and projects selected PCs out of the original unfiltered data.
 
 ## Agent Rules Extracted
 
 - Use projection methods only with explicit artifact windows/components.
+- Look for high-frequency muscle activity and biphasic/MEP-like early time courses when selecting projection/SSP-SIR components.
 - Mention risk of attenuating early neural signal.
 - Report what was projected and how TEP morphology changed.
 
