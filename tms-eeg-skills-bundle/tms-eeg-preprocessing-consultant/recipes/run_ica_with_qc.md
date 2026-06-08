@@ -22,7 +22,9 @@ from mne.preprocessing import ICA
 
 raw_for_ica = raw_interp.copy()
 
-# TODO: choose filters for ICA fitting after pulse artifact handling.
+# Optional ICA-training filter after pulse artifact handling.
+# Keep this separate from the final analysis data; do not let an early
+# high-pass silently become the TEP/GMFA/LMFP analysis waveform.
 raw_for_ica.filter(l_freq=1.0, h_freq=None)
 
 ica = ICA(

@@ -53,6 +53,10 @@ EEGLAB-compatible data, event labels, pulse event, epoch timespan, sampling rate
 
 Based on the AARATEP README, the pipeline stages include epoching, artifact interpolation with custom autoregressive blending, downsampling, baseline correction, high-pass filtering, bad-channel identification, early eye-related IC rejection, SOUND, decay component removal, a second artifact interpolation, line-noise filtering, ICA, IC rejection with ICLabel plus TMS-specific rules, low-pass filtering, and average rereferencing.
 
+Treat the mid-pipeline high-pass step as part of that specific automated workflow, not as the advisor's default. When giving general TMS-EEG advice, prefer late analysis filtering after major TMS-specific artifact handling unless the user is reproducing AARATEP exactly.
+
+Do not collapse all ARTIST-family workflows into this exact order. The original ARTIST summary is often described as pulse artifact removal, early downsampling, first ICA for decay, filters, epoching, bad epoch/channel handling, second ICA, average reference, and baseline. Treat AARATEP and ARTIST as related but not identical sources; load `pipeline-tables/preprocessing-step-order.md` when comparing them.
+
 ## Step Cards To Load
 
 Load automated artifact rejection, pulse interpolation, SOUND, decay/recharge, filtering/downsampling, ICA, trial rejection, TEP averaging, and QC cards. Load the AARATEP repo card before writing MATLAB code.

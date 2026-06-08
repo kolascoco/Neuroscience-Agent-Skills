@@ -26,6 +26,8 @@ Reference repository for automated TMS-EEG preprocessing using advanced artifact
 
 The staged automated workflow: epoching, artifact interpolation, downsampling, baseline correction, high-pass filtering, bad-channel identification, early eye-related IC rejection, SOUND, decay component removal, further interpolation, line-noise filtering, ICA, ICLabel plus TMS-specific component rules, low-pass filtering, and average rereferencing.
 
+This order is a repo-specific implementation cue. Do not generalize the early/mid high-pass position into ordinary advisor code unless the user asks to reproduce AARATEP. General TMS-EEG advice should prefer late analysis filtering after pulse and major artifact handling.
+
 ## Workflow Concepts
 
 Automation can make TMS-EEG preprocessing more reproducible, but the resulting decisions must be logged and reviewed.

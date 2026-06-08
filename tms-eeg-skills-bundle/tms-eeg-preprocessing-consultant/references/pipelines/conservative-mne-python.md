@@ -57,12 +57,14 @@ Data format, sampling rate, event channel or pulse timestamps, target, active/sh
 3. Mark or interpolate the pulse artifact window before filtering.
 4. Inspect amplifier decay/recharge and large muscle artifacts.
 5. Mark bad channels and gross bad epochs.
-6. Filter cautiously after pulse artifact handling.
-7. Epoch and baseline with a defensible pre-pulse window.
-8. Run ICA or equivalent component cleaning.
-9. Reject remaining bad trials.
-10. Average TEPs and compute GMFA/LMFP.
-11. Generate QC plots and a processing log.
+6. Epoch and baseline with a defensible pre-pulse window if needed.
+7. Run ICA or equivalent component cleaning. If ICA needs a filtered copy, keep that copy separate from the final analysis data.
+8. Filter the analysis data late and cautiously, usually after TMS-specific cleaning. Prefer low-pass/notch choices over early high-pass on short epochs.
+9. Downsample only after pulse/timing QC and filtering-edge checks.
+10. Reject remaining bad trials.
+11. Apply the final feature reference across all EEG channels, usually CAR or justified Laplacian/CSD.
+12. Average TEPs and compute GMFA/LMFP, selecting LMFP ROI channels only after the full-channel reference.
+13. Generate QC plots and a processing log.
 
 ## Step Cards To Load
 
@@ -74,11 +76,11 @@ Use placeholders for artifact windows, filter bands, baseline windows, and rejec
 
 ## QC Checkpoints
 
-Raw pulse alignment, pre/post interpolation traces, bad-channel map, ICA component reports, retained trial counts by condition, TEP butterfly/topography, GMFA/LMFP, and condition-specific artifact balance.
+Raw pulse alignment, pre/post interpolation traces, bad-channel map, ICA component reports, retained trial counts by condition, reference mode, TEP butterfly/topography, GMFA/LMFP, and condition-specific artifact balance.
 
 ## Common Failure Modes
 
-Filtering across unhandled pulse artifacts, downsampling before pulse/timing QC, anti-alias/filter ringing, ICA fitted on dominated artifact periods, condition-specific trial loss, overcleaning cortical signal, event timing shifts, and interpreting sensory responses as cortical excitability.
+Filtering across unhandled pulse artifacts, using analysis filters too early, downsampling before pulse/timing QC, anti-alias/filter ringing, ICA fitted on dominated artifact periods, condition-specific trial loss, overcleaning cortical signal, event timing shifts, and interpreting sensory responses as cortical excitability.
 
 ## Learning Mode Response
 
@@ -86,7 +88,7 @@ Explain each step by artifact type and scientific risk: pulse first, then signal
 
 ## Code-Engineer Mode Response
 
-Use recipes for loading, event detection, artifact interpolation, ICA, TEP averaging, GMFA/LMFP, and QC. Verify APIs through Context7 or GitHub fallback.
+Use recipes for loading, event detection, artifact interpolation, ICA, full-channel re-referencing, TEP averaging, GMFA/LMFP, and QC. Verify APIs through Context7 or GitHub fallback.
 
 ## Claims And Caveats
 

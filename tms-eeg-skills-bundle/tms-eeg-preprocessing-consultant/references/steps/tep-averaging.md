@@ -22,11 +22,13 @@ After final epoch cleaning and before metrics/topographies.
 
 ## Inputs Needed
 
-Clean epochs, condition labels, channel selection, baseline policy, and time windows.
+Clean epochs, condition labels, channel selection, reference mode, baseline policy, and time windows.
 
 ## Decision Rules
 
 Keep active/sham/control averages separate and report retained trials.
+
+When averages will feed GMFA, LMFP, early ROI metrics, or topographic comparisons, apply the intended reference to the full EEG channel set before ROI selection or feature extraction.
 
 ## Method Options
 
@@ -46,7 +48,7 @@ Butterfly plots, topomaps at selected latencies, confidence intervals if availab
 
 ## Failure Modes
 
-Averaging across mismatched conditions, hiding residual artifacts, and overinterpreting component labels.
+Averaging across mismatched conditions, hiding residual artifacts, applying feature references only within ROI channels, and overinterpreting component labels.
 
 ## Sources
 

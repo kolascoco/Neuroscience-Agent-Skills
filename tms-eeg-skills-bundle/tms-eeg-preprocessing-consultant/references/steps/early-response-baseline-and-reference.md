@@ -27,9 +27,11 @@ Reference scheme, montage, pre-pulse baseline window, target, and lead configura
 
 Report reference and baseline explicitly. Test sensitivity when early effects are small or topography-dependent.
 
+For LMFP or early ROI metrics, re-reference all EEG channels before ROI selection. CAR within the ROI is not equivalent to full-scalp CAR and can suppress local channels against each other.
+
 ## Method Options
 
-Average reference, linked mastoids or original reference when justified, ROI-specific sensitivity checks, and no-baseline diagnostic plots.
+Average reference, surface Laplacian/CSD when justified, linked mastoids or original reference when justified, ROI-specific sensitivity checks, and no-baseline diagnostic plots.
 
 ## Learning Mode Explanation
 
@@ -45,7 +47,7 @@ Compare early topographies under reference/baseline alternatives when feasible.
 
 ## Failure Modes
 
-Unreported rereferencing, contaminated baseline, and reference-driven false lateralization.
+Unreported rereferencing, CAR applied only to ROI channels, contaminated baseline, and reference-driven false lateralization.
 
 ## Sources
 

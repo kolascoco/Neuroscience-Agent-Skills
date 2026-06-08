@@ -44,4 +44,5 @@ Use this skill when a user asks how to design, prepare, or run a TMS-EEG experim
 - When asked what an artifact looks like, separate appearance heuristics from interpretation and load artifact-appearance cards before making a physiological claim.
 - For i-TEPs, require high temporal precision, online artifact checks, lead-configuration awareness, and explicit pulse-artifact controls.
 - For DLPFC/frontal/lateral targets, flag muscle and sensory confounds early.
+- For tactile-feeling or somatosensory questions, separate cortical target response, scalp sensation, auditory/somatosensory PEPs, and subjective report.
 - For software/tooling questions, use Context7 or official/GitHub fallback sources when current APIs matter.

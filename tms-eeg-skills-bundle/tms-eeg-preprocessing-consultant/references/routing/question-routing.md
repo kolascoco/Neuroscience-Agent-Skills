@@ -15,7 +15,9 @@ tags:
 | TESA-style cleaning or two ICA passes | `pipelines/tesa-inspired-two-pass-ica.md` | `repos/tesa.md`, `artifacts/overcleaning-and-ica-risk.md` |
 | MATLAB, EEGLAB, TESA, `.set` files, FastICA | `routing/code-language-selection.md` | `pipelines/tesa-inspired-two-pass-ica.md`, `recipes/tesa_matlab_preprocessing.md`, `repos/tesa.md` |
 | Downsampling, resampling, aliasing, anti-aliasing, or filter ringing | `steps/downsampling-and-resampling.md` | `steps/filtering.md`, `artifacts/sampling-sync-early-artifacts.md` |
+| Step order, "correct" preprocessing sequence, or pipeline comparison | `pipeline-tables/preprocessing-step-order.md` | Relevant pipeline cards, `steps/downsampling-and-resampling.md`, `steps/filtering.md`, `steps/gmfa-lmfp-computation.md` |
 | Automated artifact rejection, ARTIST, or AARATEP | `pipelines/automated-artist-aaratep.md` | `repos/aaratep-pipeline.md`, `papers/wu-2018-artist.md`, `steps/automated-artifact-rejection.md` |
+| TMSEEG MATLAB GUI workflow | `papers/atluri-2016-tmseeg.md` | `pipeline-tables/preprocessing-step-order.md`, `pipelines/tesa-inspired-two-pass-ica.md`, `steps/qc-plots-and-reporting.md` |
 | SOUND, SSP, SIR, source-space signal cleaning | `pipelines/sound-ssp-sir-enhanced.md` | `repos/pytep-sound-ssp-sir.md`, `steps/sound-cleaning.md`, `steps/ssp-sir-cleaning.md` |
 | TEP modeling, recurrent network dynamics, PyTepFit | `pipelines/tepfit-network-modeling-analysis.md` | `repos/pytepfit.md`, `papers/momi-2023-recurrent-network-dynamics.md`, `steps/tepfit-modeling-analysis.md` |
 | Immediate TEPs, i-TEPs, early responses | `pipelines/itep-early-response-analysis.md` | `artifacts/early-pulse-residual-risk.md`, `artifacts/lead-configuration-early-artifacts.md`, `artifacts/sampling-sync-early-artifacts.md` |

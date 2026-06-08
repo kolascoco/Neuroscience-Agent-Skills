@@ -125,7 +125,10 @@ artifact_time_interval_2 = [-3 10]; % TODO: use only if QC justifies.
 EEG = pop_tesa_removedata(EEG, artifact_time_interval_2);
 EEG = pop_tesa_interpdata(EEG, 'cubic', [5 5]);
 
-% Filtering. Avoid 1 Hz high-pass on short epochs; high-pass continuous data when needed.
+% Late analysis filtering. Avoid 1 Hz high-pass on short epochs; high-pass
+% continuous data when needed, or use a separate ICA-training copy if justified.
+% Apply analysis filters only after pulse/artifact-window handling and major
+% artifact cleaning so filters do not spread sharp TMS artifacts into the TEP.
 % TODO: replace apply_eeg_filter with verified EEGLAB/TESA filter calls if helper unavailable.
 % EEG = apply_eeg_filter(EEG, 0, 80);
 % EEG = apply_eeg_filter(EEG, 48, 52, 'revfilt', 1, 'plotfreqz', 1);
@@ -142,6 +145,10 @@ EEG = pop_select(EEG, 'time', [-1 1]);
 pop_eegplot(EEG, 1, 1, 1);
 figure; pop_timtopo(EEG, [-100 190], [20 40 60 80], ...
     'Final cleaned TEPs');
+
+% Before GMFA/LMFP or ROI feature calculation, apply the final reference to
+% all EEG channels first. Do not average-reference only the ROI channels.
+% EEG_features = pop_reref(EEG, []);  % CAR example for full-channel features.
 
 pop_saveset(EEG, 'filename', [data_name, '_cleaned.set'], 'filepath', out_dir);
 ```

@@ -41,4 +41,5 @@ report.save("tms_eeg_qc_report.html", overwrite=True, open_browser=False)
 - ICA/projection decisions
 - rejected/retained trials per condition
 - TEP/GMFA/LMFP/i-TEP windows
+- reference mode for feature calculation; confirm CAR/Laplacian/CSD was applied before ROI selection for LMFP
 - unresolved caveats

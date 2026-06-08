@@ -14,6 +14,7 @@ Use this skill when a user asks for TMS-EEG preprocessing advice, code, artifact
 1. **Classify the request** using `references/routing/question-routing.md`.
 2. **Collect or infer critical metadata**: data format, continuous vs epoched, sampling rate, TMS event timing, target, analysis goal, active/sham/control conditions, EEG channel count/reference, and known artifacts.
 3. **Load one pipeline card** from `references/pipelines/`, then only the step/artifact/repo/paper cards it names.
+   - For step-order or pipeline-comparison questions, also load `references/pipeline-tables/preprocessing-step-order.md`.
 4. **Choose response mode**:
    - Learning mode: explain why each step matters, risks, and interpretation consequences.
    - Code-engineer mode: give concise steps, code templates, placeholders, and QC checks.
@@ -32,6 +33,7 @@ For acquisition, online QC, target/coil adjustment, source-analysis cautions, an
 - Automated ARTIST/AARATEP workflow: `references/pipelines/automated-artist-aaratep.md`
 - TEP modeling / PyTepFit analysis branch: `references/pipelines/tepfit-network-modeling-analysis.md`
 - Immediate TEP/i-TEP early-response branch: `references/pipelines/itep-early-response-analysis.md`
+- Cross-pipeline step-order comparison: `references/pipeline-tables/preprocessing-step-order.md`
 
 ## Code Writing
 

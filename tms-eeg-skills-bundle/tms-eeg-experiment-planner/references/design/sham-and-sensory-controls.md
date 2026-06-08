@@ -27,6 +27,7 @@ Design controls that separate cortical TMS-evoked activity from click, scalp sen
 - If early local TEP is weak, late N100-P200 activity may be dominated by auditory/sensory contamination.
 - If using sham subtraction, check whether sham/control PEPs resemble real-TMS PEPs closely enough for the intended interpretation.
 - Consider individualized PEP matching or PEP saturation logic when somatosensory subtraction is central to the study design.
+- For tactile-feeling studies, collect subjective ratings that separate scalp sensation, click loudness, unpleasantness, perceived tactile quality, and perceived location.
 - Retune masking when stimulation intensity changes.
 - Report sham and masking parameters clearly.
 

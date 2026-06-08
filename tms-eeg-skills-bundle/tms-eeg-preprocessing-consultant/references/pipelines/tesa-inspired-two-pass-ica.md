@@ -62,6 +62,8 @@ Sampling rate, event timing, artifact removal windows, target, number of trials,
 12. Downsample/trim edges, reject remaining bad trials, visualize final TEPs, and save.
 13. Compare cleaned data with minimally preprocessed data to detect preprocessing distortion.
 
+Canonical TESA-style summaries may start with channel rejection before epoching, use a long pre-TMS baseline such as `-650` to `-250 ms`, downsample to `1 kHz` soon after pulse interpolation, then perform bad-epoch rejection, two ICA rounds, late bad-channel interpolation, average reference, and final baseline. The local lesson-script order in this card is a teaching variant, so verify the target source before writing methods text.
+
 ## Step Cards To Load
 
 Load pulse, decay/recharge, muscle, filtering, ICA, SOUND, SSP-SIR, ocular/auditory, TEP, and QC step cards. For MATLAB code, load `recipes/tesa_matlab_preprocessing.md` and `guidelines/matlab-tesa-lesson-pipeline.md`.

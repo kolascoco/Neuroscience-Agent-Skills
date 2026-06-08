@@ -44,12 +44,15 @@ Raw or epoched data, montage/electrode locations, event timing, target, artifact
 
 1. Load data, verify montage/channel coordinates, and reject missing/zero coordinate setups before SOUND/SSP-SIR.
 2. Handle pulse artifact before filtering or model-based denoising.
-3. Apply basic preprocessing with cautious filters and a clean pre-TMS baseline.
+3. Apply baseline/diagnostic preprocessing as needed without broad analysis filtering.
 4. Apply SOUND where appropriate for channel-level noise suppression.
 5. Inspect SSP-SIR components before choosing the number of PCs.
 6. Apply SSP-SIR to early TMS-evoked muscle artifact when justified.
 7. Run ICA after SSP-SIR for residual ocular, blink, decay, and non-early artifacts.
-8. Compute TEP/GMFA/LMFP and QC before/after each major cleaning stage.
+8. Apply low-pass/notch or other analysis filters late, after major TMS-specific cleaning, and inspect ringing.
+9. Apply the final feature reference across all EEG channels, then compute TEP/GMFA/LMFP and QC before/after each major cleaning stage. Select LMFP ROI channels only after full-channel referencing.
+
+Some source-specific SOUND/SSP-SIR summaries place a high-pass filter before epoching and pulse interpolation. Treat this as a reproducibility-specific exception, not as advice. For general advisor/code output, prefer pulse-window handling and major artifact cleaning before analysis filters. If a high-pass-first order is reproduced, require explicit ringing QC and report that filtering was performed before pulse interpolation.
 
 ## Step Cards To Load
 
@@ -57,7 +60,7 @@ Load SOUND and SSP-SIR step cards plus pulse, TEP, metrics, and QC cards.
 
 ## Parameter Defaults To Consider
 
-Use the starting values in `steps/ssp-sir-cleaning.md`, including pulse interpolation windows, cautious filter/baseline settings, SOUND `iter_num`/`lambda_val`, and SSP-SIR `art_scale`, `time_range`, `pc`, and `M`. Treat them as starting values requiring dataset QC, not universal defaults.
+Use the starting values in `steps/ssp-sir-cleaning.md`, including pulse interpolation windows, cautious late filter/baseline settings, SOUND `iter_num`/`lambda_val`, and SSP-SIR `art_scale`, `time_range`, `pc`, and `M`. Treat them as starting values requiring dataset QC, not universal defaults.
 
 ## QC Checkpoints
 

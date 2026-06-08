@@ -44,6 +44,8 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 
 - The source data are already epoched; normally epoching happens early in preprocessing.
 - The lesson uses baseline correction rather than a 1 Hz high-pass on short epochs.
+- The lesson places analysis filtering late, after pulse interpolation, bad channel/trial inspection, ICA, SOUND, SSP-SIR, and optional second artifact-window interpolation.
+- The script comments that detrending or high-pass filtering can help ICA, but it also warns that filtering can create edge artifacts, remove slow components, and distort signals if applied before high-amplitude artifact removal.
 - SOUND can extrapolate previously removed channels if supplied a full-channel reference dataset.
 - SSP-SIR can use manual or automatic artifact windows; manual windows are preferable when known.
 - Visual comparison with minimally processed data is a key QC step.
@@ -51,5 +53,6 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 ## Agent Rules Extracted
 
 - For MATLAB/TESA answers, include visualization checkpoints after pulse removal, ICA, SOUND, SSP-SIR, filtering, and final cleaning.
+- Use "filters late" as the default for epoched TMS-EEG analysis output. If an ICA-preparation filter is used, describe it as a separate training-data choice, not as the final analysis filter.
 - Keep lesson helper functions separate from general TESA functions; mark them as project-specific.
 - Do not treat the lesson's numeric parameters as universal defaults.

@@ -31,7 +31,7 @@ Every substantive cleaning step should have a before/after plot or numeric summa
 
 ## Method Options
 
-Raw overlays, epoch images, component reports, evoked butterfly plots, topomaps, spectra, GMFA/LMFP, and trial-count tables.
+Raw overlays, epoch images, component reports, evoked butterfly plots, topomaps, spectra, GMFA/LMFP, reference mode, and trial-count tables.
 
 ## Learning Mode Explanation
 
@@ -47,7 +47,7 @@ Include pulse windows, artifact residuals, component decisions, retained trials,
 
 ## Failure Modes
 
-Only plotting final averages, no artifact-window report, no trial counts, and missing code/config provenance.
+Only plotting final averages, no artifact-window report, no trial counts, missing reference mode for feature calculation, and missing code/config provenance.
 
 ## Sources
 

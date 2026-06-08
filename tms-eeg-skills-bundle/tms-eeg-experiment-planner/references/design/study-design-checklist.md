@@ -20,6 +20,7 @@ Turn a research question into a pre-collection TMS-EEG protocol with explicit ta
 | Coil setup | coil type, handle/current direction, initial orientation, orientation search plan |
 | Intensity | RMT starting point, TEP/i-TEP online adjustment, safety maximum, artifact ceiling |
 | EEG acquisition | cap/channel count, sampling rate, reference, electrode/lead layout, physiological channels |
+| Hardware integration | recharge delay, pulse waveform/current direction, trigger synchronization, coil cooling if long blocks |
 | Controls | sham, auditory masking, somatosensory control, active control target if needed |
 | Trials | minimum usable trials, expected rejection, blocks/rest breaks, condition balance |
 | Online QC | rt-TEP monitoring, single-trial artifact checks, early TEP go/no-go rule |
@@ -44,4 +45,4 @@ When asked for a study plan, return:
 
 ## Sources
 
-Good-practice note; Hernandez-Pavon et al. 2023 recommendations card in preprocessing skill; rt-TEP and neuronavigation cards.
+Good-practice note; Hernandez-Pavon et al. 2023 recommendations card; rt-TEP and neuronavigation cards.
