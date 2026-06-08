@@ -52,7 +52,7 @@ Raw or epoched data, montage/electrode locations, event timing, target, artifact
 5. Apply SOUND where appropriate for channel-level noise suppression.
 6. Inspect SSP-SIR components before choosing the number of PCs.
 7. Apply SSP-SIR to early TMS-evoked muscle artifact when justified.
-8. Optionally run a later ICA/component review only for residual stereotyped artifacts that remain after SOUND/SSP-SIR, with explicit rank and before/after TEP QC.
+8. Optionally run a later ICA/component review only for residual stereotyped non-sensory artifacts that remain after SOUND/SSP-SIR, with explicit rank and before/after TEP QC. Auditory/sensory-related components are normally handled by masking, controls, contrasts, or justified subtraction rather than default ICA removal.
 9. Apply low-pass/notch or other analysis filters late, after major TMS-specific cleaning, and inspect ringing.
 10. Apply the final feature reference across all EEG channels, then compute TEP/GMFA/LMFP and QC before/after each major cleaning stage. Select LMFP ROI channels only after full-channel referencing.
 

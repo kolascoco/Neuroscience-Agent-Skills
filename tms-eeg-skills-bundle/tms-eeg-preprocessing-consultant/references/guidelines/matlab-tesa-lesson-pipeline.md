@@ -30,7 +30,7 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 4. Visualize raw TEPs and average-reference TEPs.
 5. Inspect pulse artifact, remove a window such as `[-2 12] ms`, and interpolate with `pop_tesa_interpdata(..., 'cubic', [1 1])`.
 6. Save one-trial dataset with full channel locations for later SOUND channel replacement.
-7. Manually inspect and remove bad channels/trials.
+7. Manually inspect bad channels/trials. Exclude bad channels before ICA so they are not used in decomposition, while preserving a full-channel reference dataset for later SOUND/channel repair.
 8. Baseline correct and run PCA compression plus FastICA using `pop_tesa_pcacompress`, `pop_tesa_fastica`, and `pop_tesa_compplot`; use this ICA stage for ocular, blink, eye-movement, and non-stimulus-locked/background muscle artifacts.
 9. Run SOUND with `pop_tesa_sound`; the lesson notes SOUND transforms to average reference.
 10. Run SSP-SIR with `pop_tesa_sspsir` for remaining TMS-evoked muscle artifact.

@@ -90,7 +90,10 @@ pop_eegplot(pop_reref(EEG, []), 1, 1, 1);
 % non-stimulus-locked/background muscle artifacts. Do not reject components
 % with clear TMS-stimulus-locked activity or TMS-evoked muscle; handle those
 % with artifact-window interpolation, projection/SSP-SIR, trial rejection, or
-% target/protocol adjustment.
+% target/protocol adjustment. Mark/exclude bad channels before ICA; repair
+% them later with SOUND or interpolation rather than using them in ICA.
+% Auditory/sensory-related activity is not removed by default; handle it with
+% masking, sham/control contrasts, or justified ERP subtraction if needed.
 EEG = pop_rmbase(EEG, baseline_time_interval, []);
 EEG = pop_tesa_pcacompress(EEG, 'compVal', 20, 'plot', 'on');
 EEG = pop_tesa_fastica(EEG, 'approach', 'symm', 'g', 'tanh', ...

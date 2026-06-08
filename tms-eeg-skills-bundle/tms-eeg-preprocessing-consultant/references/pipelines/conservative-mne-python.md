@@ -58,7 +58,7 @@ Data format, sampling rate, event channel or pulse timestamps, target, active/sh
 4. Inspect amplifier decay/recharge and large muscle artifacts.
 5. Mark bad channels and gross bad epochs.
 6. Epoch and baseline with a defensible pre-pulse window if needed.
-7. Run ICA or equivalent component cleaning for ocular, movement, and non-stimulus-locked/background artifacts. Do not remove TMS-evoked muscle or clear TMS-stimulus-locked components with ordinary ICA rejection. If ICA needs a filtered copy, keep that copy separate from the final analysis data.
+7. Mark bad channels before ICA and exclude them from decomposition; repair them after ICA using interpolation/SOUND or another documented channel-repair method. Run ICA or equivalent component cleaning for ocular, movement, and non-stimulus-locked/background artifacts. Do not remove TMS-evoked muscle or clear TMS-stimulus-locked components with ordinary ICA rejection. Do not remove auditory/sensory-related components by default; use masking, control-condition contrasts, or justified ERP subtraction if the analysis specifically requires it. If ICA needs a filtered copy, keep that copy separate from the final analysis data.
 8. Filter the analysis data late and cautiously, usually after TMS-specific cleaning. Prefer low-pass/notch choices over early high-pass on short epochs.
 9. Downsample only after pulse/timing QC and filtering-edge checks.
 10. Reject remaining bad trials.

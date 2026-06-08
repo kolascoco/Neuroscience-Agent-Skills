@@ -22,11 +22,11 @@ Similarity to auditory/somatosensory control responses, broad scalp topographies
 
 ## Mitigation Options
 
-Masking noise, realistic sham, sensory control conditions, active control targets, trial-level covariates, and cautious interpretation.
+Masking noise, realistic sham, sensory control conditions, active control targets, trial-level covariates, contrast/subtraction strategies such as auditory ERP subtraction when justified, and cautious interpretation.
 
 ## Pipeline Implications
 
-Preprocessing cannot solve poor controls. Keep condition labels separate and avoid removing sensory components without a defined analysis goal.
+Preprocessing cannot solve poor controls. Keep condition labels separate and avoid removing sensory components without a defined analysis goal. By default, do not reject auditory/somatosensory-related ICA components; handle them through masking, appropriate condition contrasts, or justified subtraction/modeling.
 
 ## Interpretation Caveats
 
