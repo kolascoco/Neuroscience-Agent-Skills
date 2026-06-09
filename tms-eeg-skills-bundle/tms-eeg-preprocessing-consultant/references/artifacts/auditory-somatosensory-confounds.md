@@ -18,11 +18,11 @@ Several TEP components and condition differences can include sensory-evoked cont
 
 ## Detection Clues
 
-Similarity to auditory/somatosensory control responses, broad scalp topographies, condition differences in click/sensation, and late components such as N100.
+Similarity to auditory/somatosensory control responses, broad scalp topographies, condition differences in click/sensation, and late components such as N100. Spatial correlation between peripherally evoked potentials and TEPs emerges from roughly 60 ms post-pulse; components earlier than ~60 ms show little spatial overlap and are more likely to reflect direct cortical activity, though the N45 can still carry some sensory contribution (Biabani et al. 2019).
 
 ## Mitigation Options
 
-Masking noise, realistic sham, sensory control conditions, active control targets, trial-level covariates, contrast/subtraction strategies such as auditory ERP subtraction when justified, and cautious interpretation.
+Masking noise, realistic sham, sensory control conditions, active control targets, trial-level covariates, contrast/subtraction strategies such as auditory ERP subtraction when justified, and cautious interpretation. Among ICA, linear regression, and SSP-SIR for sensory-component removal, SSP-SIR offers the best tradeoff: it suppresses sensory contributions while better preserving non-sensory signal, whereas ICA broadly reduces all TEP peaks and linear regression distorts early source topographies (Biabani et al. 2019). When using SSP-SIR for this purpose, confirm that the projected PCs match peripheral-evoked-potential topographies rather than projecting blindly.
 
 ## Pipeline Implications
 
@@ -30,8 +30,8 @@ Preprocessing cannot solve poor controls. Keep condition labels separate and avo
 
 ## Interpretation Caveats
 
-Do not present active-vs-sham TEP differences as direct cortical excitability unless sensory confounds are addressed.
+Do not present active-vs-sham TEP differences as direct cortical excitability unless sensory confounds are addressed. Masking reduces but cannot eliminate auditory input: even at maximal masking intensity, subjects still perceive the TMS click (Biabani et al. 2019). Perceptual masking success does not guarantee equivalent neural confounds — N45, N100, and P180 were larger at 90% RMT than at perceptually indistinguishable realistic sham despite active masking (Gordon et al. 2018). Reporting of perceived sensory experience remains rare across the literature, which limits cross-study auditing of sensory control.
 
 ## Sources
 
-Gordon et al. 2018; Gordon et al. 2026; TMS click masking workflow.
+Biabani et al. 2019; Gordon et al. 2018; Gordon et al. 2026; `papers/methodological-choices-matter.md`; TMS click masking workflow.

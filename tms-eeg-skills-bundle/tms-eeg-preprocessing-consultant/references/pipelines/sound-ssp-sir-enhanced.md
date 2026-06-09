@@ -84,4 +84,4 @@ Use verified PyTEP-SOUND-SSP-SIR and MNE APIs. If unavailable, provide pseudocod
 
 ## Claims And Caveats
 
-Model-based cleaning can reduce artifacts but does not remove the need for sham/control and early-latency caution.
+Model-based cleaning can reduce artifacts but does not remove the need for sham/control and early-latency caution. SSP-SIR over-projection of the early window can suppress genuine early cortical activity; because early local responses (<100 ms) feed later recurrent network dynamics, distorting them can cascade into the late TEP (Momi et al. 2023), so compare before/after topographies in the 0–60 ms window, not only GMFA. SOUND still requires valid electrode positions and forward-model assumptions — missing or inaccurate coordinates invalidate its noise estimates.

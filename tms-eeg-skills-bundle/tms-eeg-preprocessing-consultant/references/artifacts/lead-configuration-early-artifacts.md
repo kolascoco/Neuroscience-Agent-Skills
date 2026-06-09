@@ -10,7 +10,7 @@ tags:
 
 ## What It Is
 
-Early post-pulse artifacts shaped by electrode leads, wire routing, and cap setup.
+Early post-pulse artifacts shaped by electrode leads, wire routing, and cap setup. This card covers the preprocessing-level implications (what to check and report); for the hardware/physics mechanism see `artifacts/electrode-lead-configuration.md`.
 
 ## Why It Matters
 
@@ -26,7 +26,7 @@ Document lead layout, keep setup consistent, inspect topographies against lead g
 
 ## Pipeline Implications
 
-Pair early topographies with hardware/setup notes.
+Pair early topographies with hardware/setup notes. For i-TEP analysis, retain a copy of minimally processed data at the native sampling rate for comparison with artifact-corrected data. Hardware-related artifact produces reproducible single-trial patterns (consistent polarity across trials), unlike the variable muscle artifact, and its topography tends to mirror lead-wire layout rather than neuroanatomical expectations.
 
 ## Interpretation Caveats
 

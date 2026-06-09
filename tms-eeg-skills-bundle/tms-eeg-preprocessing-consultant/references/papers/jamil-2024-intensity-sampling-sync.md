@@ -23,11 +23,11 @@ Acquisition parameters directly affect pulse artifact amplitude/duration and ear
 
 ## Key Methods
 
-Digest full methods before citing exact quantitative relationships.
+Quantifies how acquisition/stimulation parameters affect the TMS pulse artifact. Sampling frequency is the dominant predictor of artifact amplitude (~56% of variance) and duration (~49%); stimulation intensity is second (~38% / ~41%); sample synchronization is minor (~6% / ~9%). Acquiring at 20 kHz vs. 5 kHz gives ~86% higher amplitude but ~57% shorter duration; higher intensity adds ~6% amplitude and ~30% duration; synchronized acquisition reduces amplitude ~3% and improves within-subject consistency.
 
 ## Practical Recommendations
 
-Ask for stimulation intensity, sampling rate, synchronization, and trigger timing when discussing early responses.
+Ask for stimulation intensity, sampling rate, synchronization, and trigger timing when discussing early responses. Artifact-window durations cannot be generalized across datasets acquired at different sampling rates or intensities; the window must be Fs- and intensity-aware.
 
 ## Agent Rules Extracted
 
@@ -35,7 +35,7 @@ Never give an i-TEP analysis plan without reporting sampling/synchronization and
 
 ## Claims To Avoid
 
-Do not attribute early amplitude/duration changes to physiology before acquisition effects are checked.
+Do not attribute early amplitude/duration changes to physiology before acquisition effects are checked. Do not recommend a fixed artifact-window length (e.g., "use 10 ms") without specifying the sampling-rate and stimulation-intensity context.
 
 ## Questions This Source Helps Answer
 

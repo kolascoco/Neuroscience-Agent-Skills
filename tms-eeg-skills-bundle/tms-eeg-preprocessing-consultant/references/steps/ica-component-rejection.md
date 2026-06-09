@@ -30,6 +30,8 @@ Sufficient trials, channel count, bad-channel mask before ICA, ICA-training data
 
 ## Decision Rules
 
+The ICA pass that precedes SOUND/SSP-SIR is for ocular, blink, eye-movement, and non-stimulus-locked/background-muscle artifact only — never for TMS-evoked muscle or stimulus-locked components. Handle those with pulse-window interpolation, projection/SSP-SIR, trial rejection, or target adjustment.
+
 Do not reject components by label alone. Require topography, time course, spectrum, and condition-aware QC. Do not remove components with clear TMS-stimulus-locked activity unless there is a protocol-specific, documented artifact model and sensitivity analysis; ordinary ICA rejection of such components risks spoiling genuine TEP components.
 
 Do not remove auditory/somatosensory-related components by default. If the question specifically requires sensory-response correction, prefer proper experimental contrasts or modeled subtraction, for example subtracting an auditory ERP/control response where the design supports it, and report the assumptions.

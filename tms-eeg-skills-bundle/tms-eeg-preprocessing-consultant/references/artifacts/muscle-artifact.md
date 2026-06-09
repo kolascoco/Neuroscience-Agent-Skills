@@ -13,7 +13,7 @@ Scalp, facial, neck, or target-adjacent muscle activity evoked by TMS.
 
 ## Why It Matters
 
-It can dominate early and mid-latency EEG, especially for frontal/lateral targets, and can differ between active and sham conditions.
+It can dominate early and mid-latency EEG, especially for frontal/lateral targets, and can differ between active and sham conditions. Peak-to-peak amplitude can exceed 1 mV (>1000 µV) for frontal/lateral targets (Rogasch et al. 2017). For DLPFC, muscle artifact and early-local TEP amplitude are strongly negatively correlated across subregions (R ≈ −0.71): regions with more artifact show smaller measured EL-TEPs, which can reflect either true signal suppression or preprocessing over-rejection (Gogulski et al. 2024).
 
 ## Detection Clues
 
@@ -35,4 +35,4 @@ Residual muscle activity can mimic stronger evoked responses; mention it for DLP
 
 ## Sources
 
-TESA-inspired pipeline; Maki 2011 projection paper; Mutanen 2016 SSP-SIR/muscle recovery paper; Gogulski DLPFC reliability paper; Kabir 2024 DLPFC state-dynamics paper.
+TESA-inspired pipeline; Rogasch et al. 2017 (amplitude); Maki 2011 projection paper; Mutanen 2016 SSP-SIR/muscle recovery paper; Gogulski et al. 2024 DLPFC mapping/reliability papers; Kabir 2024 DLPFC state-dynamics paper.

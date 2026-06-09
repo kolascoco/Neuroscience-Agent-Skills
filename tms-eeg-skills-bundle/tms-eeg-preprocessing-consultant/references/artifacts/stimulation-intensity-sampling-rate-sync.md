@@ -13,11 +13,11 @@ Acquisition and stimulation parameters that alter pulse artifact amplitude, dura
 
 ## Why It Matters
 
-Early responses can be distorted by sample alignment, sampling rate, trigger precision, and stimulation intensity.
+Early responses can be distorted by sample alignment, sampling rate, trigger precision, and stimulation intensity. Among these, sampling frequency is the dominant predictor of pulse artifact amplitude (~56% of variance) and duration (~49%), stimulation intensity is second (~38% / ~41%), and synchronization is a minor third factor (~6% / ~9%) (Jamil et al. 2024).
 
 ## Detection Clues
 
-Pulse artifact duration changes with intensity, sample-level onset jitter, and different artifact morphology across acquisition settings.
+Pulse artifact duration changes with intensity, sample-level onset jitter, and different artifact morphology across acquisition settings. Acquiring at 20 kHz versus 5 kHz yields ~86% higher pulse amplitude but ~57% shorter duration; higher intensity adds ~6% amplitude and ~30% duration; synchronized acquisition lowers amplitude ~3% and improves within-subject consistency (Jamil et al. 2024). High-Fs data can thus appear to need a shorter artifact window while actually carrying a sharper, higher-amplitude transient.
 
 ## Mitigation Options
 

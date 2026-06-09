@@ -24,11 +24,11 @@ Important for DLPFC-specific TEP analysis and the challenge of mapping "excitabi
 
 ## Main TEP Nature Points
 
-DLPFC TEPs are target- and artifact-sensitive. Cortical excitability language must be cautious and tied to operational measures.
+DLPFC TEPs are target- and artifact-sensitive. Early-local TEPs (EL-TEPs, ~20–50 ms) vary strongly across dlPFC subregions: posterior-medial targets give the largest EL-TEPs (~100% larger than standard targets) and smallest muscle artifacts, while anterior-lateral targets show the largest artifacts. EL-TEP and artifact amplitudes are strongly negatively correlated (R ≈ −0.71). Personalized target/angle selection adds ~36% EL-TEP over the group-best target. Processing used an automated SOUND + decay-removal + two-round ICA + final-filter pipeline, with a high mean fraction of ICA components rejected (~61%). Cortical excitability language must be cautious and tied to operational measures.
 
 ## Methodological Tips And Nuances
 
-Ask about target subregion, muscle artifact, sensory controls, early local responses, and reliability metrics.
+Ask about target subregion, muscle artifact, sensory controls, early local responses, and reliability metrics. Standard "5 cm" / EEG-F3 DLPFC targeting is not optimal for EL-TEP quality; document the specific subregion and whether neuronavigation E-field equalization was used.
 
 ## Agent Rules Extracted
 

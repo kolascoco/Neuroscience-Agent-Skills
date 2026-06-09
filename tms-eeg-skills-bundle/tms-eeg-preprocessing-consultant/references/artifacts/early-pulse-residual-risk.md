@@ -14,7 +14,7 @@ Residual pulse, recovery, interpolation, or ringing artifact inside the immediat
 
 ## Why It Matters
 
-i-TEPs are analyzed close to the strongest artifact in the recording.
+i-TEPs are analyzed close to the strongest artifact in the recording. The decay artifact can extend tens of milliseconds beyond the interpolated pulse window, with amplitude correlated to pulse amplitude (ρ ≈ 0.86; Lankinen et al. 2026), so a short interpolation window (e.g., −2 to 10 ms) may leave a decay tail that mimics an early biological response but is actually capacitive discharge.
 
 ## Detection Clues
 
@@ -34,4 +34,4 @@ Without artifact-boundary evidence, describe early findings as exploratory.
 
 ## Sources
 
-Beck 2024; Nuyts 2025; Jamil 2024.
+Lankinen et al. 2026 (decay tail); Beck 2024; Nuyts 2025; Jamil 2024.

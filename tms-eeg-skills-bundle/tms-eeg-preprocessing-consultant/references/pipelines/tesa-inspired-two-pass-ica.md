@@ -31,6 +31,7 @@ artifact_cards:
   - artifacts/muscle-artifact.md
   - artifacts/auditory-somatosensory-confounds.md
   - artifacts/overcleaning-and-ica-risk.md
+  - artifacts/filter-ringing.md
 repo_cards:
   - repos/tesa.md
 paper_cards:
@@ -90,4 +91,4 @@ For MATLAB, use verified TESA/EEGLAB calls and state dependencies. For Python, d
 
 ## Claims And Caveats
 
-Two-pass ICA can be useful but is not automatically superior. It requires transparent component decisions and QC.
+Two-pass ICA can be useful but is not automatically superior. It requires transparent component decisions and QC. The independence assumption is partly violated by time-locked TMS-evoked activity, so components carrying real cortical responses can be misclassified; vary the rejected-component count by ±2 and check TEP stability (Rogasch et al. 2022). PCA compression before ICA is commonly set to retain ~25–30 components from a ~60-channel montage (Rogasch et al. 2017); for low-channel-count recordings this rank choice affects the decomposition. Varying a single step such as the decay-suppression method changes both early TEP amplitude and topography, so transparent parameter reporting is required for interpretation.

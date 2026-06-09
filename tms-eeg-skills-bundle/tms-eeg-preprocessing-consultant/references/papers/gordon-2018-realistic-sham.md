@@ -22,15 +22,15 @@ Realistic sham comparisons are central to separating direct TMS-evoked cortical 
 
 ## Key Methods
 
-Digest full paper before citing exact results.
+Three M1 conditions — realistic sham vs. 90% RMT vs. 110% RMT — with active sensory masking and two-pass ICA. Subjects could not reliably distinguish realistic sham from 90% RMT (~67% correct, near chance). Despite this perceptual equivalence and matched masking, N45, N100, and P180 were significantly larger at 90% RMT than at sham, and sensory-related responses persisted after masking and ICA.
 
 ## Practical Recommendations
 
-Ask whether realistic sham or sensory controls are present before interpreting active TMS TEPs.
+Ask whether realistic sham or sensory controls are present before interpreting active TMS TEPs. Perceptual indistinguishability between active and sham does not imply equivalent neural confounds; sham-subtracted TEPs at matched perceptual intensity are a stronger interpretive basis than active-only TEPs.
 
 ## Agent Rules Extracted
 
-Active-vs-sham differences must be discussed with auditory/somatosensory confounds in mind.
+Active-vs-sham differences must be discussed with auditory/somatosensory confounds in mind. No pipeline (masking + ICA included) fully removes sensory contributions.
 
 ## Claims To Avoid
 

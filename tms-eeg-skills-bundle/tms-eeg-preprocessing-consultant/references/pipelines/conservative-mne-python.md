@@ -34,6 +34,7 @@ artifact_cards:
   - artifacts/muscle-artifact.md
   - artifacts/auditory-somatosensory-confounds.md
   - artifacts/overcleaning-and-ica-risk.md
+  - artifacts/filter-ringing.md
 repo_cards:
   - repos/mne-python.md
   - repos/tmseegpy.md
@@ -92,4 +93,4 @@ Use recipes for loading, event detection, artifact interpolation, ICA, full-chan
 
 ## Claims And Caveats
 
-TEPs and GMFA/LMFP are scalp-level responses shaped by cortical, network, sensory, muscle, and preprocessing factors. Avoid pure excitability claims.
+TEPs and GMFA/LMFP are scalp-level responses shaped by cortical, network, sensory, muscle, and preprocessing factors. Avoid pure excitability claims. If this pipeline's ICA step is used, note that ICA-based cleaning is associated with systematically smaller TEP amplitudes across all peaks (see `papers/methodological-choices-matter.md`); amplitude comparisons against ICA-free pipelines or normative values may partly reflect this rather than physiology.

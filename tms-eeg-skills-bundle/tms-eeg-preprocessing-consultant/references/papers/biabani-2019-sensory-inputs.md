@@ -23,11 +23,11 @@ This is a key source for separating cortical TMS-evoked activity from sensory in
 
 ## Main TEP Nature Points
 
-TEPs can include substantial auditory and somatosensory contributions. Later components may be especially vulnerable to sensory interpretation errors.
+TEPs can include substantial auditory and somatosensory contributions. Spatial correlation between peripherally evoked potentials (PEPs) and TEPs emerges from ~60 ms; components earlier than ~60 ms show little overlap and are more cortically specific, while N100/P180 are most contaminated. Even at maximal masking intensity, all subjects still perceived the TMS click. Of ICA, linear regression, and SSP-SIR, SSP-SIR best removed sensory contributions while preserving non-sensory signal; ICA broadly suppressed all peaks and regression distorted early topographies.
 
 ## Methodological Tips And Nuances
 
-Ask about masking noise, sham/control conditions, scalp sensation, mechanical vibration, and whether active and sham conditions are sensory-matched.
+Ask about masking noise, sham/control conditions, scalp sensation, mechanical vibration, and whether active and sham conditions are sensory-matched. When using SSP-SIR to suppress sensory components, inspect PC topographies and confirm they match PEP spatial patterns before projecting rather than applying it blindly.
 
 ## Agent Rules Extracted
 
