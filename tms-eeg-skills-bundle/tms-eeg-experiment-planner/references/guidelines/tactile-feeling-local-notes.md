@@ -2,7 +2,7 @@
 type: guideline-card
 id: tactile-feeling-local-notes
 title: EEG-TMS For Tactile Feeling Local Notes
-source_file: /Users/nikolaj_syrov/Downloads/EEG-TMS for tactile feeling .docx
+source_file: EEG-TMS for tactile feeling .docx
 tags:
   - tactile
   - somatosensory

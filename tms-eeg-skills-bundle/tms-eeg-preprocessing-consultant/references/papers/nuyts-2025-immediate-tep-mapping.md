@@ -18,28 +18,28 @@ confidence: preprint-seed-card
 
 ## Why This Matters For The Agent
 
-Seed source for i-TEP spatial mapping and early response topography questions.
+Spatial-mapping study of the immediate TEP (i-TEP): characterizes how the i-TEP varies across pericentral cortex and compares it to MEP topography. Supports early-response topography/ROI questions and the link between i-TEPs and corticospinal output.
 
 ## Key Methods
 
-Digest full methods before extracting windows, target grid, or statistical choices.
+15 healthy volunteers (9 female). i-TEP hotspot identified in left SM1_HAND; single biphasic pulses at 110% RMT delivered at six cortical sites 1 cm apart along a rostro-caudal axis (2 cm rostral to 3 cm caudal of the SM1_HAND hotspot). i-TEP defined as a response within ~2–7 ms post-TMS featuring high-frequency peaks (~650–900 Hz inter-peak frequency) superimposed on a slower positive wave; site-specific i-TEP and MEP responses compared. i-TEP inter-peak intervals mirror SICF probed by paired-pulse TMS.
 
 ## Practical Recommendations
 
-Use for questions about rostro-caudal/pericentral mapping and topographic early-response analyses.
+Use for questions about rostro-caudal/pericentral mapping and topographic early-response analyses. i-TEP magnitude follows a crescendo-decrescendo gradient peaking at the SM1_HAND hotspot, similar to (but not identical to) the MEP gradient — normalized i-TEP amplitude decayed less rapidly at the first postcentral site. Report target grid, hotspot definition, intensity, and ROI when discussing mapped i-TEPs.
 
 ## Agent Rules Extracted
 
-When discussing mapped i-TEPs, require target location, ROI/topography definitions, and early artifact controls.
+When discussing mapped i-TEPs, require target location, ROI/topography definitions, and early-artifact controls. Similar-but-distinct i-TEP and MEP spatial profiles suggest overlapping but non-identical neuronal populations — do not equate them.
 
 ## Claims To Avoid
 
-Do not use spatial patterns alone as proof of cortical origin.
+Do not use spatial patterns alone as proof of cortical origin (the authors frame the pyramidal-neuron interpretation as supported but not proven). Do not generalize from SM1_HAND mapping to non-motor targets.
 
 ## Questions This Source Helps Answer
 
-How can immediate responses vary across nearby M1/pericentral targets?
+How does the immediate response vary across nearby pericentral targets? How do i-TEP and MEP spatial gradients compare?
 
 ## Related Cards
 
-`steps/early-tep-topography-and-roi.md`; `pipelines/itep-early-response-analysis.md`.
+`steps/early-tep-topography-and-roi.md`; `pipelines/itep-early-response-analysis.md`; `papers/beck-2024-iteps.md`.

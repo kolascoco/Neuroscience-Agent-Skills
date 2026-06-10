@@ -4,7 +4,7 @@ id: stango-2025-high-frequency-sampling-artifacts
 title: Impact Of High-Frequency Sampling Rate And Stimulation Intensity On Early TMS Artifacts: Considerations For Immediate TMS-EEG Responses
 year: 2025
 authors: Stango A; Zazio A; Barchiesi G; Bonfiglio NS; Bortoletto M
-source_pdf: /Users/nikolaj_syrov/Downloads/1-s2.0-S1053811925005294-main.pdf
+source_pdf: 1-s2.0-S1053811925005294-main.pdf
 doi: 10.1016/j.neuroimage.2025.121526
 tags:
   - early-artifacts

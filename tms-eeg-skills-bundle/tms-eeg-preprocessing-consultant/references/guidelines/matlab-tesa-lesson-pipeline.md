@@ -2,7 +2,7 @@
 type: guideline-card
 id: matlab-tesa-lesson-pipeline
 title: MATLAB EEGLAB/TESA Lesson Pipeline
-source_script: /Users/nikolaj_syrov/Documents/GitHub/TMS_EEG_SF_data_analysis/lesson1_data_preprocessing.m
+source_script: lesson1_data_preprocessing.m (TMS_EEG_SF_data_analysis)
 tags:
   - language:matlab
   - ecosystem:eeglab
