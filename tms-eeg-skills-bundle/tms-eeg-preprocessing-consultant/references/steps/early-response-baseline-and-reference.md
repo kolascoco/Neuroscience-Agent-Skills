@@ -27,6 +27,8 @@ Reference scheme, montage, pre-pulse baseline window, target, and lead configura
 
 Report reference and baseline explicitly. Test sensitivity when early effects are small or topography-dependent.
 
+Baseline correction is meant to set the pre-TMS signal level to zero, not to hide pre-pulse physiology or residual artifact. Do not treat `[-300 -5] ms` or any other window as a magic default; verify that the chosen interval is quiet for the target, task, stimulation history, and analysis goal.
+
 For LMFP or early ROI metrics, re-reference all EEG channels before ROI selection. CAR within the ROI is not equivalent to full-scalp CAR and can suppress local channels against each other.
 
 ## Method Options

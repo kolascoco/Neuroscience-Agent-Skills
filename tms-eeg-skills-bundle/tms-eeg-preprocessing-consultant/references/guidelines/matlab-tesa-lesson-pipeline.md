@@ -26,9 +26,9 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 
 1. Initialize MATLAB, project paths, and EEGLAB.
 2. Load an epoched EEGLAB `.set` dataset and prepare events for TESA.
-3. Baseline correct with a clean pre-TMS window, e.g. `[-50 -10] ms` in the lesson.
+3. Baseline correct with a clean pre-TMS window chosen for the protocol and current preprocessing stage.
 4. Visualize raw TEPs and average-reference TEPs.
-5. Inspect pulse artifact, remove a window such as `[-2 12] ms`, and interpolate with `pop_tesa_interpdata(..., 'cubic', [1 1])`.
+5. Inspect pulse artifact, remove the shortest justified pulse/muscle-contaminated window, and interpolate with `pop_tesa_interpdata(..., 'cubic', [1 1])`.
 6. Save one-trial dataset with full channel locations for later SOUND channel replacement.
 7. Manually inspect bad channels/trials. Exclude bad channels before ICA so they are not used in decomposition, while preserving a full-channel reference dataset for later SOUND/channel repair.
 8. Baseline correct and run PCA compression plus FastICA using `pop_tesa_pcacompress`, `pop_tesa_fastica`, and `pop_tesa_compplot`; use this ICA stage for ocular, blink, eye-movement, and non-stimulus-locked/background muscle artifacts.
@@ -50,6 +50,15 @@ This local teaching script provides a concrete MATLAB/EEGLAB/TESA preprocessing 
 - SOUND can extrapolate previously removed channels if supplied a full-channel reference dataset.
 - SSP-SIR can use manual or automatic artifact windows; manual windows are preferable when known.
 - Visual comparison with minimally processed data is a key QC step.
+
+## Parameter Guidance
+
+- Baseline `[-50 -10] ms` is usually a safe short baseline and can be useful after ICA and SOUND to adjust slow baseline shifts after interventions.
+- Baseline correction is used to set the pre-TMS signal level to zero, so TEP amplitudes start from the same pre-pulse reference level rather than from an arbitrary voltage offset.
+- Baseline `[-300 -5] ms` can be more robust because it uses more samples, but only if the interval is physiologically quiet for the experiment. Inspect the data and design carefully: do not include evoked activity, task-related preparation, residual artifact, or intervention-related drift that should not be subtracted. The `300 ms` length is not a magic value or universal truth; it is a practical choice that must fit the design and data.
+- Pulse-only removal `[-2 3] ms` or `[-2 4] ms` is a good starting point for motor, parietal, or other targets where TMS-evoked muscle artifact does not strongly affect the signal. Even these short windows remove possible immediate TEP samples, so do not use them without caveat if the acquisition setup could record interpretable i-TEPs.
+- Pulse/muscle removal `[-2 12] ms` is a reasonable recommendation for DLPFC TEPs or other cases with strong early muscle artifact that cannot be repaired. Some articles use `[-2 10] ms`. Inspect the actual pulse and muscle artifact and adjust per dataset; remove as little data as possible while still preventing the artifact from contaminating later cleaning and filtering.
+- SOUND `lambdaValue=0.1` is a good starting point. Higher values produce stronger cleaning and greater risk of overcorrection, so adjust or increase only when diagnostics show residual channel-level noise and before/after TEP checks remain acceptable.
 
 ## Agent Rules Extracted
 
