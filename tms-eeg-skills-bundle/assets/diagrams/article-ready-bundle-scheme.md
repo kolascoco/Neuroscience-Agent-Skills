@@ -10,7 +10,7 @@ tags:
   - skill-architecture
 ---
 
-# TMS-EEG Skills Bundle: Article-Ready Scheme
+# TMS-EEG Skills Bundle
 
 ## Bundle Structure
 
@@ -22,36 +22,39 @@ tms-eeg-skills-bundle/
 │       ├── bundle-structure.svg
 │       ├── bundle-knowledge-layers.svg
 │       ├── bundle-functional-branches.svg
-│       └── bundle-runtime-block-logic.svg
-├── tms-eeg-experiment-planner/
+│       ├── bundle-runtime-block-logic.svg
+│       └── bundle-lifecycle-routing.svg
+├── tms-eeg-experiment-planner/        # before acquisition
 │   ├── SKILL.md
 │   ├── references/
-│   │   ├── routing/
-│   │   ├── design/
-│   │   ├── targeting/
-│   │   ├── targets/
-│   │   ├── online-qc/
-│   │   ├── artifacts/
-│   │   ├── artifact-appearance/
-│   │   ├── repos/
-│   │   ├── papers/
-│   │   └── guidelines/
-│   └── templates/
-└── tms-eeg-preprocessing-consultant/
+│   │   ├── routing/              (2)
+│   │   ├── design/               (5)
+│   │   ├── targeting/            (3)
+│   │   ├── targets/              (6)
+│   │   ├── online-qc/            (3)
+│   │   ├── artifacts/            (2)
+│   │   ├── artifact-appearance/  (3)
+│   │   ├── repos/                (5)
+│   │   ├── papers/              (13)
+│   │   └── guidelines/           (2)
+│   └── templates/                (3)
+└── tms-eeg-preprocessing-consultant/  # after acquisition
     ├── SKILL.md
     ├── references/
-    │   ├── routing/
-    │   ├── pipelines/
-    │   ├── steps/
-    │   ├── artifacts/
-    │   ├── repos/
-    │   ├── papers/
-    │   ├── guidelines/
-    │   ├── extended-digests/
-    │   └── pipeline-tables/
-    ├── recipes/
+    │   ├── routing/              (5)
+    │   ├── pipelines/            (6)
+    │   ├── steps/               (23)
+    │   ├── artifacts/           (10)
+    │   ├── repos/                (7)
+    │   ├── papers/              (33)
+    │   ├── guidelines/           (2)
+    │   ├── extended-digests/     (2)
+    │   └── pipeline-tables/      (3)
+    ├── recipes/                 (10)
     └── assets/
 ```
+
+Card counts are approximate and grow as the corpus expands.
 
 SVG version: `bundle-structure.svg`
 

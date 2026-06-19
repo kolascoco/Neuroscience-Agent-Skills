@@ -24,6 +24,7 @@ This folder groups the TMS-EEG agent skills as one methodological bundle while k
 - `assets/diagrams/bundle-knowledge-layers.svg`: layered knowledge architecture.
 - `assets/diagrams/bundle-functional-branches.svg`: functional branches across planning and preprocessing.
 - `assets/diagrams/bundle-runtime-block-logic.svg`: runtime routing/block logic.
+- `assets/diagrams/bundle-lifecycle-routing.svg`: lifecycle routing of queries to each sub-skill with capability and guardrail detail.
 
 ## Future Bundle Candidates
 

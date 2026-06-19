@@ -1,60 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-labelledby="title desc">
   <title id="title">TMS-EEG Skills Bundle Structure</title>
-  <desc id="desc">Block diagram showing the TMS-EEG skills bundle with experiment planning and preprocessing consultant sub-skills.</desc>
+  <desc id="desc">Folder taxonomy of the TMS-EEG skills bundle showing the experiment planner and preprocessing consultant sub-skills with their reference-card categories and approximate card counts.</desc>
   <defs>
     <style>
       .bg { fill: #f8fafc; }
       .title { font: 700 28px Arial, sans-serif; fill: #111827; }
       .subtitle { font: 400 15px Arial, sans-serif; fill: #4b5563; }
-      .box { fill: #ffffff; stroke: #1f2937; stroke-width: 1.4; rx: 10; }
-      .bundle { fill: #e0f2fe; stroke: #075985; stroke-width: 1.8; rx: 12; }
-      .planner { fill: #ecfdf5; stroke: #047857; stroke-width: 1.5; rx: 10; }
-      .prep { fill: #fff7ed; stroke: #c2410c; stroke-width: 1.5; rx: 10; }
-      .shared { fill: #f5f3ff; stroke: #6d28d9; stroke-width: 1.3; rx: 9; }
+      .bundle { fill: #e0f2fe; stroke: #075985; stroke-width: 1.8; }
+      .planner { fill: #ecfdf5; stroke: #047857; stroke-width: 1.6; }
+      .prep { fill: #fff7ed; stroke: #c2410c; stroke-width: 1.6; }
+      .shared { fill: #f5f3ff; stroke: #6d28d9; stroke-width: 1.3; }
+      .cat-p { fill: #ffffff; stroke: #047857; stroke-width: 1; }
+      .cat-c { fill: #ffffff; stroke: #c2410c; stroke-width: 1; }
       .label { font: 700 17px Arial, sans-serif; fill: #111827; }
-      .text { font: 400 13px Arial, sans-serif; fill: #374151; }
-      .small { font: 400 12px Arial, sans-serif; fill: #4b5563; }
-      .arrow { stroke: #374151; stroke-width: 1.7; fill: none; marker-end: url(#arrowhead); }
+      .sub { font: 700 13px Arial, sans-serif; fill: #1f2937; }
+      .text { font: 400 12.5px Arial, sans-serif; fill: #374151; }
+      .small { font: 400 11.5px Arial, sans-serif; fill: #4b5563; }
+      .badge { font: 700 11px Arial, sans-serif; fill: #ffffff; }
+      .stage-p { font: 700 13px Arial, sans-serif; fill: #047857; }
+      .stage-c { font: 700 13px Arial, sans-serif; fill: #c2410c; }
     </style>
-    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-      <path d="M0,0 L10,4 L0,8 Z" fill="#374151"/>
-    </marker>
   </defs>
-  <rect class="bg" x="0" y="0" width="1200" height="820"/>
-  <text class="title" x="60" y="58">TMS-EEG Skills Bundle</text>
-  <text class="subtitle" x="60" y="84">One methodological bundle, two separately routed expert sub-skills.</text>
+  <rect class="bg" x="0" y="0" width="1200" height="860"/>
+  <text class="title" x="60" y="54">TMS-EEG Skills Bundle — Structure</text>
+  <text class="subtitle" x="60" y="80">One methodological bundle, two separately routed expert sub-skills; compact source-grounded cards.</text>
 
-  <rect class="bundle" x="60" y="120" width="1080" height="650"/>
-  <text class="label" x="88" y="154">tms-eeg-skills-bundle/</text>
-  <text class="small" x="88" y="176">Bundle README, shared article schemes, and future TMS-EEG sub-skills.</text>
+  <rect class="bundle" x="60" y="104" width="1080" height="700" rx="12"/>
+  <text class="label" x="86" y="136">tms-eeg-skills-bundle/</text>
+  <text class="small" x="86" y="156">README · assets/diagrams (structure, knowledge-layers, functional-branches, runtime-block-logic, lifecycle-routing)</text>
 
-  <rect class="planner" x="100" y="220" width="470" height="420"/>
-  <text class="label" x="128" y="254">tms-eeg-experiment-planner/</text>
-  <text class="text" x="128" y="282">Before data collection</text>
-  <text class="small" x="128" y="312">• target choice and target-specific risk</text>
-  <text class="small" x="128" y="336">• coil orientation, intensity, RMT vs TEP threshold</text>
-  <text class="small" x="128" y="360">• sham, masking, sensory controls</text>
-  <text class="small" x="128" y="384">• rt-TEP monitoring and online QC</text>
-  <text class="small" x="128" y="408">• neuronavigation, SimNIBS, SlicerTMS, NaviNIBS</text>
-  <text class="small" x="128" y="432">• channel/lead preparation and artifact appearance</text>
-  <text class="small" x="128" y="456">• session checklists and methods templates</text>
+  <!-- ===== PLANNER COLUMN ===== -->
+  <rect class="planner" x="92" y="180" width="500" height="540" rx="10"/>
+  <text class="label" x="116" y="212">tms-eeg-experiment-planner/</text>
+  <text class="stage-p" x="116" y="234">Before acquisition · SKILL.md + templates/ (3)</text>
 
-  <rect class="prep" x="630" y="220" width="470" height="420"/>
-  <text class="label" x="658" y="254">tms-eeg-preprocessing-consultant/</text>
-  <text class="text" x="658" y="282">After data collection</text>
-  <text class="small" x="658" y="312">• preprocessing pipeline selection</text>
-  <text class="small" x="658" y="336">• TMS pulse, decay, muscle, sensory artifact handling</text>
-  <text class="small" x="658" y="360">• Python/MNE and MATLAB/EEGLAB/TESA recipes</text>
-  <text class="small" x="658" y="384">• SOUND, SSP-SIR, ICA, ARTIST/AARATEP</text>
-  <text class="small" x="658" y="408">• TEPs, GMFA, LMFP, i-TEP early windows</text>
-  <text class="small" x="658" y="432">• PyTepFit downstream modeling branch</text>
-  <text class="small" x="658" y="456">• QC reports, caveats, and code-generation policy</text>
+  <rect class="cat-p" x="116" y="250" width="452" height="58" rx="7"/>
+  <text class="sub" x="130" y="272">design/ (5)  ·  targeting/ (3)  ·  targets/ (6)</text>
+  <text class="small" x="130" y="292">study design, trial count, coil/intensity, RMT-vs-TEP, target-specific risk</text>
 
-  <rect class="shared" x="230" y="675" width="740" height="72"/>
-  <text class="label" x="260" y="704">Shared Design Logic</text>
-  <text class="small" x="260" y="728">Compact cards distill raw articles, repos, and notes; Context7/GitHub handle changing software APIs.</text>
+  <rect class="cat-p" x="116" y="318" width="452" height="58" rx="7"/>
+  <text class="sub" x="130" y="340">design/ controls  ·  online-qc/ (3)</text>
+  <text class="small" x="130" y="360">sham &amp; sensory masking, rt-TEP monitoring, acquisition go/no-go, i-TEP practice</text>
 
-  <path class="arrow" d="M570 430 C595 430, 605 430, 630 430"/>
-  <text class="small" x="492" y="410">acquisition metadata</text>
-  <text class="small" x="502" y="456">artifact risks</text>
+  <rect class="cat-p" x="116" y="386" width="452" height="58" rx="7"/>
+  <text class="sub" x="130" y="408">artifacts/ (2)  ·  artifact-appearance/ (3)</text>
+  <text class="small" x="130" y="428">channel/lead prep, decay avoidance, what artifacts look like online</text>
+
+  <rect class="cat-p" x="116" y="454" width="452" height="58" rx="7"/>
+  <text class="sub" x="130" y="476">papers/ (13)  ·  repos/ (5)  ·  guidelines/ (2)</text>
+  <text class="small" x="130" y="496">SimNIBS, Nexstim, SlicerTMS, NaviNIBS, rt-TEP; sham/coil/sensory evidence</text>
+
+  <rect class="cat-p" x="116" y="522" width="452" height="58" rx="7"/>
+  <text class="sub" x="130" y="544">routing/ (2)  ·  templates/ (3)</text>
+  <text class="small" x="130" y="564">question routing, target-risk routing, protocol/checklist/prereg templates</text>
+
+  <text class="small" x="116" y="610">Key question:</text>
+  <text class="text" x="116" y="630">“How do we design the session so the data</text>
+  <text class="text" x="116" y="648">can answer the question?”</text>
+  <text class="stage-p" x="116" y="688">Prevents avoidable bad datasets at acquisition.</text>
+
+  <!-- ===== PREPROCESSING COLUMN ===== -->
+  <rect class="prep" x="616" y="180" width="500" height="540" rx="10"/>
+  <text class="label" x="640" y="212">tms-eeg-preprocessing-consultant/</text>
+  <text class="stage-c" x="640" y="234">After acquisition · SKILL.md + recipes/ (10)</text>
+
+  <rect class="cat-c" x="640" y="250" width="452" height="58" rx="7"/>
+  <text class="sub" x="654" y="272">pipelines/ (6)</text>
+  <text class="small" x="654" y="292">conservative MNE, TESA two-pass ICA, SOUND/SSP-SIR, ARTIST/AARATEP, i-TEP, PyTepFit</text>
+
+  <rect class="cat-c" x="640" y="318" width="452" height="58" rx="7"/>
+  <text class="sub" x="654" y="340">steps/ (23)</text>
+  <text class="small" x="654" y="360">pulse removal, decay/recharge, filtering, ICA, SOUND, SSP-SIR, TEP/GMFA/LMFP, QC</text>
+
+  <rect class="cat-c" x="640" y="386" width="452" height="58" rx="7"/>
+  <text class="sub" x="654" y="408">artifacts/ (10)</text>
+  <text class="small" x="654" y="428">pulse, decay-residual, muscle, sensory, lead-config (×2), filter-ringing, overcleaning, sampling/sync</text>
+
+  <rect class="cat-c" x="640" y="454" width="452" height="58" rx="7"/>
+  <text class="sub" x="654" y="476">papers/ (33)  ·  repos/ (7)  ·  guidelines/ (2)</text>
+  <text class="small" x="654" y="496">TESA, MNE, tmseegpy, PyTEP-SOUND-SSP-SIR, PyTepFit; method &amp; caveat evidence</text>
+
+  <rect class="cat-c" x="640" y="522" width="452" height="58" rx="7"/>
+  <text class="sub" x="654" y="544">routing/ (5)  ·  pipeline-tables/ (3)  ·  extended-digests/ (2)</text>
+  <text class="small" x="654" y="564">request routing, code-language &amp; Context7/GitHub policy, step-order tables</text>
+
+  <text class="small" x="640" y="610">Key question:</text>
+  <text class="text" x="640" y="630">“How do we clean, quantify, code, and</text>
+  <text class="text" x="640" y="648">interpret the acquired data cautiously?”</text>
+  <text class="stage-c" x="640" y="688">Not a rescue operation for acquisition errors.</text>
+
+  <!-- ===== SHARED LOGIC ===== -->
+  <rect class="shared" x="230" y="734" width="740" height="56" rx="9"/>
+  <text class="label" x="258" y="762">Shared Design Logic</text>
+  <text class="small" x="258" y="782">Typed cards (paper · artifact · pipeline · step · repo · template) carry rationales, caveats, cross-refs; community-extensible via pull requests.</text>
 </svg>

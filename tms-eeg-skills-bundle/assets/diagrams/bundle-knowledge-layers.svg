@@ -42,12 +42,14 @@
   <text class="text" x="846" y="234">reusable operations and target risks</text>
 
   <rect class="node risk" x="820" y="290" width="300" height="80"/>
-  <text class="label" x="846" y="322">Artifact Cards</text>
-  <text class="text" x="846" y="344">pulse, decay, muscle, sensory, overcleaning</text>
+  <text class="label" x="846" y="318">Artifact Cards</text>
+  <text class="text" x="846" y="338">pulse, decay/recharge, muscle, sensory,</text>
+  <text class="text" x="846" y="356">lead-config, filter-ringing, overcleaning</text>
 
   <rect class="node risk" x="820" y="400" width="300" height="80"/>
-  <text class="label" x="846" y="432">Appearance Cards</text>
-  <text class="text" x="846" y="454">what artifacts look like online/offline</text>
+  <text class="label" x="846" y="428">Appearance / QC &amp; Reporting</text>
+  <text class="text" x="846" y="448">artifact look online/offline; reference,</text>
+  <text class="text" x="846" y="466">rank, baseline, condition-matched cleaning</text>
 
   <rect class="node source" x="430" y="300" width="300" height="92"/>
   <text class="label" x="456" y="332">Paper / Guideline Cards</text>

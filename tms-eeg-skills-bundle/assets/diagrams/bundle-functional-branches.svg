@@ -45,16 +45,18 @@
   <text class="text" x="863" y="300">MNE, TESA, SOUND, SSP-SIR</text>
 
   <rect class="prep" x="835" y="365" width="285" height="80"/>
-  <text class="label" x="863" y="398">Artifact Cleaning</text>
-  <text class="text" x="863" y="420">pulse, decay, muscle, sensory</text>
+  <text class="label" x="863" y="392">Artifact Cleaning</text>
+  <text class="text" x="863" y="412">pulse, decay, muscle, sensory,</text>
+  <text class="text" x="863" y="430">lead-config, filter-ringing, overcleaning</text>
 
   <rect class="prep" x="835" y="485" width="285" height="80"/>
   <text class="label" x="863" y="518">TEP Analysis</text>
   <text class="text" x="863" y="540">TEPs, GMFA, LMFP, i-TEPs</text>
 
   <rect class="prep" x="835" y="605" width="285" height="80"/>
-  <text class="label" x="863" y="638">Code Generation</text>
-  <text class="text" x="863" y="660">Python/MNE or MATLAB/TESA</text>
+  <text class="label" x="863" y="632">Code Generation + QC/Reporting</text>
+  <text class="text" x="863" y="652">Python/MNE or MATLAB/TESA;</text>
+  <text class="text" x="863" y="670">reference, rank, baseline, condition match</text>
 
   <rect class="shared" x="455" y="365" width="290" height="92"/>
   <text class="label" x="492" y="398">Shared Evidence Layer</text>
