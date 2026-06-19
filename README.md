@@ -94,3 +94,7 @@ Future skills could include:
 ## Contributing
 
 Add each new skill as its own directory with a `SKILL.md` file and any supporting references in a local `references/` folder. Domain-specific families, such as TMS-EEG, can be grouped in a bundle folder with a bundle README. Keep examples concrete, cite source URLs where possible, and include error-recovery notes for fragile APIs or older academic websites.
+
+## License
+
+This project is licensed under the MIT License.
