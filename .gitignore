@@ -19,3 +19,4 @@ __pycache__/
 
 # Local raw source corpus used to author distilled TMS-EEG skill cards
 TMS-EEG-artifacts/
+tms-eeg-skills-bundle/

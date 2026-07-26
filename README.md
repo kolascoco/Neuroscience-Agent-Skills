@@ -12,11 +12,11 @@ Think of this repo as a field kit for research agents.
 
 ## Available Skills
 
-| Skill | What it helps with | Status |
-|---|---|---|
-| `neuroscience-database-lookup` | Search public neuroscience datasets and educational anatomy resources across OpenNeuro, OSF, Figshare, Dryad, Harvard Dataverse, Science Data Bank, Zenodo, TDBRAIN, HCP, BRAVA, NITRC, Oliva Lab, visual stimulus/eye-tracking resources, TEMCA2/FAFB, and BrainFacts 3D Brain. | Ready |
-| `tms-eeg-skills-bundle/tms-eeg-experiment-planner` | Design TMS-EEG studies before data collection: target choice, coil orientation/intensity, RMT versus TEP threshold, sham/sensory controls, rt-TEP monitoring, acquisition QC, neuronavigation, E-field modeling, SlicerTMS, and session checklists. | Draft |
-| `tms-eeg-skills-bundle/tms-eeg-preprocessing-consultant` | Plan, explain, and code TMS-EEG preprocessing workflows for TEP/GMFA/LMFP and immediate TEP/i-TEP analysis, with Context7-first/GitHub-fallback software lookup and artifact-aware QC cards. | Draft |
+| Skill | Main function | Use when the agent needs to... | Typical output |
+|---|---|---|---|
+| `neuroscience-database-lookup` | Dataset and resource discovery | Find neuroscience datasets, data repositories, anatomy resources, visual stimuli, connectomics resources, or data descriptor articles when direct dataset links are hard to locate. | Ranked dataset links, access notes, DOI/accession IDs, file formats, licenses, citations, and article fallbacks. |
+| `obsidian-literature-notes` | Literature-to-Obsidian conversion | Turn papers, PDFs, articles, web pages, or pasted sources into traceable Zettelkasten-style notes with rigorous methodology extraction. | Vault-ready Markdown notes with YAML frontmatter, tags, wikilinks, metadata, results, limitations, and reproducibility gaps. |
+| `scientific-research-data-analysis` | Scientific analysis governance | Plan, audit, run, reproduce, or report empirical analyses while preserving hypotheses, data contracts, exclusions, controls, provenance, and interpretation discipline. | Frozen analysis plans, data contracts, configs, validation checks, result manifests, audit notes, and restrained interpretation summaries. |
 
 ## First Skill: Neuroscience Database Lookup
 
@@ -38,6 +38,16 @@ The included `neuroscience-database-lookup` skill helps agents retrieve and summ
 
 The skill emphasizes exact source links, API endpoints, access notes, licensing, citations, clear output formatting, and a compact "Big Data Fit" check for volume, variety, velocity, veracity, and scientific value.
 
+## Other Skills
+
+### Obsidian Literature Notes
+
+`obsidian-literature-notes` helps agents create research notes that are useful inside an Obsidian vault. It is built for careful source handling: no invented metadata, no abstract-only method sections, structured methodology fields for empirical work, and explicit `not reported` entries when a paper leaves replication details out.
+
+### Scientific Research Data Analysis
+
+`scientific-research-data-analysis` governs empirical work from idea to result. It helps agents separate planning from outcome inspection, freeze analysis choices before results, audit data contracts, validate statistical designs, record provenance, and interpret findings without overclaiming.
+
 ## Repository Layout
 
 ```text
@@ -58,18 +68,20 @@ The skill emphasizes exact source links, API endpoints, access notes, licensing,
 │       ├── osf.md
 │       ├── temca2-fafb.md
 │       └── visual-stimulus-and-eyetracking.md
-└── tms-eeg-skills-bundle/
-    ├── README.md
-    ├── tms-eeg-experiment-planner/
-    │   ├── SKILL.md
-    │   ├── references/
-    │   └── templates/
-    └── tms-eeg-preprocessing-consultant/
-        ├── SKILL.md
-        ├── assets/
-        ├── recipes/
-        └── references/
+├── obsidian-literature-notes/
+│   ├── SKILL.md
+│   └── references/
+└── scientific-research-data-analysis/
+    ├── SKILL.md
+    ├── agents/
+    ├── references/
+    └── scripts/
 ```
+
+Ignored local bundles:
+
+- `tms-eeg-skills-bundle/` - local TMS-EEG experiment planning and preprocessing bundle.
+- `TMS-EEG-artifacts/` - local raw source corpus used to author distilled TMS-EEG skill cards.
 
 ## Roadmap
 

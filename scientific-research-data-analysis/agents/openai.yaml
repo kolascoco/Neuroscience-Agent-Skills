@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scientific Research Data Analysis"
+  short_description: "Govern rigorous data analysis"
+  default_prompt: "Use $scientific-research-data-analysis to plan and govern a scientific data analysis with frozen decisions, provenance, statistical review, and adversarial audit."
