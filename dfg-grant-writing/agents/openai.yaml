@@ -1,0 +1,4 @@
+interface:
+  display_name: "DFG Grant Writing"
+  short_description: "Draft and review rigorous DFG proposals"
+  default_prompt: "Use $dfg-grant-writing to help me draft and review a DFG research proposal."
