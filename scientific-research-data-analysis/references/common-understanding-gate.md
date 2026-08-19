@@ -1,62 +1,95 @@
 # Common Understanding Gate
 
 Use this gate before result-producing scientific work. The Orchestrator
-conducts this interview; attribute estimand/hypothesis reasoning to Theorist
-judgment and null/multiplicity/design reasoning to Statistician judgment (see
-[soul-roles.md](soul-roles.md)), even though you answer as the same agent.
+drafts and defends the proposal; attribute estimand/hypothesis reasoning to
+Theorist judgment and null/multiplicity/design reasoning to Statistician
+judgment (see [soul-roles.md](soul-roles.md)), even though you answer as the
+same agent.
 
 ## Rule
 
-Treat the open scientific choices as a design tree. [decision-tree.md](decision-tree.md)'s
-section order (Scientific Target, Data And Sample, Preprocessing And Features,
-Statistics, Outputs) is that tree's approximate dependency order already —
-use it as the default traversal unless a specific choice obviously reorders it.
+Common understanding remains mandatory: the planning stage always ends in
+confirmed shared understanding. Reaching it is by proposal, not by interview —
+the mechanism changed, the requirement did not. Confirmation is explicit.
+Silence is not confirmation, and absence of objection is not confirmation. An
+agent that cannot draft a proposal it can defend has not established
+understanding; it returns to fact-finding rather than presenting a proposal
+full of open questions.
 
-Work the tree in rounds:
+Treat the open scientific choices as a design tree.
+[decision-tree.md](decision-tree.md)'s section order (Scientific Target, Data
+And Sample, Preprocessing And Features, Statistics, Outputs) is that tree's
+approximate dependency order already — use it as the default traversal
+unless a specific choice obviously reorders it.
 
-1. **Frontier:** the decisions whose prerequisites are already settled — the
-   ones you can ask now without guessing at an answer you haven't heard yet.
-   A decision that depends on another still-open decision belongs to a later
-   round, not this one.
-2. **Ask the whole frontier at once**, numbered, each with a recommended
-   answer and a short reason — except pull any individually high-risk or
-   deeply consequential decision (e.g., the primary estimand, the null model)
-   into its own round even when it is frontier-ready. "Its own round" means
-   asked alone and confirmed before the rest of that frontier is presented,
-   not just visually separated within the same message. Frontier logic
-   decides what CAN be batched; risk decides what gets split out anyway.
-3. **Recompute the frontier** from the user's answers and ask the next round.
-   Repeat until the frontier is empty: every relevant branch of the decision
-   tree visited, nothing left silently assumed.
+**The necessity test.** A question reaches the user only when none of the
+following resolves it:
 
-Facts are never a frontier question for the user. Before every round,
-distinguish facts from decisions:
+1. **A fact the agent can establish itself.** Facts are never asked of the
+   user. Before every question, distinguish facts from decisions:
+   - **Facts** (paths, hashes, schema, existing metadata, prior
+     documentation): look them up yourself. A single read, grep, or
+     directory listing is trivial — do it inline. Anything requiring a
+     directory-tree exploration, a script run, or cross-referencing multiple
+     files is nontrivial — dispatch it to a sub-agent instead of resolving it
+     inline and blocking on it; only the part of the proposal that depends on
+     that fact waits, draft the rest of the proposal now.
+   - **Decisions** (anything requiring scientific judgment): these are not
+     facts, and branch 1 does not resolve them — test branches 2 and 3
+     instead, recommending an answer rather than silently assuming a
+     default, especially when high risk.
+2. **A decision already confirmed in this session.** The agent derives the
+   consequence and states the derivation rather than asking again.
+3. **A defensible default.** The agent states it as a named assumption the
+   user can reject, rather than asking or silently assuming it.
 
-- **Facts** (paths, hashes, schema, existing metadata, prior documentation):
-  look them up yourself. A single read, grep, or directory listing is trivial
-  — do it inline. Anything requiring a directory-tree exploration, a script
-  run, or cross-referencing multiple files is nontrivial — dispatch it to a
-  sub-agent instead of blocking the round on it; only the decisions
-  downstream of that fact wait, ask the rest of the frontier now.
-- **Decisions** (anything requiring scientific judgment): ask the user,
-  recommend an answer, and wait rather than assuming a default, especially
-  when high risk.
+When none of the three resolves a question, ask it in the proposal.
+Otherwise decide and record the choice with its basis (fact, prior
+confirmation, or named default).
+
+**Derived decisions inherit confirmation.** A decision determined by an
+already-confirmed choice is presented as a consequence — "because you chose
+X, Y follows" — not re-asked. Confirming one decision shrinks the remaining
+question set; it never unlocks a new round of questions.
+
+**Mechanical check.** More than three questions surviving the necessity test
+is evidence that facts were not established — nothing more. The agent
+returns to fact-finding and re-derives whatever branch 1 can resolve. This
+check is never a reason to restate a scientific decision as a named default
+merely to bring the count under four: branch 1 does not apply to decisions
+requiring scientific judgment, and no amount of fact-finding reduces a
+genuine decision to a fact. When fact-finding is exhausted and more than
+three genuine decisions still survive, present all of them in the proposal
+and state why the count is high, rather than disguising any of them as a
+default.
+
+The frontier concept survives with a changed job: it no longer sequences
+questions to the user; it orders what the agent resolves for itself before a
+coherent proposal exists.
 
 Before explicit confirmation:
 
 1. Perform only read-only inspection needed to establish facts.
-2. Record accepted choices in a decision ledger as each round closes.
+2. Record accepted choices — facts, prior confirmations, and named
+   defaults — in a decision ledger as they are settled.
 3. Do not create result-producing code, inspect scientific outcomes, tune
    thresholds, or launch real-data compute.
-4. When the frontier is empty, present the full ledger, unresolved risks,
-   expected artifacts, and compute estimate. Ask whether shared understanding
-   is confirmed.
+4. Present the full proposal once: the ledger, every named default and its
+   rationale, unresolved risks, expected artifacts, compute estimate, and any
+   questions that survived the necessity test. Ask whether shared
+   understanding is confirmed.
+
+This necessity test governs any grilling or interview procedure invoked on
+an analysis in this skill's scope, including `anthropic-skills:grilling`.
 
 ## Compact Ledger Mode
 
-For read-only planning or simple low-risk tasks, skip the round structure: a
-single compact ledger may group related decisions. Label anything unresolved
-and do not proceed to outcomes.
+For read-only discussion, brainstorming, or plan sketch — the Operating
+Rule's first branch, and only that branch — a compact ledger may group
+related decisions into a single presentation in place of the full proposal
+above. This changes only how decisions are grouped for presentation; it
+never removes the explicit-confirmation requirement stated in `## Rule`, and
+it does not extend to result-producing work. Label anything unresolved.
 
 ## Reopening Choices
 

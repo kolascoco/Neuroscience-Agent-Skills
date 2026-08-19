@@ -19,17 +19,29 @@ Classify the request before acting.
 - **Read-only discussion, brainstorming, or plan sketch:** use a compact
   decision ledger; do not require a full gate.
 - **Result-producing work, reproducibility tests, adapted analyses, new nulls,
-  p-values, model fitting, or outcome inspection:** enter the shared
-  understanding gate and work it in frontier rounds (see
+  p-values, model fitting, or outcome inspection:** the agent establishes the
+  facts itself, drafts the complete proposal, and presents it once — the plan,
+  every degree of freedom it filled, the rationale for each, and what it left
+  open (see
   [references/common-understanding-gate.md](references/common-understanding-gate.md)).
-  Do not inspect outcomes or write analysis code until the plan/config/data
-  contract are frozen and the user explicitly confirms.
-- **First real-data run, long compute over 30 minutes, or confirmation/one-shot
-  run:** stop at a compute or confirmation gate with analysis id, dataset,
-  operation, and time estimate.
+  The user approves, edits, or rejects the proposal in one pass. Do not write
+  analysis code or inspect outcomes until the plan/config/data contract are
+  frozen and the user explicitly confirms them.
+- **Two categories still block; the agent stops and waits for confirmation
+  before proceeding:**
+  - **The scientific target.** Hypothesis, estimand, and null model are
+    confirmed before any test runs.
+  - **Expensive or irreversible compute.** First real-data run, compute over
+    30 minutes, or a confirmatory one-shot run, presented with analysis id,
+    dataset, operation, and time estimate.
 
-Facts are discovered from files; decisions are asked of the user. Never fill a
-scientific degree of freedom with a silent default.
+Facts are discovered from files; decisions are asked of the user.
+A default may be filled, never silently. Every filled degree of freedom
+appears in the proposal as a named assumption with its rationale, in a form
+the user can reject.
+
+[references/claim-discipline.md](references/claim-discipline.md) applies as a
+standing rule at every step of this workflow, not as a step of its own.
 
 ## Workflow
 
@@ -43,9 +55,9 @@ than advisory.
 1. **Orient and scope.** *Role: Orchestrator.* Identify whether the task is
    planning, data audit, implementation, statistical review, adversarial
    review, theory update, or writing.
-2. **Build shared understanding.** *Role: Orchestrator interviews, drawing on
-   Theorist (estimand/hypothesis) and Statistician (design/null) judgment.* For
-   result-producing work, follow
+2. **Build shared understanding.** *Role: Orchestrator drafts and defends the
+   proposal, drawing on Theorist (estimand/hypothesis) and Statistician
+   (design/null) judgment.* For result-producing work, follow
    [references/common-understanding-gate.md](references/common-understanding-gate.md)
    and the relevant branches of [references/decision-tree.md](references/decision-tree.md).
 3. **Audit the data contract.** *Role: Scout.* Before analysis, read
@@ -53,14 +65,16 @@ than advisory.
    ambiguous identifiers, unclear units, trial/event misalignment, undocumented
    preprocessing, or unresolved missingness.
 4. **Freeze artifacts.** *Role: Analyst writes; Orchestrator confirms the
-   freeze.* Create or update a plan and config before outcome inspection. Use
+   freeze.* Create or update `plan.md` and config before outcome inspection. Use
    [references/analysis-artifact-contract.md](references/analysis-artifact-contract.md).
 5. **Validate design.** *Role: Statistician.* For statistical plans or
    inference, read [references/statistician-review.md](references/statistician-review.md).
-6. **Implement minimally.** *Role: Analyst.* Keep code inside the analysis
-   folder. Add positive, negative/null, boundary, and provenance controls
-   before trusting results. Cache expensive intermediates with input/config/code
-   hashes.
+6. **Implement minimally.** *Role: Analyst.* Before trusting the output of
+   any pipeline stage used for the first time in this project, complete
+   [references/instrument-validation.md](references/instrument-validation.md).
+   Keep code inside the analysis folder. Add positive, negative/null,
+   boundary, and provenance controls before trusting results. Cache expensive
+   intermediates with input/config/code hashes.
 7. **Audit independently.** *Role: Adversary — independent execution is
    required whenever your platform can provide it, not merely preferred.* After
    results, use [references/adversarial-review.md](references/adversarial-review.md);
@@ -90,3 +104,7 @@ Scientific work is complete only when the frozen plan is honored, controls pass,
 outputs are complete, figures are inspected, hashes/manifests/logs exist,
 limitations are explicit, and the next status is clear: blocked, revised,
 exploratory, confirmed, falsified, or integrated.
+
+Under-use of authorized time or compute is a planning failure, not thrift; an
+analysis that returns a thin result well inside its approved budget reports
+why the remaining budget was not used.

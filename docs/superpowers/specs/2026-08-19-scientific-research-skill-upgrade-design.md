@@ -94,8 +94,12 @@ that applies at every step, not as a workflow step of its own.
 
 ### 5.2 `references/common-understanding-gate.md`
 
-The `## Rule` section is rewritten. `## Compact Ledger Mode` and
-`## Reopening Choices` are kept as-is.
+The `## Rule` section is rewritten. `## Reopening Choices` is kept as-is.
+`## Compact Ledger Mode` is amended (see 5.3).
+
+The freeze precondition keeps all three of its terms and its strength: plan,
+config, and data contract are **frozen** — not merely present — before analysis
+code is written or any outcome is inspected.
 
 **Common understanding remains mandatory.** The planning stage always ends in
 confirmed shared understanding. The mechanism changed; the requirement did not.
@@ -136,6 +140,33 @@ coherent proposal exists.
 
 This necessity test governs any grilling or interview procedure invoked on an
 analysis in this skill's scope, including `anthropic-skills:grilling`.
+
+### 5.3 `## Compact Ledger Mode` is amended, not preserved
+
+The section reads, in the version this upgrade inherits:
+
+> "For read-only planning or simple low-risk tasks, skip the round structure: a
+> single compact ledger may group related decisions. Label anything unresolved
+> and do not proceed to outcomes."
+
+"The round structure" named the three frontier rounds. With those gone, the
+phrase binds instead to the only mechanism `## Rule` now prescribes — the
+proposal and its confirmation — turning the section into a bypass. Two further
+properties make it load-bearing: its trigger is a disjunction that admits
+result-producing work an agent self-labels "simple low-risk", broader than the
+Operating Rule's read-only branch; and its backstop bars inspecting outcomes
+without barring the writing or running of analysis code.
+
+The section is therefore amended on both counts:
+
+- Its trigger narrows to match the Operating Rule's first branch exactly:
+  read-only discussion, brainstorming, or plan sketch. The separate
+  "simple low-risk tasks" clause is removed.
+- It states that the compact ledger changes how decisions are grouped for
+  presentation and never removes the explicit-confirmation requirement.
+
+What the section keeps: a compact ledger may group related decisions in one
+presentation, and anything unresolved is labeled.
 
 ## 6. Change 2 — New reference file: `references/instrument-validation.md`
 
@@ -186,6 +217,10 @@ a tool in the abstract. The same tool at two positions holds two records.
 
 Consequences:
 
+- **The chain is linear.** Each stage after the first consumes the stage at
+  `position - 1`. Two stages consuming one predecessor would make "the terminal
+  stage" ambiguous and would let a fork escape the staleness rule, since each
+  branch is compared only against the shared parent.
 - **Validation runs in pipeline order.** A stage cannot be validated before its
   predecessor, because its condition-1 input does not exist yet.
 - **A stage reaches PASS only after its successor has run once on its output.**
@@ -243,6 +278,10 @@ not a frozen decision.
 ```
 
 - `status` is one of `PASS`, `PENDING`, `FAIL`, `STALE`.
+- `validated_at` is an ISO-8601 timestamp **carrying a UTC offset**. A naive
+  timestamp is rejected: it cannot order a cascade across machines, and mixing
+  naive and aware values raises at comparison time rather than reporting a
+  diagnosis. A date without a time is likewise rejected.
 - `input_ref` identifies the input without requiring a rehash of large raw
   data: for the first stage it is the data-contract entry (which already
   carries a SHA-256 per `data-contract.md`); for later stages it is the
@@ -326,6 +365,9 @@ Standing rule, referenced from the Operating Rule. Applies at every step.
 1. **State only what you established.** Any factual claim in a summary, figure
    caption, or manuscript traces to an executed computation or a saved artifact
    that can be cited. "Verified" means a check was run and its output exists.
+   A claim carried forward from an earlier step is re-verified before it
+   appears in a later artifact; carrying it forward unchecked does not count as
+   re-verifying it.
 2. **Never write an identifier from memory.** Every DOI, PMID, accession,
    dataset id, URL, atlas coordinate, and citation is the literal output of a
    lookup executed in the same session that wrote it.
@@ -408,7 +450,9 @@ contract, so the contract adopts observed reality:
 
 ### 8.1 Project ideas list — `ideas.md`
 
-One file per **project**, at the project root, above `analyses/`. Required, not
+One file per **project**, at the project root, above `analyses/` — derived from
+the analyses root rather than from the working directory, so it lands in the
+project regardless of where the scaffold is invoked from. Required, not
 optional. A per-analysis ideas file is explicitly rejected: fragmenting the
 list across analysis folders destroys the accumulation that gives it value.
 
@@ -458,7 +502,12 @@ directory, overridable with `--gate-status PATH`.
 - **Agreement check:** the two files name the same set of stages. Report any
   declared stage missing an observed entry, and any observed entry naming no
   declared stage.
-- Fail when a tool referenced in `code/` has no entry in the instrument record.
+- **Not mechanically checked:** whether every tool `code/` actually uses has an
+  instrument record. An import is not decidable as an instrument — `numpy` is
+  not one, `mne` may be — so a static check produces false positives until it
+  is disabled, which is worse than no check. Coverage of the record is a
+  judgment call and lives on the Adversary's checklist in
+  `adversarial-review.md`, not in this script.
 - **Legacy configs:** a `config.json` without `instruments` fails with a
   message naming the fix — add `"instruments": []` and create a
   `gate_status.json` containing `{"instrument_status": []}`.
@@ -499,7 +548,131 @@ holding the two new files to the same standard.
   over `SKILL.md` and `references/` returns only occurrences that are gates or
   bounded permissions in context.
 
-## 11. Acceptance criteria
+## 11. Field-use findings and resulting changes
+
+A real project using this skill was surveyed on 2026-08-19: 52 analysis folders
+(`F001`-`F048`) plus an earlier generation under
+`TW_theta_coupling_reproduction/`. The four changes below come from that
+evidence; each cites what was observed.
+
+**Correction to an earlier reading of this survey.** The first pass treated the
+low presence of late-workflow artifacts — adversarial reviews, final reports,
+post-result statistician reviews — as evidence that the review-and-report half
+of the workflow was decaying. The project owner corrected this: that project had
+not yet reached results discussion. Those analyses are in flight, not skipped, so
+the counts measure progress rather than compliance and are not evidence of decay.
+No conclusion in this section rests on them.
+
+What does hold is stage-independent, because it is measured either among
+artifacts that were produced or in files written at freeze time: the naming
+divergence in 11.1, the id collisions in 11.3, and the family-declaration decay
+in 11.2, which lives in `plan.md` files. The theory-vs-journal asymmetry in 11.4
+is retained as a distinction worth stating, but it is no longer offered as
+evidence that step 9 failed in that project.
+
+### 11.1 Canonical artifact filenames
+
+**Observed.** Fourteen distinct filenames carry statistician-review output
+(`statistician_review.md`, `statistician_design_review.md`,
+`statistician_result_review.md`, `statistician_final_review.md`,
+`statistical_review.md`, and more), including two spellings of one artifact:
+`post_result_statistician_review.md` and `postresult_statistician_review.md`.
+Roughly nineteen filenames carry controller-audit output. Two filenames carry
+the freeze record: `freeze_manifest.json` and `freeze.json`.
+
+**Consequence.** "Did the adversarial review run on F031?" cannot be answered
+without opening the folder and reading. A gate whose output has no canonical
+name is not mechanically checkable. This count is stage-independent: it is
+measured among the analyses that did produce the artifact, not across all 52.
+
+**Change.** `analysis-artifact-contract.md` gains a fixed filename table. Each
+name is the most frequent observed spelling, so adopting it costs the least
+renaming:
+
+| Artifact | Canonical filename | Observed |
+|---|---|---|
+| Data-contract audit (Scout) | `input_audit.md` / `.json` | 22 / 15 |
+| Statistician pre-analysis review | `statistician_review.md` | 29 |
+| Statistician post-result review | `statistician_post_result_review.md` | 3 + 3 (two spellings) |
+| Adversarial review (Adversary) | `adversarial_review.md` | 13 |
+| Freeze record | `freeze_manifest.json` | 13 (vs `freeze.json` 6) |
+| Gate outcomes + instrument status | `gate_status.json` | 17 |
+| Result hashes | `result_manifest.json` | 14 |
+| Final narrative | `final_report.md` | 7 (vs `summary.md` 3) |
+| Theory-update entry | `lab_journal_entry.md` | 15 |
+
+A review that ran under a different filename did not run, because it cannot be
+found. Where one analysis needs several instances of an artifact (per stage,
+per amendment), the canonical stem takes a suffix:
+`adversarial_review_<stage>.md`, never a new stem.
+
+### 11.2 Analysis families and configuration counts
+
+**Observed.** `F007` through `F014` are nine analyses of one question, varying
+exclusion threshold (6, 10, 15), sample size (n13, n16, n19, n25, n31), and
+tmax (2000, 5000). `F007`'s plan declares `exploratory`, `selection-informed`,
+and a multiplicity claim. `F010`, `F013`, and `F014` declare none of them. No
+analysis in the project states how many configurations were tried.
+
+**Consequence.** A garden of forking paths recorded in the filesystem, with the
+labels that would flag it dropped exactly as the family grew.
+
+**Change.** `config.json` gains a `family` block:
+
+```
+{ "family_id", "parent_analysis", "varies" }
+```
+
+- An analysis that changes a parameter of an earlier analysis addressing the
+  same question sets `parent_analysis` to that analysis id and shares its
+  `family_id`. `varies` names the parameters changed.
+- Every family member's final report states the family size at write time:
+  configuration k of n tried.
+- `interpretation-rules.md`: a member of a family larger than one is not
+  labeled confirmatory unless the whole family was frozen before outcome
+  access. Absent that, the family is selection-informed, and the count is
+  reported with the result.
+
+### 11.3 Unique analysis ids
+
+**Observed.** `F014` and `F030` each name two different directories. Ids are
+assigned by hand and collide.
+
+**Change.** `init_analysis.py` exits non-zero when the target directory already
+exists, and when any sibling directory shares the new id's ordinal prefix
+followed by `_`. An id is not reused; a variant takes its own id and records
+`parent_analysis` per 11.2.
+
+### 11.4 The theory document and the lab journal are different artifacts
+
+**Observed.** `lab_journal/theta_coupled_tw_progress.md` is 403 KB and 5,746
+lines, current to 2026-08-18. Every file in `theory/` was last modified
+2026-07-23.
+
+**Reading, with its limit stated.** The project had not yet reached results
+discussion, so theory updates were not necessarily due — this is not evidence
+that step 9 failed there. What it does show is a shape worth ruling on in
+advance: an append-only journal accumulates without bound and stays current
+because appending is cheap, while a current-state document only moves when
+someone re-derives it. A journal at 5,746 lines cannot be read under pressure,
+so the two artifacts serve different purposes and the skill states which is
+which rather than treating them as one obligation.
+
+**Change.** `theory-update.md` states the distinction as a rule:
+
+- The **lab journal** is an append-only record. It grows without bound. It is
+  written to on every update and is not a decision aid.
+- The **theory document** is current-state and bounded. It is **re-derived**,
+  not appended to: superseded claims are removed or marked, not accumulated.
+- Appending a journal entry does not satisfy step 9. A theory update that
+  leaves the theory document unchanged states why in the journal entry, naming
+  the artifact that failed to move it.
+
+A staleness detector — flagging when the theory document is older than N
+completed analyses — is deferred to separate work; it needs a script and a
+threshold the project owner chooses.
+
+## 12. Acceptance criteria
 
 1. Two new reference files exist and are linked from `SKILL.md`.
 2. The Operating Rule describes propose-then-verify, retains the two blocking
@@ -528,3 +701,14 @@ holding the two new files to the same standard.
    theory update) and read triggers (stall, method drop, theory update) named,
    and `theory-update.md` points its stubs at it.
 7. Every cross-reference link between files resolves.
+8. `analysis-artifact-contract.md` carries the canonical filename table (11.1),
+   and the names in it match the table's spellings exactly.
+9. `config.json` accepts a `family` block with `family_id`, `parent_analysis`,
+   and `varies`; `interpretation-rules.md` states that a member of a family
+   larger than one is not labeled confirmatory unless the whole family was
+   frozen before outcome access.
+10. `init_analysis.py` exits non-zero on a duplicate analysis id and on an id
+   whose ordinal prefix is already taken by a sibling directory.
+11. `theory-update.md` states that the lab journal is append-only and the
+   theory document is re-derived, and that a journal entry alone does not
+   satisfy step 9.

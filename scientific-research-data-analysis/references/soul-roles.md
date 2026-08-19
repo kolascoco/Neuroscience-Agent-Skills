@@ -21,11 +21,14 @@ treating any role as someone else's problem.
   null/exchangeability, and reporting before compute and after results; owns
   [statistician-review.md](statistician-review.md).
 - **Analyst:** writes frozen plan, config, code, controls, results, figures,
-  manifests, logs, and `summary.md`. Does not certify its own result.
+  manifests, logs, `gate_status.json`, and `final_report.md`; owns
+  [instrument-validation.md](instrument-validation.md). Does not certify its
+  own result.
 - **Adversary:** fresh-context methods reviewer; owns
   [adversarial-review.md](adversarial-review.md). Attacks plan adherence,
-  leakage, multiplicity, code, controls, confounds, and fragility, and performs
-  the reproducibility/rerun check — there is no separate "controller" role.
+  leakage, multiplicity, code, controls, confounds, and fragility; re-checks
+  the instrument record; and performs the reproducibility/rerun check — there
+  is no separate "controller" role.
 - **Theory-updater:** integrates positives, nulls, blocks, and risks into the
   living theory and proposes next stubs; owns
   [theory-update.md](theory-update.md).
@@ -37,7 +40,7 @@ treating any role as someone else's problem.
 | SKILL.md step | Role(s) | Independent execution |
 |---|---|---|
 | 1. Orient and scope | Orchestrator | Same context |
-| 2. Build shared understanding | Orchestrator + Theorist + Statistician judgment | Same context |
+| 2. Build shared understanding | Orchestrator drafts and defends the proposal | Same context |
 | 3. Audit the data contract | Scout | Same context |
 | 4. Freeze artifacts | Analyst writes, Orchestrator confirms | Same context |
 | 5. Validate design | Statistician | Recommended for confirmatory/high-stakes work |
@@ -82,14 +85,21 @@ dispatch independently just as for the Adversary.
 
 ## Handoff Rule
 
-Pass minimal path-only context whenever possible. Never brief the adversary with
-the analyst's interpretation. Surface conflicts rather than adjudicating them
-silently — escalate unresolved role conflicts to the user as a scientific
-decision (per the Operating Rule in SKILL.md); the Orchestrator does not
-resolve them on its own authority.
+A handoff does not count as compliant unless it passes minimal, path-only
+context. You may add a fact beyond a path only when the receiving role's
+checklist cannot be completed without it, and only if you record what was
+added and why. Never brief the adversary with the analyst's interpretation.
+Surface conflicts rather than adjudicating them silently — escalate unresolved
+role conflicts to the user as a scientific decision (per the Operating Rule in
+SKILL.md); the Orchestrator does not resolve them on its own authority.
 
 ## Gates
 
-Human gates are for expensive or irreversible actions: confirmation split,
-first real-data compute, and long compute. Hypothesis exploration can be cheap
-and reversible, but it must remain labeled correctly.
+Human gates are for expensive or irreversible actions: shared-understanding
+confirmation, first real-data compute, and long compute (see the Operating
+Rule in SKILL.md and
+[common-understanding-gate.md](common-understanding-gate.md)). Confirmation
+is neither expensive nor irreversible on its own, but it gates everything
+expensive and irreversible that follows it, so it is a human gate in its own
+right, not an optional courtesy. Hypothesis exploration can be cheap and
+reversible, but it must remain labeled correctly.

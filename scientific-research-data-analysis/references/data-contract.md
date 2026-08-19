@@ -31,6 +31,9 @@ Stop and resolve before analysis when:
 
 ## Data Audit Output
 
-Write a short audit artifact with PASS/FAIL per contract item. Do not include
+Write a short audit artifact with PASS/FAIL per contract item, as
+`input_audit.md` (and `input_audit.json` for the machine-readable form) per
+the canonical filename table in
+[analysis-artifact-contract.md](analysis-artifact-contract.md). Do not include
 new scientific results or exploratory plots beyond inventories, row counts,
 schema summaries, and support counts.
