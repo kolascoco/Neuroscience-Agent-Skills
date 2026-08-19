@@ -24,14 +24,16 @@ Classify the request before acting.
   every degree of freedom it filled, the rationale for each, and what it left
   open (see
   [references/common-understanding-gate.md](references/common-understanding-gate.md)).
-  The user approves, edits, or rejects the proposal in one pass. Do not
-  inspect outcomes or write analysis code until `plan.md` and `config.json`
-  exist and the user explicitly confirms them.
-- **Two categories still block regardless of the proposal:** the scientific
-  target — hypothesis, estimand, and null model, confirmed before any test
-  runs — and expensive or irreversible compute — first real-data run,
-  compute over 30 minutes, or a confirmatory one-shot run, presented with
-  analysis id, dataset, operation, and time estimate.
+  The user approves, edits, or rejects the proposal in one pass. Do not write
+  analysis code or inspect outcomes until the plan/config/data contract are
+  frozen and the user explicitly confirms them.
+- **Two categories still block; the agent stops and waits for confirmation
+  before proceeding:**
+  - **The scientific target.** Hypothesis, estimand, and null model are
+    confirmed before any test runs.
+  - **Expensive or irreversible compute.** First real-data run, compute over
+    30 minutes, or a confirmatory one-shot run, presented with analysis id,
+    dataset, operation, and time estimate.
 
 Facts are discovered from files; decisions are asked of the user.
 A default may be filled, never silently. Every filled degree of freedom

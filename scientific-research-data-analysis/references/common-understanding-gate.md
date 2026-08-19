@@ -1,9 +1,10 @@
 # Common Understanding Gate
 
 Use this gate before result-producing scientific work. The Orchestrator
-conducts this interview; attribute estimand/hypothesis reasoning to Theorist
-judgment and null/multiplicity/design reasoning to Statistician judgment (see
-[soul-roles.md](soul-roles.md)), even though you answer as the same agent.
+drafts and defends the proposal; attribute estimand/hypothesis reasoning to
+Theorist judgment and null/multiplicity/design reasoning to Statistician
+judgment (see [soul-roles.md](soul-roles.md)), even though you answer as the
+same agent.
 
 ## Rule
 
@@ -35,8 +36,8 @@ following resolves it:
      that fact waits, draft the rest of the proposal now.
    - **Decisions** (anything requiring scientific judgment): these are not
      facts, and branch 1 does not resolve them — test branches 2 and 3
-     instead, recommending an answer rather than assuming a default,
-     especially when high risk.
+     instead, recommending an answer rather than silently assuming a
+     default, especially when high risk.
 2. **A decision already confirmed in this session.** The agent derives the
    consequence and states the derivation rather than asking again.
 3. **A defensible default.** The agent states it as a named assumption the
@@ -76,9 +77,12 @@ an analysis in this skill's scope, including `anthropic-skills:grilling`.
 
 ## Compact Ledger Mode
 
-For read-only planning or simple low-risk tasks, skip the round structure: a
-single compact ledger may group related decisions. Label anything unresolved
-and do not proceed to outcomes.
+For read-only discussion, brainstorming, or plan sketch — the Operating
+Rule's first branch, and only that branch — a compact ledger may group
+related decisions into a single presentation in place of the full proposal
+above. This changes only how decisions are grouped for presentation; it
+never removes the explicit-confirmation requirement stated in `## Rule`, and
+it does not extend to result-producing work. Label anything unresolved.
 
 ## Reopening Choices
 
