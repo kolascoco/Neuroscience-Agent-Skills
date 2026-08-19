@@ -155,13 +155,14 @@ a check the generating procedure did not optimize.
 
 ### 6.2 When the gate fires
 
-A tool passes validation the first time the project depends on it for a result,
-and again whenever any of these change: tool version, parameters, or input data
-regime. The PASS record is reused for the project's lifetime otherwise.
+A stage passes validation the first time the project depends on it for a
+result, and again whenever any of these change: tool version, parameters, or
+input data regime. The PASS record is reused for the project's lifetime
+otherwise, subject to the cascade rule in 6.3.2.
 
 ### 6.3 PASS conditions
 
-A tool is validated only when all hold:
+A stage is validated only when all hold:
 
 1. It ran on **real project data**, not a toy or synthetic example.
 2. It ran at the **same version and parameters** used in production.
@@ -170,18 +171,63 @@ A tool is validated only when all hold:
    accepted the output and produced its own.
 5. The output is **not degenerate** (see 6.5).
 
-A tool that exits zero without satisfying all five is not validated. Process
+A stage that exits zero without satisfying all five is not validated. Process
 exit status is not evidence of scientific validity.
+
+#### 6.3.1 PASS is a property of the chain, not of a tool
+
+Conditions 1 and 4 point in opposite directions along the pipeline, so no stage
+can be validated in isolation. Condition 1 requires that the stage saw real
+project data — for any stage after the first, that means the real output of its
+validated predecessor, never a synthetic stand-in. Condition 4 requires that
+the stage's successor consumed its output. Every stage therefore depends on
+both of its neighbours, and PASS attaches to a **position in a chain**, not to
+a tool in the abstract. The same tool at two positions holds two records.
+
+Consequences:
+
+- **Validation runs in pipeline order.** A stage cannot be validated before its
+  predecessor, because its condition-1 input does not exist yet.
+- **A stage reaches PASS only after its successor has run once on its output.**
+  Until then it is PENDING, not PASS.
+- **The terminal stage's condition 4** is satisfied by the reported artifact —
+  the figure, table, or statistic — being produced from its output.
+- **The chain has a PASS only when every stage holds a current PASS** and one
+  end-to-end run on real project data has completed.
+
+#### 6.3.2 Cascade invalidation
+
+A change at any stage clears that stage's PASS **and the PASS of every stage
+downstream of it**, because those records were earned against output that no
+longer exists. Changing the first stage's parameters invalidates the whole
+chain.
+
+Where a stage's consumer changes how it consumes, the producer's condition 4 is
+re-tested even when the producer itself did not change.
+
+**Mechanical check.** A stage whose `validated_at` predates the `validated_at`
+of any upstream stage is stale. This requires no judgment and is enforced by
+`scripts/validate_analysis_config.py` (Change 5).
 
 ### 6.4 Instrument record
 
-Recorded in `config.json` under an `instruments` array, one entry per tool:
+Recorded in `config.json` under an `instruments` array, one entry per **stage**
+in pipeline order:
 
 ```
-{ "name", "version", "install_source", "parameters",
-  "input_path", "input_sha256", "runtime_s", "output_shape",
+{ "stage", "position", "consumes", "name", "version", "install_source",
+  "parameters", "input_ref", "runtime_s", "output_shape",
   "validated_at", "status" }
 ```
+
+- `position` is the stage's index in the chain; `consumes` names the upstream
+  stage it takes input from (`null` for the first). Together these make the
+  chain explicit so the cascade in 6.3.2 is computable rather than remembered.
+- `status` is one of `PASS`, `PENDING`, `FAIL`, `STALE`.
+- `input_ref` identifies the input without requiring a rehash of large raw
+  data: for the first stage it is the data-contract entry (which already
+  carries a SHA-256 per `data-contract.md`); for later stages it is the
+  upstream stage id plus that stage's `validated_at`.
 
 This block is validated by `scripts/validate_analysis_config.py` (Change 5).
 
@@ -358,11 +404,24 @@ An idea is never silently deleted.
 ## 9. Change 5 — `scripts/validate_analysis_config.py`
 
 - Validate the `instruments` array: required keys present, `validated_at`
-  parseable, `status` in an allowed enum.
+  parseable, `status` in `{PASS, PENDING, FAIL, STALE}`.
 - Fail when a tool referenced in `code/` has no entry in the instrument record.
+- **Chain checks** (6.3.1, 6.3.2), all mechanical:
+  - `position` values form a contiguous ordering with no gaps or duplicates;
+  - every `consumes` names an existing stage, and only the first stage has
+    `consumes: null`;
+  - the graph is acyclic;
+  - **staleness** — any stage whose `validated_at` predates the `validated_at`
+    of any upstream stage is reported STALE, along with every stage downstream
+    of it;
+  - no stage carries `PASS` while any upstream stage carries `PENDING`, `FAIL`,
+    or `STALE`.
+- Report the chain's overall state: PASS only when every stage is PASS.
 - Keep the script's existing checks unchanged.
 
-The script remains a helper, not a substitute for scientific approval.
+The script remains a helper, not a substitute for scientific approval. It
+checks the chain's arithmetic; it cannot check that a stage's output is
+scientifically correct.
 
 ## 10. Change 6 — Style pass
 
@@ -397,6 +456,10 @@ holding the two new files to the same standard.
 5. `validate_analysis_config.py` accepts a config with a well-formed
    `instruments` block and rejects one where a code-referenced tool is missing
    from it.
+5a. Chain semantics hold: PASS is defined per stage-position rather than per
+   tool; a stage is PENDING until its successor consumes its output; a change
+   at any stage cascades STALE to every downstream stage; and the script
+   detects staleness from `validated_at` ordering alone.
 6. The project ideas list is specified as one required file at the project
    root, with its write triggers (results discussion, analysis, data audit,
    theory update) and read triggers (stall, method drop, theory update) named,
