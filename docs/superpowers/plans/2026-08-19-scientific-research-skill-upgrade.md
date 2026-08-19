@@ -1461,6 +1461,42 @@ grep -q 'no record' references/adversarial-review.md && echo "coverage OK"
 
 Expected: `coverage OK`.
 
+- [ ] **Step 1d: Document the rules the validator actually enforces**
+
+Task 6's fix round added two rules to `validate_analysis_config.py` that
+`references/instrument-validation.md` never states, so an operator hand-writing
+a `gate_status.json` gets rejected by rules the shipped documentation does not
+mention. Fix the reference file:
+
+1. Its `validated_at` description currently reads as a plain timestamp. State
+   that it is ISO-8601 **carrying a UTC offset**, that a naive timestamp is
+   rejected because it cannot order a cascade across machines, and that a date
+   without a time is rejected.
+2. Its `consumes` description currently says only "the upstream stage it takes
+   input from". State that the chain is linear: each stage after the first
+   consumes the stage at `position - 1`.
+3. The file says "Exactly these seven keys" and "Exactly these six keys", but
+   the validator checks only that the required keys are present and accepts
+   extra ones. Change both to state the keys are required rather than
+   exhaustive.
+
+- [ ] **Step 1e: Accept the `Z` timestamp spelling**
+
+`datetime.fromisoformat` rejects `2026-08-19T10:00:00Z` on Python 3.8-3.10 and
+accepts it on 3.11+. Since Task 6 made offsets mandatory, the most common UTC
+spelling now fails on older interpreters. In `parse_time` in
+`scripts/validate_analysis_config.py`, normalize a single trailing `Z` to
+`+00:00` before parsing, so the same input behaves identically on every
+supported version. Add a test asserting a `Z`-suffixed `validated_at` is
+accepted, and run the full suite.
+
+```bash
+cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis
+python3 -m unittest discover -s scripts -p 'test_*.py' 2>&1 | tail -3
+```
+
+Expected: `OK`, with one more test than before.
+
 - [ ] **Step 2: Verify every acceptance criterion from spec §11**
 
 ```bash
