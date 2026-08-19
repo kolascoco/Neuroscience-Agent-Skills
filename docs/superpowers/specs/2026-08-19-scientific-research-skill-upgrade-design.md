@@ -217,6 +217,10 @@ a tool in the abstract. The same tool at two positions holds two records.
 
 Consequences:
 
+- **The chain is linear.** Each stage after the first consumes the stage at
+  `position - 1`. Two stages consuming one predecessor would make "the terminal
+  stage" ambiguous and would let a fork escape the staleness rule, since each
+  branch is compared only against the shared parent.
 - **Validation runs in pipeline order.** A stage cannot be validated before its
   predecessor, because its condition-1 input does not exist yet.
 - **A stage reaches PASS only after its successor has run once on its output.**
@@ -274,6 +278,10 @@ not a frozen decision.
 ```
 
 - `status` is one of `PASS`, `PENDING`, `FAIL`, `STALE`.
+- `validated_at` is an ISO-8601 timestamp **carrying a UTC offset**. A naive
+  timestamp is rejected: it cannot order a cascade across machines, and mixing
+  naive and aware values raises at comparison time rather than reporting a
+  diagnosis. A date without a time is likewise rejected.
 - `input_ref` identifies the input without requiring a rehash of large raw
   data: for the first stage it is the data-contract entry (which already
   carries a SHA-256 per `data-contract.md`); for later stages it is the
@@ -442,7 +450,9 @@ contract, so the contract adopts observed reality:
 
 ### 8.1 Project ideas list — `ideas.md`
 
-One file per **project**, at the project root, above `analyses/`. Required, not
+One file per **project**, at the project root, above `analyses/` — derived from
+the analyses root rather than from the working directory, so it lands in the
+project regardless of where the scaffold is invoked from. Required, not
 optional. A per-analysis ideas file is explicitly rejected: fragmenting the
 list across analysis folders destroys the accumulation that gives it value.
 
