@@ -499,7 +499,113 @@ holding the two new files to the same standard.
   over `SKILL.md` and `references/` returns only occurrences that are gates or
   bounded permissions in context.
 
-## 11. Acceptance criteria
+## 11. Field-use findings and resulting changes
+
+A real project using this skill was surveyed on 2026-08-19: 52 analysis folders
+(`F001`-`F048`) plus an earlier generation under
+`TW_theta_coupling_reproduction/`. The survey found the plan-and-freeze half of
+the workflow working and the review-and-report half decaying. The four changes
+below come from that evidence; each cites what was observed.
+
+### 11.1 Canonical artifact filenames
+
+**Observed.** Fourteen distinct filenames carry statistician-review output
+(`statistician_review.md`, `statistician_design_review.md`,
+`statistician_result_review.md`, `statistician_final_review.md`,
+`statistical_review.md`, and more), including two spellings of one artifact:
+`post_result_statistician_review.md` and `postresult_statistician_review.md`.
+Roughly nineteen filenames carry controller-audit output. Two filenames carry
+the freeze record: `freeze_manifest.json` and `freeze.json`.
+
+**Consequence.** "Did the adversarial review run on F031?" cannot be answered
+without opening the folder and reading. A gate whose output has no canonical
+name is not mechanically checkable.
+
+**Change.** `analysis-artifact-contract.md` gains a fixed filename table. Each
+name is the most frequent observed spelling, so adopting it costs the least
+renaming:
+
+| Artifact | Canonical filename | Observed |
+|---|---|---|
+| Data-contract audit (Scout) | `input_audit.md` / `.json` | 22 / 15 |
+| Statistician pre-analysis review | `statistician_review.md` | 29 |
+| Statistician post-result review | `statistician_post_result_review.md` | 3 + 3 (two spellings) |
+| Adversarial review (Adversary) | `adversarial_review.md` | 13 |
+| Freeze record | `freeze_manifest.json` | 13 (vs `freeze.json` 6) |
+| Gate outcomes + instrument status | `gate_status.json` | 17 |
+| Result hashes | `result_manifest.json` | 14 |
+| Final narrative | `final_report.md` | 7 (vs `summary.md` 3) |
+| Theory-update entry | `lab_journal_entry.md` | 15 |
+
+A review that ran under a different filename did not run, because it cannot be
+found. Where one analysis needs several instances of an artifact (per stage,
+per amendment), the canonical stem takes a suffix:
+`adversarial_review_<stage>.md`, never a new stem.
+
+### 11.2 Analysis families and configuration counts
+
+**Observed.** `F007` through `F014` are nine analyses of one question, varying
+exclusion threshold (6, 10, 15), sample size (n13, n16, n19, n25, n31), and
+tmax (2000, 5000). `F007`'s plan declares `exploratory`, `selection-informed`,
+and a multiplicity claim. `F010`, `F013`, and `F014` declare none of them. No
+analysis in the project states how many configurations were tried.
+
+**Consequence.** A garden of forking paths recorded in the filesystem, with the
+labels that would flag it dropped exactly as the family grew.
+
+**Change.** `config.json` gains a `family` block:
+
+```
+{ "family_id", "parent_analysis", "varies" }
+```
+
+- An analysis that changes a parameter of an earlier analysis addressing the
+  same question sets `parent_analysis` to that analysis id and shares its
+  `family_id`. `varies` names the parameters changed.
+- Every family member's final report states the family size at write time:
+  configuration k of n tried.
+- `interpretation-rules.md`: a member of a family larger than one is not
+  labeled confirmatory unless the whole family was frozen before outcome
+  access. Absent that, the family is selection-informed, and the count is
+  reported with the result.
+
+### 11.3 Unique analysis ids
+
+**Observed.** `F014` and `F030` each name two different directories. Ids are
+assigned by hand and collide.
+
+**Change.** `init_analysis.py` exits non-zero when the target directory already
+exists, and when any sibling directory shares the new id's ordinal prefix
+followed by `_`. An id is not reused; a variant takes its own id and records
+`parent_analysis` per 11.2.
+
+### 11.4 The theory document and the lab journal are different artifacts
+
+**Observed.** `lab_journal/theta_coupled_tw_progress.md` is 403 KB and 5,746
+lines, current to 2026-08-18. Every file in `theory/` was last modified
+2026-07-23. Roughly thirty analyses ran after the theory stopped being updated,
+and nothing detected it.
+
+**Consequence.** Step 9 silently stopped executing a third of the way through
+the project. Everything learned went into an append-only log too large to read
+under pressure, while the short document that could guide a decision went a
+month stale.
+
+**Change.** `theory-update.md` states the distinction as a rule:
+
+- The **lab journal** is an append-only record. It grows without bound. It is
+  written to on every update and is not a decision aid.
+- The **theory document** is current-state and bounded. It is **re-derived**,
+  not appended to: superseded claims are removed or marked, not accumulated.
+- Appending a journal entry does not satisfy step 9. A theory update that
+  leaves the theory document unchanged states why in the journal entry, naming
+  the artifact that failed to move it.
+
+A staleness detector — flagging when the theory document is older than N
+completed analyses — is deferred to separate work; it needs a script and a
+threshold the project owner chooses.
+
+## 12. Acceptance criteria
 
 1. Two new reference files exist and are linked from `SKILL.md`.
 2. The Operating Rule describes propose-then-verify, retains the two blocking
@@ -528,3 +634,14 @@ holding the two new files to the same standard.
    theory update) and read triggers (stall, method drop, theory update) named,
    and `theory-update.md` points its stubs at it.
 7. Every cross-reference link between files resolves.
+8. `analysis-artifact-contract.md` carries the canonical filename table (11.1),
+   and the names in it match the table's spellings exactly.
+9. `config.json` accepts a `family` block with `family_id`, `parent_analysis`,
+   and `varies`; `interpretation-rules.md` states that a member of a family
+   larger than one is not labeled confirmatory unless the whole family was
+   frozen before outcome access.
+10. `init_analysis.py` exits non-zero on a duplicate analysis id and on an id
+   whose ordinal prefix is already taken by a sibling directory.
+11. `theory-update.md` states that the lab journal is append-only and the
+   theory document is re-derived, and that a journal entry alone does not
+   satisfy step 9.
