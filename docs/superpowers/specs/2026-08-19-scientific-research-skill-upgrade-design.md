@@ -492,7 +492,12 @@ directory, overridable with `--gate-status PATH`.
 - **Agreement check:** the two files name the same set of stages. Report any
   declared stage missing an observed entry, and any observed entry naming no
   declared stage.
-- Fail when a tool referenced in `code/` has no entry in the instrument record.
+- **Not mechanically checked:** whether every tool `code/` actually uses has an
+  instrument record. An import is not decidable as an instrument — `numpy` is
+  not one, `mne` may be — so a static check produces false positives until it
+  is disabled, which is worse than no check. Coverage of the record is a
+  judgment call and lives on the Adversary's checklist in
+  `adversarial-review.md`, not in this script.
 - **Legacy configs:** a `config.json` without `instruments` fails with a
   message naming the fix — add `"instruments": []` and create a
   `gate_status.json` containing `{"instrument_status": []}`.

@@ -1438,6 +1438,29 @@ cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-re
 grep -rn 'summary\.md' SKILL.md references/ scripts/ && echo "FAIL: summary.md survives" || echo "rename complete"
 ```
 
+- [ ] **Step 1c: Add instrument-record coverage to the adversarial checklist**
+
+Spec section 9 originally asked `validate_analysis_config.py` to fail when a
+tool used in `code/` had no instrument record. That check was removed from the
+spec during Task 6: an import is not decidable as an instrument — `numpy` is
+not one, `mne` may be — so a static check produces false positives until
+someone disables it. Coverage is a judgment call, and the spec now assigns it
+to the Adversary.
+
+`references/adversarial-review.md` checklist item 9 currently covers only the
+record's internal consistency (every stage PASS, none STALE, `validated_at`
+ordering). Extend it to cover coverage as well: every tool the analysis
+actually depends on for a result has a record, and a tool used in `code/` with
+no record is a finding. Keep the existing link to
+`[instrument-validation.md](instrument-validation.md)`.
+
+```bash
+cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis
+grep -q 'no record' references/adversarial-review.md && echo "coverage OK"
+```
+
+Expected: `coverage OK`.
+
 - [ ] **Step 2: Verify every acceptance criterion from spec §11**
 
 ```bash
