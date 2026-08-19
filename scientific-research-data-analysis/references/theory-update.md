@@ -12,9 +12,12 @@ project maintains a living theory or lab journal.
 5. Contradictions become open tensions rather than quiet resolutions.
 6. Do not create rescue chains. A follow-up that keeps a failed idea alive must
    state the specific flaw or new estimand and become a new analysis.
-7. Propose at most three next stubs per update. Stubs are inputs to a future
-   Theorist pass (SKILL.md step 2), not self-authorizing — they still need
-   shared understanding before compute.
+7. Propose at most three next stubs per update. Stubs are recorded in the
+   project `ideas.md` (see
+   [analysis-artifact-contract.md](analysis-artifact-contract.md)) so the two
+   artifacts stay consistent. Stubs are inputs to a future Theorist pass
+   (SKILL.md step 2), not self-authorizing — they still need shared
+   understanding before compute.
 
 ## Changelog Entry
 
@@ -24,4 +27,16 @@ Record:
 - what changed in belief;
 - what is now constrained or unsupported;
 - residual risks;
-- proposed next steps.
+- proposed next steps;
+- `ideas.md`: which ideas this update added or closed.
+
+## Journal And Theory Are Different Artifacts
+
+- The **lab journal** is an append-only record. It grows without bound. It
+  is written on every update and is not a decision aid.
+- The **theory document** is current-state and bounded. It is
+  **re-derived**, not appended to: superseded claims are removed or marked,
+  never accumulated.
+- Appending a journal entry does not satisfy step 9. A theory update that
+  leaves the theory document unchanged states why in the journal entry,
+  naming the artifact that failed to move it.
