@@ -1,9 +1,13 @@
 # Scientific Research Data Analysis Skill — Upgrade Design
 
 **Date:** 2026-08-19
-**Target:** `scientific-research-data-analysis/`
-**Source of findings:** Anthropic, `claude-protein-binder-design` prompt dataset
-(Hugging Face), plus `scientific-research-data-analysis/anthropic_scientific_exploration_prompt_analysis.md`
+**Target:** this skill.
+**Sources of findings:**
+1. Anthropic, `claude-protein-binder-design` prompt dataset, `prompts/prompts/`
+   — <https://huggingface.co/datasets/Anthropic/claude-protein-binder-design>
+2. A survey of a 52-analysis EEG project that used this skill in practice.
+   Section 11 records what that survey found; the counts there are measured
+   from the project tree, not estimated.
 
 ## 1. Context
 
