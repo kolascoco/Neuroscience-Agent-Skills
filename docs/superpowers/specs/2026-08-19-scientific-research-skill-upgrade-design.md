@@ -311,12 +311,46 @@ Standing rule, referenced from the Operating Rule. Applies at every step.
 
 ### `references/analysis-artifact-contract.md`
 - `config.json` gains the `instruments` block (6.4).
-- New optional file `ideas.md` in the analysis folder: candidate directions not
-  in the current plan, ranked, each with a one-line rationale and a rough cost.
-  Maintained continuously as ideas occur, consulted when the analysis stalls.
-  Rationale: creative output degrades under pressure, so idea generation is
-  decoupled in time from idea selection.
 - Result Summary gains the retrievability check (open every referenced file).
+- Cross-reference to the project ideas list (8.1). The per-analysis folder does
+  not carry its own ideas file.
+
+### 8.1 Project ideas list — `ideas.md`
+
+One file per **project**, at the project root, above `analyses/`. Required, not
+optional. A per-analysis ideas file is explicitly rejected: fragmenting the
+list across analysis folders destroys the accumulation that gives it value.
+
+**Purpose.** Creative output degrades under exactly the conditions that demand
+it — after a failure, against a deadline, late in a session. The file decouples
+idea generation from idea selection in time: ideas are captured while thinking
+is unhurried, and chosen from when the work stalls.
+
+**Contents.** One line per idea, ranked by expected value, each carrying a
+one-line rationale and a rough cost. An idea names what it would test or
+change, not merely a topic.
+
+**When it is written.** Continuously, whenever an idea surfaces and is not
+pursued. Specifically:
+
+- while discussing results — any alternative reading, follow-up, or "we could
+  also look at" that is not being pursued now is captured rather than lost;
+- during analysis — a method, control, or comparison considered and set aside;
+- at data audit — a question the data raised that is out of the current scope;
+- at theory update — the next stubs proposed by `theory-update.md` are entered
+  here, and the two artifacts stay consistent.
+
+**When it is read.** When an analysis stalls, when a method is dropped via the
+fallback ladder (6.8), and at every theory update.
+
+**Status marking.** Each entry carries one of: open, in progress, done
+(pointing at the analysis id that took it up), or dropped with a reason.
+An idea is never silently deleted.
+
+### `references/theory-update.md`
+- The "at most three next stubs" rule gains its destination: stubs are recorded
+  in the project `ideas.md` (8.1). Stubs remain inputs to a future Theorist
+  pass, not self-authorizing.
 
 ### `references/statistician-review.md`
 - Post-Result Review gains degenerate-output detection (6.5).
@@ -363,4 +397,8 @@ holding the two new files to the same standard.
 5. `validate_analysis_config.py` accepts a config with a well-formed
    `instruments` block and rejects one where a code-referenced tool is missing
    from it.
-6. Every cross-reference link between files resolves.
+6. The project ideas list is specified as one required file at the project
+   root, with its write triggers (results discussion, analysis, data audit,
+   theory update) and read triggers (stall, method drop, theory update) named,
+   and `theory-update.md` points its stubs at it.
+7. Every cross-reference link between files resolves.
