@@ -552,9 +552,23 @@ holding the two new files to the same standard.
 
 A real project using this skill was surveyed on 2026-08-19: 52 analysis folders
 (`F001`-`F048`) plus an earlier generation under
-`TW_theta_coupling_reproduction/`. The survey found the plan-and-freeze half of
-the workflow working and the review-and-report half decaying. The four changes
-below come from that evidence; each cites what was observed.
+`TW_theta_coupling_reproduction/`. The four changes below come from that
+evidence; each cites what was observed.
+
+**Correction to an earlier reading of this survey.** The first pass treated the
+low presence of late-workflow artifacts — adversarial reviews, final reports,
+post-result statistician reviews — as evidence that the review-and-report half
+of the workflow was decaying. The project owner corrected this: that project had
+not yet reached results discussion. Those analyses are in flight, not skipped, so
+the counts measure progress rather than compliance and are not evidence of decay.
+No conclusion in this section rests on them.
+
+What does hold is stage-independent, because it is measured either among
+artifacts that were produced or in files written at freeze time: the naming
+divergence in 11.1, the id collisions in 11.3, and the family-declaration decay
+in 11.2, which lives in `plan.md` files. The theory-vs-journal asymmetry in 11.4
+is retained as a distinction worth stating, but it is no longer offered as
+evidence that step 9 failed in that project.
 
 ### 11.1 Canonical artifact filenames
 
@@ -568,7 +582,8 @@ the freeze record: `freeze_manifest.json` and `freeze.json`.
 
 **Consequence.** "Did the adversarial review run on F031?" cannot be answered
 without opening the folder and reading. A gate whose output has no canonical
-name is not mechanically checkable.
+name is not mechanically checkable. This count is stage-independent: it is
+measured among the analyses that did produce the artifact, not across all 52.
 
 **Change.** `analysis-artifact-contract.md` gains a fixed filename table. Each
 name is the most frequent observed spelling, so adopting it costs the least
@@ -632,13 +647,16 @@ followed by `_`. An id is not reused; a variant takes its own id and records
 
 **Observed.** `lab_journal/theta_coupled_tw_progress.md` is 403 KB and 5,746
 lines, current to 2026-08-18. Every file in `theory/` was last modified
-2026-07-23. Roughly thirty analyses ran after the theory stopped being updated,
-and nothing detected it.
+2026-07-23.
 
-**Consequence.** Step 9 silently stopped executing a third of the way through
-the project. Everything learned went into an append-only log too large to read
-under pressure, while the short document that could guide a decision went a
-month stale.
+**Reading, with its limit stated.** The project had not yet reached results
+discussion, so theory updates were not necessarily due — this is not evidence
+that step 9 failed there. What it does show is a shape worth ruling on in
+advance: an append-only journal accumulates without bound and stays current
+because appending is cheap, while a current-state document only moves when
+someone re-derives it. A journal at 5,746 lines cannot be read under pressure,
+so the two artifacts serve different purposes and the skill states which is
+which rather than treating them as one obligation.
 
 **Change.** `theory-update.md` states the distinction as a rule:
 
