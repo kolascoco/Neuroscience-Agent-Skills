@@ -38,7 +38,9 @@ A review missing either property does not count as adversarial review.
 7. Confounds and alternatives: list plausible non-target explanations.
 8. Fragility: name the single defensible change most likely to weaken result.
 9. Instrument record: every stage holds a PASS, no stage is STALE, and the
-   chain's `validated_at` ordering is consistent — see
+   chain's `validated_at` ordering is consistent. Coverage: every tool the
+   analysis actually depends on for a result has a record; a tool used in
+   `code/` with no record is a finding — see
    [instrument-validation.md](instrument-validation.md).
 
 ## Verdicts

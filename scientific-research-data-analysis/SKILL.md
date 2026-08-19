@@ -65,7 +65,7 @@ than advisory.
    ambiguous identifiers, unclear units, trial/event misalignment, undocumented
    preprocessing, or unresolved missingness.
 4. **Freeze artifacts.** *Role: Analyst writes; Orchestrator confirms the
-   freeze.* Create or update a plan and config before outcome inspection. Use
+   freeze.* Create or update `plan.md` and config before outcome inspection. Use
    [references/analysis-artifact-contract.md](references/analysis-artifact-contract.md).
 5. **Validate design.** *Role: Statistician.* For statistical plans or
    inference, read [references/statistician-review.md](references/statistician-review.md).

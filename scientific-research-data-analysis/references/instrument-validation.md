@@ -87,14 +87,17 @@ are stored separately, and both must agree on the same set of stages.
 
 **Declared — frozen `config.json`, key `instruments`.** One entry per stage,
 in pipeline order. Frozen with the rest of the config; a change here is a
-dated, labeled plan amendment like any other frozen-decision change. Exactly
-these seven keys per entry:
+dated, labeled plan amendment like any other frozen-decision change. These
+seven keys are required per entry; the validator rejects an entry missing any
+of them but does not reject extra keys:
 
 - `stage` — the chain-position identifier and the join key to the observed
   record.
 - `position` — its index in the chain.
 - `consumes` — the upstream stage it takes input from (`null` for the first
-  stage).
+  stage). The chain is linear: every stage after the first must name the
+  stage at `position - 1` as its `consumes` value, not any earlier stage —
+  naming anything else is rejected as a cycle or a skip.
 - `name`, `version`, `install_source`, `parameters` — identify the tool. The
   same tool at two positions produces two entries with different `stage`
   values.
@@ -104,11 +107,18 @@ cascade above is computable rather than remembered.
 
 **Observed — mutable `gate_status.json`, key `instrument_status`.** One entry
 per declared stage. Rewritten freely as work proceeds; it is a record of
-results, not a frozen decision. Exactly these six keys per entry:
+results, not a frozen decision. These six keys are required per entry; the
+validator rejects an entry missing any of them but does not reject extra
+keys:
 
 - `stage` — matches the declared `stage` it reports on.
 - `status` — one of `PASS`, `PENDING`, `FAIL`, `STALE`.
-- `validated_at` — timestamp of the run that produced this status.
+- `validated_at` — an ISO-8601 timestamp of the run that produced this
+  status, and it must carry a UTC offset (`+00:00`, `Z`, or another explicit
+  offset). A naive timestamp is rejected, because a cascade ordered across
+  machines with different local clocks cannot be trusted without an offset.
+  A date with no time component is also rejected, since it parses as a
+  naive midnight.
 - `runtime_s` — wall time of that run.
 - `output_shape` — the parsed shape/units/range check from PASS condition 3.
 - `input_ref` — identifies the input without requiring a rehash of large raw

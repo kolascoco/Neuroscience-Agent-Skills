@@ -85,11 +85,13 @@ dispatch independently just as for the Adversary.
 
 ## Handoff Rule
 
-Pass minimal path-only context whenever possible. Never brief the adversary with
-the analyst's interpretation. Surface conflicts rather than adjudicating them
-silently — escalate unresolved role conflicts to the user as a scientific
-decision (per the Operating Rule in SKILL.md); the Orchestrator does not
-resolve them on its own authority.
+A handoff does not count as compliant unless it passes minimal, path-only
+context. You may add a fact beyond a path only when the receiving role's
+checklist cannot be completed without it, and only if you record what was
+added and why. Never brief the adversary with the analyst's interpretation.
+Surface conflicts rather than adjudicating them silently — escalate unresolved
+role conflicts to the user as a scientific decision (per the Operating Rule in
+SKILL.md); the Orchestrator does not resolve them on its own authority.
 
 ## Gates
 

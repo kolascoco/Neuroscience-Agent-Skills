@@ -411,6 +411,15 @@ class TestValidatedAtDiscipline(unittest.TestCase):
         self.assertIn("validated_at", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 
+    def test_z_suffixed_validated_at_accepted(self):
+        # "Z" is the most common UTC spelling, but datetime.fromisoformat
+        # only accepts it directly on Python 3.11+. It must be normalized
+        # so this input is accepted on every supported interpreter.
+        accepted = [observed("filter", "2026-08-19T10:00:00Z")]
+        result = run(config_with([DECLARED_CHAIN[0]]), accepted)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
 
 class TestAdversarialInputs(unittest.TestCase):
     """I3: malformed/adversarial input produces a named diagnosis, not a

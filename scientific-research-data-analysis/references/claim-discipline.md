@@ -46,7 +46,7 @@ step at which the two diverged.
 ## One Source Per Number
 
 Every reported figure comes from a single saved query re-run at write time.
-Numbers are not hand-carried between `summary.md`, a figure caption, and a
+Numbers are not hand-carried between `final_report.md`, a figure caption, and a
 manuscript: copying a value from one artifact into another breaks the
 single-source rule even when the copied value is currently correct.
 

@@ -53,8 +53,14 @@ def sha256(path: Path) -> str:
 
 
 def parse_time(value: str, label: str) -> datetime:
+    # datetime.fromisoformat only accepts a trailing "Z" on Python 3.11+;
+    # normalize it to an explicit offset so the same input parses the same
+    # way on every supported interpreter version.
+    normalized = value
+    if isinstance(value, str) and value.endswith("Z"):
+        normalized = value[:-1] + "+00:00"
     try:
-        parsed = datetime.fromisoformat(value)
+        parsed = datetime.fromisoformat(normalized)
     except (TypeError, ValueError):
         raise SystemExit(f"{label} validated_at is not ISO-8601: {value!r}")
     if parsed.tzinfo is None:
