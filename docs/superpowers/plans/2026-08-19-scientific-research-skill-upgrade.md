@@ -217,6 +217,12 @@ These exact strings must appear verbatim:
 - `report measured and the gap`
 - `the number of configurations tried`
 
+In the "Lead With The Unfavorable Reading" section, add one sentence tying the
+configuration count to analysis families: where the analysis belongs to a
+family declared in `config.json`, the count is the family size at write time,
+not a recollection. Do not link `interpretation-rules.md` for this — a later
+task adds the family rule there and the cross-link belongs in that direction.
+
 In the identifiers section, name this repository's own lookup skills as the
 means of compliance: `paper-lookup`, `zotero-research-skill`, and
 `neuroscience-database-lookup`. Do not link them as files — they are sibling
@@ -474,6 +480,52 @@ which the contract requires. The contract adopts observed reality. In
 Do not touch `soul-roles.md` here — Task 5 owns that file and renames its
 `summary.md` mention.
 
+- [ ] **Step 2c: Add the canonical filename table**
+
+Read spec 11.1. A survey of a real 52-analysis project found fourteen distinct
+filenames carrying statistician-review output and about nineteen carrying
+controller-audit output, including two spellings of the same artifact. A gate
+whose output has no canonical name cannot be checked mechanically.
+
+Add a `## Canonical Filenames` section to
+`references/analysis-artifact-contract.md`, placed immediately after
+`## Required Files`. Reproduce the table from spec 11.1 with these exact
+filenames — each is the most frequent observed spelling, so adopting it costs
+the least renaming:
+
+| Artifact | Canonical filename |
+|---|---|
+| Data-contract audit (Scout) | `input_audit.md` / `input_audit.json` |
+| Statistician pre-analysis review | `statistician_review.md` |
+| Statistician post-result review | `statistician_post_result_review.md` |
+| Adversarial review (Adversary) | `adversarial_review.md` |
+| Freeze record | `freeze_manifest.json` |
+| Gate outcomes and instrument status | `gate_status.json` |
+| Result hashes | `result_manifest.json` |
+| Final narrative | `final_report.md` |
+| Theory-update entry | `lab_journal_entry.md` |
+
+State the two rules that make the table binding:
+
+- A review that ran under a different filename did not run, because it cannot
+  be found.
+- Where one analysis needs several instances of an artifact — per stage, per
+  amendment — the canonical stem takes a suffix
+  (`adversarial_review_<stage>.md`), never a new stem.
+
+- [ ] **Step 2d: Add the analysis-family block**
+
+Read spec 11.2. In `## Required Files`, extend the `config.json` description
+with the `family` block: `family_id`, `parent_analysis`, `varies`. State the
+rule: an analysis that changes a parameter of an earlier analysis addressing
+the same question sets `parent_analysis` to that analysis id, shares its
+`family_id`, and names the changed parameters in `varies`. State that every
+family member's `final_report.md` records the family size at write time —
+configuration k of n tried.
+
+The interpretation consequence is written by Task 5 into
+`interpretation-rules.md`; do not duplicate it here, cross-link it.
+
 - [ ] **Step 3: Point theory-update stubs at the ideas list**
 
 In `references/theory-update.md`, rule 7 currently reads "Propose at most three
@@ -484,6 +536,20 @@ pass, not self-authorizing.
 
 Add `ideas.md` to the `## Changelog Entry` list so each theory update records
 which ideas it added or closed.
+
+Then add a `## Journal And Theory Are Different Artifacts` section, from spec
+11.4. The evidence: in the surveyed project the lab journal reached 403 KB and
+5,746 lines and stayed current, while every file in `theory/` was frozen for a
+month as roughly thirty analyses ran. Step 9 stopped executing and nothing
+detected it. The section states:
+
+- The **lab journal** is an append-only record. It grows without bound. It is
+  written on every update and is not a decision aid.
+- The **theory document** is current-state and bounded. It is **re-derived**,
+  not appended to: superseded claims are removed or marked, never accumulated.
+- Appending a journal entry does not satisfy step 9. A theory update that
+  leaves the theory document unchanged states why in the journal entry, naming
+  the artifact that failed to move it.
 
 - [ ] **Step 4: Run the verification checks**
 
@@ -497,6 +563,14 @@ grep -q 'ideas.md' references/theory-update.md && echo "stub destination OK"
 grep -q 'gate_status.json' references/analysis-artifact-contract.md && echo "gate_status OK"
 grep -q 'final_report.md' references/analysis-artifact-contract.md && echo "report rename OK"
 grep -q 'summary\.md' references/analysis-artifact-contract.md && echo "FAIL: summary.md survives"
+grep -q '## Canonical Filenames' references/analysis-artifact-contract.md && echo "filename table OK"
+for f in input_audit.md statistician_review.md statistician_post_result_review.md adversarial_review.md freeze_manifest.json result_manifest.json lab_journal_entry.md; do
+  grep -q "$f" references/analysis-artifact-contract.md || echo "MISSING CANONICAL NAME: $f"
+done
+grep -q 'family_id' references/analysis-artifact-contract.md && echo "family block OK"
+grep -q 'parent_analysis' references/analysis-artifact-contract.md && echo "parent OK"
+grep -q 'append-only' references/theory-update.md && echo "journal split OK"
+grep -q 're-derived' references/theory-update.md && echo "theory rederive OK"
 grep -nE '\b[Ss]hould\b' references/analysis-artifact-contract.md references/theory-update.md
 ```
 
@@ -589,6 +663,21 @@ Two edits:
 2. In `## Labels`, add a cross-reference to the epistemic tiers in
    `[claim-discipline.md](claim-discipline.md)`, noting the distinction: the
    labels here classify an *analysis*, the tiers there classify a *statement*.
+3. Add an `## Analysis Families` section, from spec 11.2. The evidence: in the
+   surveyed project, nine analyses (`F007`-`F014`) addressed one question while
+   varying exclusion threshold, sample size, and time window; the first
+   declared `exploratory`, `selection-informed`, and a multiplicity claim, and
+   the later ones declared none of them. No analysis anywhere stated how many
+   configurations had been tried. The section states:
+   - A member of a family larger than one is not labeled **confirmatory**
+     unless the whole family was frozen before outcome access.
+   - Absent that freeze, the family is **selection-informed**, and the family
+     size at write time is reported alongside the result — configuration k of
+     n tried.
+   - The family is declared in `config.json`'s `family` block; cross-link
+     `[analysis-artifact-contract.md](analysis-artifact-contract.md)`.
+   Add a matching entry to `## Prohibited Moves`: do not report a family
+   member's result without its family size.
 
 - [ ] **Step 4: statistician-review.md**
 
@@ -613,6 +702,8 @@ grep -q '## Reviewer Composition' references/adversarial-review.md && echo "revi
 grep -q 'exact command or query' references/adversarial-review.md && echo "findings OK"
 grep -q '## Reporting Posture' references/interpretation-rules.md && echo "posture OK"
 grep -q 'claim-discipline.md' references/interpretation-rules.md && echo "tiers link OK"
+grep -q '## Analysis Families' references/interpretation-rules.md && echo "families OK"
+grep -q 'selection-informed' references/interpretation-rules.md && echo "selection OK"
 grep -q 'instrument-validation.md' references/statistician-review.md && echo "degenerate OK"
 grep -q 'final_report.md' references/soul-roles.md && echo "report rename OK"
 grep -q 'Orchestrator interviews' references/soul-roles.md && echo "FAIL: old wording survives"
@@ -1181,6 +1272,103 @@ and add this block immediately before the final `print(root)`:
             encoding="ascii",
         )
 ```
+
+- [ ] **Step 5b: Enforce unique analysis ids**
+
+Read spec 11.3. The surveyed project contains two directories named `F014_…`
+and two named `F030_…`; ids are hand-assigned and collide. In
+`init_analysis.py`, add this check immediately after `root` is computed and
+before any directory is created:
+
+```python
+    if root.exists():
+        raise SystemExit(f"analysis id already exists: {root}")
+    prefix = args.analysis_id.split("_")[0]
+    clashes = sorted(
+        sibling.name
+        for sibling in args.root.glob(f"{prefix}_*")
+        if sibling.is_dir()
+    )
+    if clashes:
+        raise SystemExit(
+            f"analysis id prefix {prefix!r} is already taken by: "
+            f"{', '.join(clashes)}; a variant takes its own id and records "
+            "parent_analysis in config.json"
+        )
+```
+
+Add `"family": {"family_id": None, "parent_analysis": None, "varies": []}` to
+the config template, immediately after `"instruments": []`.
+
+- [ ] **Step 5c: Validate the family block and test both new rules**
+
+In `validate_analysis_config.py`, add `"family"` to `REQUIRED_TOP_LEVEL` and
+add this check in `main()` immediately after the `validate_instruments` call:
+
+```python
+    family = config["family"]
+    if not isinstance(family, dict):
+        raise SystemExit("family must be an object")
+    missing = sorted({"family_id", "parent_analysis", "varies"} - set(family))
+    if missing:
+        raise SystemExit(f"family missing keys: {', '.join(missing)}")
+    if not isinstance(family["varies"], list):
+        raise SystemExit("family.varies must be a list")
+    if family["parent_analysis"] and not family["family_id"]:
+        raise SystemExit(
+            "family.parent_analysis is set without family_id; a variant shares "
+            "its parent's family_id"
+        )
+```
+
+Add `"family": {"family_id": None, "parent_analysis": None, "varies": []}` to
+the `config_with()` helper in the test file, then append this test class:
+
+```python
+class TestFamily(unittest.TestCase):
+    def test_missing_family_key_fails(self):
+        config = config_with([])
+        del config["family"]
+        result = run(config)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("family", result.stderr)
+
+    def test_parent_without_family_id_fails(self):
+        config = config_with([])
+        config["family"] = {
+            "family_id": None,
+            "parent_analysis": "F007",
+            "varies": ["threshold"],
+        }
+        result = run(config)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("family_id", result.stderr)
+
+    def test_wellformed_family_passes(self):
+        config = config_with([])
+        config["family"] = {
+            "family_id": "memory_performance",
+            "parent_analysis": "F007",
+            "varies": ["exclusion_threshold", "tmax"],
+        }
+        result = run(config)
+        self.assertEqual(result.returncode, 0, result.stderr)
+```
+
+Run `python3 -m unittest discover -s scripts -p 'test_*.py' -v`.
+Expected: PASS — 22 tests, `OK`.
+
+Then verify the id checks by hand:
+
+```bash
+cd "$(mktemp -d)"
+SKILL=/Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis
+python3 "$SKILL/scripts/init_analysis.py" F014_first
+python3 "$SKILL/scripts/init_analysis.py" F014_second 2>&1 | grep -q 'already taken' && echo "prefix clash rejected OK"
+python3 "$SKILL/scripts/init_analysis.py" F014_first 2>&1 | grep -qE 'already exists|already taken' && echo "duplicate rejected OK"
+```
+
+Expected: both `OK` lines.
 
 - [ ] **Step 6: Verify the scaffold end to end**
 
