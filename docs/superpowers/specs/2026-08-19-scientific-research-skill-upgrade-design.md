@@ -209,27 +209,52 @@ re-tested even when the producer itself did not change.
 of any upstream stage is stale. This requires no judgment and is enforced by
 `scripts/validate_analysis_config.py` (Change 5).
 
-### 6.4 Instrument record
+### 6.4 Instrument record — declared and observed
 
-Recorded in `config.json` under an `instruments` array, one entry per **stage**
-in pipeline order:
+The record splits across two files, because its two halves have different
+lifetimes. The **declared chain** is a frozen decision: which stages exist,
+in what order, each consuming which predecessor. The **observed state** changes
+throughout the work as stages move PENDING to PASS and cascades mark stages
+STALE. Writing mutable status into `config.json` would contradict the freeze
+rule that governs that file, so the two are stored separately.
+
+**Declared — `config.json`, key `instruments`.** One entry per stage, in
+pipeline order. Frozen with the rest of the config; a change here is a dated,
+labelled plan amendment like any other frozen-decision change.
 
 ```
-{ "stage", "position", "consumes", "name", "version", "install_source",
-  "parameters", "input_ref", "runtime_s", "output_shape",
-  "validated_at", "status" }
+{ "stage", "position", "consumes",
+  "name", "version", "install_source", "parameters" }
 ```
 
-- `position` is the stage's index in the chain; `consumes` names the upstream
-  stage it takes input from (`null` for the first). Together these make the
-  chain explicit so the cascade in 6.3.2 is computable rather than remembered.
+- `stage` is the chain-position identifier and the join key to the observed
+  record. `position` is its index; `consumes` names the upstream stage it takes
+  input from (`null` for the first). Together these make the chain explicit so
+  the cascade in 6.3.2 is computable rather than remembered.
+- `name`, `version`, `install_source`, `parameters` identify the tool. The same
+  tool at two positions produces two entries with different `stage` values.
+
+**Observed — `gate_status.json`, key `instrument_status`.** One entry per
+declared stage. Rewritten freely as work proceeds; it is a record of results,
+not a frozen decision.
+
+```
+{ "stage", "status", "validated_at", "runtime_s", "output_shape", "input_ref" }
+```
+
 - `status` is one of `PASS`, `PENDING`, `FAIL`, `STALE`.
 - `input_ref` identifies the input without requiring a rehash of large raw
   data: for the first stage it is the data-contract entry (which already
   carries a SHA-256 per `data-contract.md`); for later stages it is the
-  upstream stage id plus that stage's `validated_at`.
+  upstream stage name plus that stage's `validated_at`.
 
-This block is validated by `scripts/validate_analysis_config.py` (Change 5).
+`gate_status.json` carries `instrument_status` at minimum. Other top-level keys
+recording gate outcomes are permitted and are not validated by this skill.
+
+**Agreement.** The two files name the same set of stages. A declared stage with
+no observed entry, or an observed entry naming no declared stage, is an error.
+Both files are validated together by `scripts/validate_analysis_config.py`
+(Change 5).
 
 ### 6.5 Degenerate-output detectors
 
@@ -356,10 +381,30 @@ Standing rule, referenced from the Operating Rule. Applies at every step.
 - Cross-reference to the epistemic tiers in `claim-discipline.md`.
 
 ### `references/analysis-artifact-contract.md`
-- `config.json` gains the `instruments` block (6.4).
+- `config.json` gains the declared `instruments` block (6.4).
 - Result Summary gains the retrievability check (open every referenced file).
 - Cross-reference to the project ideas list (8.1). The per-analysis folder does
   not carry its own ideas file.
+- **Contract drift correction** (8.2).
+
+### 8.2 Aligning the contract with what agents produce
+
+A survey of a real analysis folder found the documented contract and actual
+agent output had diverged. `gate_status.json` and `final_report.md` appear
+nowhere in the skill yet are produced every run; `summary.md` is required by
+the contract yet absent from the folder; `audits/` is created by
+`init_analysis.py` and unused. A contract agents do not follow is worse than no
+contract, so the contract adopts observed reality:
+
+- **`gate_status.json` is added to Required Files.** It records gate outcomes
+  and carries `instrument_status` (6.4). Keys beyond `instrument_status` are
+  permitted and unvalidated.
+- **`summary.md` is renamed `final_report.md`** throughout
+  `analysis-artifact-contract.md` and `soul-roles.md`. The Result Summary
+  section's content requirements are unchanged; only the filename moves.
+- **`audits/` is dropped** from `init_analysis.py`. Adversarial review output
+  lands in `results/` alongside other artifacts.
+- `tests/` is retained: it is created by the scaffold and present in practice.
 
 ### 8.1 Project ideas list — `ideas.md`
 
@@ -403,9 +448,20 @@ An idea is never silently deleted.
 
 ## 9. Change 5 — `scripts/validate_analysis_config.py`
 
-- Validate the `instruments` array: required keys present, `validated_at`
-  parseable, `status` in `{PASS, PENDING, FAIL, STALE}`.
+The script takes `config.json` and reads `gate_status.json` from the same
+directory, overridable with `--gate-status PATH`.
+
+- Validate the declared `instruments` array in `config.json`: required keys
+  present, no duplicate `stage` names.
+- Validate `instrument_status` in `gate_status.json`: required keys present,
+  `validated_at` parseable, `status` in `{PASS, PENDING, FAIL, STALE}`.
+- **Agreement check:** the two files name the same set of stages. Report any
+  declared stage missing an observed entry, and any observed entry naming no
+  declared stage.
 - Fail when a tool referenced in `code/` has no entry in the instrument record.
+- **Legacy configs:** a `config.json` without `instruments` fails with a
+  message naming the fix — add `"instruments": []` and create a
+  `gate_status.json` containing `{"instrument_status": []}`.
 - **Chain checks** (6.3.1, 6.3.2), all mechanical:
   - `position` values form a contiguous ordering with no gaps or duplicates;
   - every `consumes` names an existing stage, and only the first stage has
@@ -460,6 +516,13 @@ holding the two new files to the same standard.
    tool; a stage is PENDING until its successor consumes its output; a change
    at any stage cascades STALE to every downstream stage; and the script
    detects staleness from `validated_at` ordering alone.
+5b. The declared chain lives in frozen `config.json` and the observed status in
+   mutable `gate_status.json`; the script validates both and reports any stage
+   present in one and missing from the other.
+5c. The contract's Required Files match a real analysis folder:
+   `gate_status.json` is listed, `final_report.md` has replaced `summary.md`
+   in both `analysis-artifact-contract.md` and `soul-roles.md`, and
+   `init_analysis.py` no longer creates `audits/`.
 6. The project ideas list is specified as one required file at the project
    root, with its write triggers (results discussion, analysis, data audit,
    theory update) and read triggers (stall, method drop, theory update) named,

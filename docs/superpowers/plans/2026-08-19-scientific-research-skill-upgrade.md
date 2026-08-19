@@ -106,15 +106,28 @@ acceptance criteria grep for them:
 - `log the drop with its consequence stated`
 - `Process exit status is not evidence of scientific validity`
 
-The record schema in the "Instrument Record" section must list exactly these
-twelve keys, because Task 6 validates them:
-`stage`, `position`, `consumes`, `name`, `version`, `install_source`,
-`parameters`, `input_ref`, `runtime_s`, `output_shape`, `validated_at`,
-`status`.
+The "Instrument Record" section documents a **two-file split** (spec 6.4). Read
+that spec section carefully — the record does not live in one place, because
+its two halves have different lifetimes:
+
+- **Declared, in frozen `config.json` under key `instruments`** — exactly these
+  seven keys: `stage`, `position`, `consumes`, `name`, `version`,
+  `install_source`, `parameters`.
+- **Observed, in mutable `gate_status.json` under key `instrument_status`** —
+  exactly these six keys: `stage`, `status`, `validated_at`, `runtime_s`,
+  `output_shape`, `input_ref`.
+
+State the reason for the split explicitly in the prose: `config.json` is frozen
+before outcome inspection, and instrument status changes throughout the work as
+stages move PENDING to PASS and cascades mark stages STALE. Mutable state in a
+frozen file would contradict the freeze rule. Also state the agreement rule:
+both files name the same set of stages.
 
 Cross-link `interpretation-rules.md` from the Method Tiering section (the
-Diagnostic tier is defined there) and `data-contract.md` from the Instrument
-Record section (first-stage `input_ref` points at a data-contract entry).
+Diagnostic tier is defined there), `data-contract.md` from the Instrument
+Record section (first-stage `input_ref` points at a data-contract entry), and
+`analysis-artifact-contract.md` from the Instrument Record section (both files
+are Required Files there).
 
 - [ ] **Step 3: Run the verification checks**
 
@@ -124,9 +137,10 @@ grep -c '^## ' references/instrument-validation.md
 grep -q 'A generator is not its own evaluator' references/instrument-validation.md && echo "lede OK"
 grep -q 'PENDING' references/instrument-validation.md && echo "pending OK"
 grep -q 'log the drop with its consequence stated' references/instrument-validation.md && echo "ladder OK"
-for k in stage position consumes name version install_source parameters input_ref runtime_s output_shape validated_at status; do
+for k in stage position consumes name version install_source parameters input_ref runtime_s output_shape validated_at status instrument_status gate_status.json; do
   grep -q "$k" references/instrument-validation.md || echo "MISSING KEY: $k"
 done
+grep -q 'frozen' references/instrument-validation.md && echo "split rationale OK"
 grep -nE '\b[Ss]hould\b' references/instrument-validation.md
 ```
 
@@ -439,6 +453,27 @@ and before `## Freeze Rule`. It states:
 Also add `ideas.md` to the `## Required Files` list with a one-line description
 noting it lives at the project root, not in the analysis folder.
 
+- [ ] **Step 2b: Correct the contract drift**
+
+Read spec §8.2. A real analysis folder contains `gate_status.json` and
+`final_report.md`, which appear nowhere in this skill, and lacks `summary.md`,
+which the contract requires. The contract adopts observed reality. In
+`references/analysis-artifact-contract.md`:
+
+1. Add `gate_status.json` to `## Required Files`: records gate outcomes and
+   carries the `instrument_status` array defined in
+   `[instrument-validation.md](instrument-validation.md)`. Keys beyond
+   `instrument_status` are permitted and unvalidated. Note that unlike
+   `config.json` it is mutable — it records results, not frozen decisions.
+2. Rename `summary.md` to `final_report.md` in the `## Required Files` entry
+   and in the `## Result Summary` section. The content requirements are
+   unchanged; only the filename moves.
+3. In `## Required Files`, add the declared `instruments` key to the
+   `config.json` entry's description.
+
+Do not touch `soul-roles.md` here — Task 5 owns that file and renames its
+`summary.md` mention.
+
 - [ ] **Step 3: Point theory-update stubs at the ideas list**
 
 In `references/theory-update.md`, rule 7 currently reads "Propose at most three
@@ -459,10 +494,13 @@ grep -q 'project root' references/analysis-artifact-contract.md && echo "locatio
 grep -q 'never silently deleted' references/analysis-artifact-contract.md && echo "status OK"
 grep -q 'instrument-validation.md' references/analysis-artifact-contract.md && echo "ladder link OK"
 grep -q 'ideas.md' references/theory-update.md && echo "stub destination OK"
+grep -q 'gate_status.json' references/analysis-artifact-contract.md && echo "gate_status OK"
+grep -q 'final_report.md' references/analysis-artifact-contract.md && echo "report rename OK"
+grep -q 'summary\.md' references/analysis-artifact-contract.md && echo "FAIL: summary.md survives"
 grep -nE '\b[Ss]hould\b' references/analysis-artifact-contract.md references/theory-update.md
 ```
 
-Expected: five `OK` lines. The final grep must print nothing — note that
+Expected: seven `OK` lines, no `FAIL` line. The final grep must print nothing — note that
 `analysis-artifact-contract.md:41` currently contains "`summary.md` should
 state:". Change it to "`summary.md` states:" as part of this task, since you
 are already editing this file.
@@ -509,12 +547,17 @@ git commit -m "Specify project-level ideas list and point theory stubs at it"
 
 Three edits:
 
+Four edits:
+
 1. In `## Step-To-Role Map`, the step 2 row currently reads
    "Orchestrator interviews". Change the row's role cell to
    "Orchestrator drafts and defends the proposal".
 2. In `## Roles`, the Analyst bullet gains ownership of
    `[instrument-validation.md](instrument-validation.md)`.
 3. In `## Roles`, the Adversary bullet gains re-check of the instrument record.
+4. Line 24 of `## Roles` currently ends "manifests, logs, and `summary.md`."
+   Change `summary.md` to `final_report.md`, matching the contract rename Task
+   4 made. Add `gate_status.json` to that same Analyst list.
 
 Leave `## Executing Roles As One Agent`, `## Handoff Rule`, and `## Gates`
 unchanged.
@@ -571,11 +614,13 @@ grep -q 'exact command or query' references/adversarial-review.md && echo "findi
 grep -q '## Reporting Posture' references/interpretation-rules.md && echo "posture OK"
 grep -q 'claim-discipline.md' references/interpretation-rules.md && echo "tiers link OK"
 grep -q 'instrument-validation.md' references/statistician-review.md && echo "degenerate OK"
+grep -q 'final_report.md' references/soul-roles.md && echo "report rename OK"
 grep -q 'Orchestrator interviews' references/soul-roles.md && echo "FAIL: old wording survives"
+grep -q 'summary\.md' references/soul-roles.md && echo "FAIL: summary.md survives"
 grep -nE '\b[Ss]hould\b' references/soul-roles.md references/adversarial-review.md references/interpretation-rules.md references/statistician-review.md
 ```
 
-Expected: seven `OK` lines, no `FAIL` line, final grep prints nothing.
+Expected: eight `OK` lines, no `FAIL` line, final grep prints nothing.
 
 - [ ] **Step 6: Verify links resolve**
 
@@ -604,22 +649,29 @@ git commit -m "Wire instrument validation and claim discipline into review refer
 
 This is the only task with executable code, and the only one using real TDD.
 
+The record is split across two files (spec 6.4): the **declared** chain in
+frozen `config.json`, the **observed** status in mutable `gate_status.json`.
+Read spec 6.4 before starting.
+
 **Files:**
 - Create: `scientific-research-data-analysis/scripts/test_validate_analysis_config.py`
 - Modify: `scientific-research-data-analysis/scripts/validate_analysis_config.py`
 - Modify: `scientific-research-data-analysis/scripts/init_analysis.py`
-- Read for content: spec §6.4 (record schema), §6.3.1 and §6.3.2 (chain rules), §9 (script checks)
+- Read for content: spec 6.4 (two-file schema), 6.3.1 and 6.3.2 (chain rules), 8.2 (drift), 9 (script checks)
 
 **Interfaces:**
-- Consumes: the twelve-key record schema written in Task 1's "Instrument
-  Record" section, and the `ideas.md` column headers from Task 4.
+- Consumes: the seven declared keys and six observed keys written in Task 1's
+  "Instrument Record" section, and the `ideas.md` column headers from Task 4.
 - Produces:
-  - `validate_instruments(instruments: list) -> None` in
-    `validate_analysis_config.py` — raises `SystemExit` with a message on any
-    violation, returns `None` on success.
-  - `ALLOWED_STATUS: set[str]` = `{"PASS", "PENDING", "FAIL", "STALE"}`
-  - `REQUIRED_INSTRUMENT_KEYS: set[str]` — the twelve keys.
+  - `validate_instruments(declared: list, observed: list) -> None` in
+    `validate_analysis_config.py` — raises `SystemExit` on any violation,
+    returns `None` on success.
+  - `ALLOWED_STATUS` = `{"PASS", "PENDING", "FAIL", "STALE"}`
+  - `DECLARED_KEYS` — the seven config keys.
+  - `OBSERVED_KEYS` — the six gate-status keys.
   - `"instruments"` added to `REQUIRED_TOP_LEVEL`.
+  - `--gate-status PATH` CLI flag, defaulting to `gate_status.json` beside the
+    config.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -645,8 +697,8 @@ from pathlib import Path
 SCRIPT = Path(__file__).resolve().parent / "validate_analysis_config.py"
 
 
-def stage(position, name, consumes, validated_at, status="PASS"):
-    """Build one well-formed instrument record."""
+def declared(position, name, consumes):
+    """One well-formed entry for config.json's instruments array."""
     return {
         "stage": name,
         "position": position,
@@ -655,11 +707,18 @@ def stage(position, name, consumes, validated_at, status="PASS"):
         "version": "1.0.0",
         "install_source": "pypi",
         "parameters": {},
-        "input_ref": "sources[0]" if consumes is None else consumes,
+    }
+
+
+def observed(name, validated_at, status="PASS", consumes=None):
+    """One well-formed entry for gate_status.json's instrument_status array."""
+    return {
+        "stage": name,
+        "status": status,
+        "validated_at": validated_at,
         "runtime_s": 1.5,
         "output_shape": "[64, 1000]",
-        "validated_at": validated_at,
-        "status": status,
+        "input_ref": "sources[0]" if consumes is None else consumes,
     }
 
 
@@ -676,111 +735,139 @@ def config_with(instruments):
     }
 
 
-def run(config):
+def run(config, gate_status=None, write_gate_status=True):
+    """Run the validator against a temp config, returning the CompletedProcess."""
     with tempfile.TemporaryDirectory() as tmp:
-        path = Path(tmp) / "config.json"
-        path.write_text(json.dumps(config), encoding="utf-8")
+        base = Path(tmp)
+        config_path = base / "config.json"
+        config_path.write_text(json.dumps(config), encoding="utf-8")
+        if write_gate_status:
+            payload = {"instrument_status": gate_status or []}
+            (base / "gate_status.json").write_text(
+                json.dumps(payload), encoding="utf-8"
+            )
         return subprocess.run(
-            [sys.executable, str(SCRIPT), str(path)],
+            [sys.executable, str(SCRIPT), str(config_path)],
             capture_output=True,
             text=True,
         )
 
 
-CHAIN = [
-    stage(0, "filter", None, "2026-08-19T10:00:00+00:00"),
-    stage(1, "ica", "filter", "2026-08-19T11:00:00+00:00"),
-    stage(2, "epoch", "ica", "2026-08-19T12:00:00+00:00"),
+DECLARED_CHAIN = [
+    declared(0, "filter", None),
+    declared(1, "ica", "filter"),
+    declared(2, "epoch", "ica"),
+]
+
+OBSERVED_CHAIN = [
+    observed("filter", "2026-08-19T10:00:00+00:00"),
+    observed("ica", "2026-08-19T11:00:00+00:00", consumes="filter"),
+    observed("epoch", "2026-08-19T12:00:00+00:00", consumes="ica"),
 ]
 
 
-class TestInstrumentsBlock(unittest.TestCase):
-    def test_missing_instruments_key_fails(self):
+class TestSchema(unittest.TestCase):
+    def test_missing_instruments_key_names_the_fix(self):
         config = config_with([])
         del config["instruments"]
         result = run(config)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("instruments", result.stderr)
 
-    def test_empty_instruments_list_passes(self):
+    def test_empty_chain_passes(self):
         result = run(config_with([]))
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_wellformed_chain_passes(self):
-        result = run(config_with(CHAIN))
+        result = run(config_with(DECLARED_CHAIN), OBSERVED_CHAIN)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("PASS", result.stdout)
 
-    def test_missing_key_fails(self):
-        broken = [dict(CHAIN[0])]
+    def test_declared_missing_key_fails(self):
+        broken = [dict(DECLARED_CHAIN[0])]
+        del broken[0]["install_source"]
+        result = run(config_with(broken), [OBSERVED_CHAIN[0]])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("install_source", result.stderr)
+
+    def test_observed_missing_key_fails(self):
+        broken = [dict(OBSERVED_CHAIN[0])]
         del broken[0]["output_shape"]
-        result = run(config_with(broken))
+        result = run(config_with([DECLARED_CHAIN[0]]), broken)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("output_shape", result.stderr)
 
     def test_invalid_status_fails(self):
-        broken = [stage(0, "filter", None, "2026-08-19T10:00:00+00:00", status="OK")]
-        result = run(config_with(broken))
+        broken = [observed("filter", "2026-08-19T10:00:00+00:00", status="OK")]
+        result = run(config_with([DECLARED_CHAIN[0]]), broken)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("status", result.stderr)
 
     def test_unparseable_validated_at_fails(self):
-        broken = [stage(0, "filter", None, "yesterday")]
-        result = run(config_with(broken))
+        broken = [observed("filter", "yesterday")]
+        result = run(config_with([DECLARED_CHAIN[0]]), broken)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("validated_at", result.stderr)
 
 
+class TestTwoFileAgreement(unittest.TestCase):
+    def test_missing_gate_status_file_names_the_fix(self):
+        result = run(
+            config_with([DECLARED_CHAIN[0]]), write_gate_status=False
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("gate_status.json", result.stderr)
+
+    def test_declared_stage_without_observed_entry_fails(self):
+        result = run(config_with(DECLARED_CHAIN), [OBSERVED_CHAIN[0]])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ica", result.stderr)
+
+    def test_observed_entry_without_declared_stage_fails(self):
+        extra = OBSERVED_CHAIN + [observed("ghost", "2026-08-19T13:00:00+00:00")]
+        result = run(config_with(DECLARED_CHAIN), extra)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ghost", result.stderr)
+
+
 class TestChainShape(unittest.TestCase):
     def test_duplicate_position_fails(self):
-        broken = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00"),
-            stage(0, "ica", "filter", "2026-08-19T11:00:00+00:00"),
-        ]
-        result = run(config_with(broken))
+        broken = [declared(0, "filter", None), declared(0, "ica", "filter")]
+        result = run(config_with(broken), OBSERVED_CHAIN[:2])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("position", result.stderr)
 
     def test_gap_in_positions_fails(self):
-        broken = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00"),
-            stage(2, "ica", "filter", "2026-08-19T11:00:00+00:00"),
-        ]
-        result = run(config_with(broken))
+        broken = [declared(0, "filter", None), declared(2, "ica", "filter")]
+        result = run(config_with(broken), OBSERVED_CHAIN[:2])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("position", result.stderr)
 
     def test_consumes_unknown_stage_fails(self):
-        broken = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00"),
-            stage(1, "ica", "nonexistent", "2026-08-19T11:00:00+00:00"),
-        ]
-        result = run(config_with(broken))
+        broken = [declared(0, "filter", None), declared(1, "ica", "nonexistent")]
+        result = run(config_with(broken), OBSERVED_CHAIN[:2])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("nonexistent", result.stderr)
 
     def test_first_stage_with_consumes_fails(self):
-        broken = [stage(0, "filter", "ghost", "2026-08-19T10:00:00+00:00")]
-        result = run(config_with(broken))
+        broken = [declared(0, "filter", "ghost")]
+        result = run(config_with(broken), [OBSERVED_CHAIN[0]])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("consumes", result.stderr)
 
     def test_later_stage_without_consumes_fails(self):
-        broken = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00"),
-            stage(1, "ica", None, "2026-08-19T11:00:00+00:00"),
-        ]
-        result = run(config_with(broken))
+        broken = [declared(0, "filter", None), declared(1, "ica", None)]
+        result = run(config_with(broken), OBSERVED_CHAIN[:2])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("consumes", result.stderr)
 
     def test_cycle_fails(self):
         broken = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00"),
-            stage(1, "ica", "epoch", "2026-08-19T11:00:00+00:00"),
-            stage(2, "epoch", "ica", "2026-08-19T12:00:00+00:00"),
+            declared(0, "filter", None),
+            declared(1, "ica", "epoch"),
+            declared(2, "epoch", "ica"),
         ]
-        result = run(config_with(broken))
+        result = run(config_with(broken), OBSERVED_CHAIN)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("cycle", result.stderr.lower())
 
@@ -788,29 +875,30 @@ class TestChainShape(unittest.TestCase):
 class TestCascade(unittest.TestCase):
     def test_downstream_validated_before_upstream_is_stale(self):
         broken = [
-            stage(0, "filter", None, "2026-08-19T14:00:00+00:00"),
-            stage(1, "ica", "filter", "2026-08-19T11:00:00+00:00"),
+            observed("filter", "2026-08-19T14:00:00+00:00"),
+            observed("ica", "2026-08-19T11:00:00+00:00", consumes="filter"),
         ]
-        result = run(config_with(broken))
+        result = run(config_with(DECLARED_CHAIN[:2]), broken)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("STALE", result.stderr)
 
     def test_pass_downstream_of_pending_fails(self):
         broken = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00", status="PENDING"),
-            stage(1, "ica", "filter", "2026-08-19T11:00:00+00:00", status="PASS"),
+            observed("filter", "2026-08-19T10:00:00+00:00", status="PENDING"),
+            observed("ica", "2026-08-19T11:00:00+00:00", status="PASS", consumes="filter"),
         ]
-        result = run(config_with(broken))
+        result = run(config_with(DECLARED_CHAIN[:2]), broken)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("PENDING", result.stderr)
 
     def test_pending_downstream_of_pass_is_allowed(self):
         ok = [
-            stage(0, "filter", None, "2026-08-19T10:00:00+00:00", status="PASS"),
-            stage(1, "ica", "filter", "2026-08-19T11:00:00+00:00", status="PENDING"),
+            observed("filter", "2026-08-19T10:00:00+00:00", status="PASS"),
+            observed("ica", "2026-08-19T11:00:00+00:00", status="PENDING", consumes="filter"),
         ]
-        result = run(config_with(ok))
+        result = run(config_with(DECLARED_CHAIN[:2]), ok)
         self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("INCOMPLETE", result.stdout)
 
 
 if __name__ == "__main__":
@@ -824,16 +912,13 @@ cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-re
 python3 -m unittest discover -s scripts -p 'test_*.py' -v
 ```
 
-Expected: FAIL. `test_missing_instruments_key_fails` and
-`test_empty_instruments_list_passes` will not both hold, and every chain test
-fails, because `validate_analysis_config.py` does not yet know about
-`instruments`.
+Expected: FAIL — 19 tests run, most error out, because
+`validate_analysis_config.py` does not yet know about `instruments`,
+`gate_status.json`, or the `--gate-status` flag.
 
 - [ ] **Step 3: Implement the validator changes**
 
-In `scripts/validate_analysis_config.py`:
-
-Add to the imports:
+In `scripts/validate_analysis_config.py`, add to the imports:
 
 ```python
 from datetime import datetime
@@ -845,7 +930,7 @@ after it:
 ```python
 ALLOWED_STATUS = {"PASS", "PENDING", "FAIL", "STALE"}
 
-REQUIRED_INSTRUMENT_KEYS = {
+DECLARED_KEYS = {
     "stage",
     "position",
     "consumes",
@@ -853,15 +938,19 @@ REQUIRED_INSTRUMENT_KEYS = {
     "version",
     "install_source",
     "parameters",
-    "input_ref",
+}
+
+OBSERVED_KEYS = {
+    "stage",
+    "status",
+    "validated_at",
     "runtime_s",
     "output_shape",
-    "validated_at",
-    "status",
+    "input_ref",
 }
 ```
 
-Add this function above `main()`:
+Add these functions above `main()`:
 
 ```python
 def parse_time(value: str, label: str) -> datetime:
@@ -871,38 +960,67 @@ def parse_time(value: str, label: str) -> datetime:
         raise SystemExit(f"{label} validated_at is not ISO-8601: {value!r}")
 
 
-def validate_instruments(instruments: object) -> None:
-    """Validate the instrument chain. Raises SystemExit on any violation."""
-    if not isinstance(instruments, list):
-        raise SystemExit("instruments must be a list")
-    if not instruments:
-        return
-
-    by_stage: dict[str, dict] = {}
-    for index, record in enumerate(instruments):
-        label = f"instruments[{index}]"
+def check_entries(records, required, kind):
+    """Type-check one array and index it by stage name."""
+    if not isinstance(records, list):
+        raise SystemExit(f"{kind} must be a list")
+    by_stage = {}
+    for index, record in enumerate(records):
+        label = f"{kind}[{index}]"
         if not isinstance(record, dict):
             raise SystemExit(f"{label} must be an object")
-        missing = sorted(REQUIRED_INSTRUMENT_KEYS - set(record))
+        missing = sorted(required - set(record))
         if missing:
             raise SystemExit(f"{label} missing keys: {', '.join(missing)}")
+        if record["stage"] in by_stage:
+            raise SystemExit(f"{kind} has duplicate stage name: {record['stage']}")
+        by_stage[record["stage"]] = record
+    return by_stage
+
+
+def validate_instruments(declared: object, observed: object) -> None:
+    """Validate the declared chain and its observed status. Raises SystemExit."""
+    declared_by_stage = check_entries(declared, DECLARED_KEYS, "instruments")
+    observed_by_stage = check_entries(
+        observed, OBSERVED_KEYS, "instrument_status"
+    )
+
+    if not declared_by_stage:
+        if observed_by_stage:
+            raise SystemExit(
+                "instrument_status records stages that config.json does not "
+                f"declare: {', '.join(sorted(observed_by_stage))}"
+            )
+        return
+
+    unobserved = sorted(set(declared_by_stage) - set(observed_by_stage))
+    if unobserved:
+        raise SystemExit(
+            "declared stages have no instrument_status entry in "
+            f"gate_status.json: {', '.join(unobserved)}"
+        )
+    undeclared = sorted(set(observed_by_stage) - set(declared_by_stage))
+    if undeclared:
+        raise SystemExit(
+            "instrument_status records stages that config.json does not "
+            f"declare: {', '.join(undeclared)}"
+        )
+
+    for stage_name, record in observed_by_stage.items():
         if record["status"] not in ALLOWED_STATUS:
             raise SystemExit(
-                f"{label} status must be one of {sorted(ALLOWED_STATUS)}, "
-                f"got {record['status']!r}"
+                f"instrument_status[{stage_name}] status must be one of "
+                f"{sorted(ALLOWED_STATUS)}, got {record['status']!r}"
             )
-        parse_time(record["validated_at"], label)
-        if record["stage"] in by_stage:
-            raise SystemExit(f"duplicate stage name: {record['stage']}")
-        by_stage[record["stage"]] = record
+        parse_time(record["validated_at"], f"instrument_status[{stage_name}]")
 
-    positions = sorted(record["position"] for record in instruments)
-    if positions != list(range(len(instruments))):
+    positions = sorted(record["position"] for record in declared)
+    if positions != list(range(len(declared))):
         raise SystemExit(
             f"instrument position values must be contiguous from 0, got {positions}"
         )
 
-    ordered = sorted(instruments, key=lambda record: record["position"])
+    ordered = sorted(declared, key=lambda record: record["position"])
     for record in ordered:
         upstream_name = record["consumes"]
         if record["position"] == 0:
@@ -915,54 +1033,81 @@ def validate_instruments(instruments: object) -> None:
             raise SystemExit(
                 f"stage {record['stage']} must name an upstream stage in consumes"
             )
-        if upstream_name not in by_stage:
+        if upstream_name not in declared_by_stage:
             raise SystemExit(
                 f"stage {record['stage']} consumes unknown stage: {upstream_name}"
             )
-        if by_stage[upstream_name]["position"] >= record["position"]:
+        if declared_by_stage[upstream_name]["position"] >= record["position"]:
             raise SystemExit(
                 f"cycle: stage {record['stage']} consumes {upstream_name}, "
                 "which is not upstream of it"
             )
 
     for record in ordered:
-        if record["consumes"] is None:
+        upstream_name = record["consumes"]
+        if upstream_name is None:
             continue
-        upstream = by_stage[record["consumes"]]
-        own = parse_time(record["validated_at"], record["stage"])
-        up = parse_time(upstream["validated_at"], upstream["stage"])
-        if own < up:
+        own = observed_by_stage[record["stage"]]
+        up = observed_by_stage[upstream_name]
+        if parse_time(own["validated_at"], record["stage"]) < parse_time(
+            up["validated_at"], upstream_name
+        ):
             raise SystemExit(
-                f"stage {record['stage']} is STALE: validated at {record['validated_at']} "
-                f"but upstream {upstream['stage']} was validated later at "
-                f"{upstream['validated_at']}"
+                f"stage {record['stage']} is STALE: validated at "
+                f"{own['validated_at']} but upstream {upstream_name} was "
+                f"validated later at {up['validated_at']}"
             )
-        if record["status"] == "PASS" and upstream["status"] != "PASS":
+        if own["status"] == "PASS" and up["status"] != "PASS":
             raise SystemExit(
                 f"stage {record['stage']} cannot be PASS while upstream "
-                f"{upstream['stage']} is {upstream['status']}"
+                f"{upstream_name} is {up['status']}"
             )
+```
+
+Add the CLI flag next to the existing arguments in `main()`:
+
+```python
+    parser.add_argument("--gate-status", type=Path, default=None)
 ```
 
 In `main()`, after the existing `required_outputs` type check and before the
 `--check-files` block, add:
 
 ```python
-    validate_instruments(config["instruments"])
+    declared = config["instruments"]
+    gate_path = args.gate_status or args.config.parent / "gate_status.json"
+    if not isinstance(declared, list):
+        raise SystemExit("instruments must be a list")
+    if declared and not gate_path.is_file():
+        raise SystemExit(
+            f"gate_status.json not found at {gate_path}; create it containing "
+            '{"instrument_status": []} and record one entry per declared stage'
+        )
+    if gate_path.is_file():
+        gate_status = json.loads(gate_path.read_text(encoding="utf-8"))
+        observed = gate_status.get("instrument_status", [])
+    else:
+        observed = []
+    validate_instruments(declared, observed)
 ```
 
 Replace the final `print("PASS")` with a chain-state report that keeps `PASS`
 in the output so existing usage is unaffected:
 
 ```python
-    instruments = config["instruments"]
-    if instruments:
-        states = {record["status"] for record in instruments}
+    if declared:
+        states = {record["status"] for record in observed}
         chain = "PASS" if states == {"PASS"} else "INCOMPLETE"
-        print(f"PASS (instrument chain: {chain}, {len(instruments)} stages)")
+        print(f"PASS (instrument chain: {chain}, {len(declared)} stages)")
     else:
         print("PASS (no instruments recorded)")
 ```
+
+Note the legacy path: a `config.json` written before this upgrade has no
+`instruments` key, so `REQUIRED_TOP_LEVEL` rejects it with
+`missing required config keys: instruments`. That message is the migration
+instruction — add `"instruments": []` to the config and create a
+`gate_status.json` containing `{"instrument_status": []}`.
 
 - [ ] **Step 4: Run the tests to verify they pass**
 
@@ -971,14 +1116,20 @@ cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-re
 python3 -m unittest discover -s scripts -p 'test_*.py' -v
 ```
 
-Expected: PASS — 15 tests, `OK`.
+Expected: PASS — 19 tests, `OK`.
 
 - [ ] **Step 5: Update the scaffold script**
 
-In `scripts/init_analysis.py`, two changes.
+In `scripts/init_analysis.py`, four changes.
 
-First, add `"instruments": []` to the config template dict, immediately after
-`"required_outputs": []`, so a freshly scaffolded config validates:
+First, drop `audits` from the directory loop (spec 8.2 — nothing uses it):
+
+```python
+    for name in ("code", "results", "tests"):
+```
+
+Second, add `"instruments": []` to the config template dict, immediately after
+`"required_outputs": []`:
 
 ```python
                     "required_outputs": [],
@@ -986,8 +1137,19 @@ First, add `"instruments": []` to the config template dict, immediately after
                     "interpretation": "unfrozen",
 ```
 
-Second, create the project ideas list. Add this argument next to the existing
-`--root` argument:
+Third, create `gate_status.json` beside `config.json`. Add this block after the
+config-writing block:
+
+```python
+    gate_status = root / "gate_status.json"
+    if not gate_status.exists():
+        gate_status.write_text(
+            json.dumps({"gates": {}, "instrument_status": []}, indent=2) + "\n",
+            encoding="ascii",
+        )
+```
+
+Fourth, create the project ideas list. Add this argument next to `--root`:
 
 ```python
     parser.add_argument("--project-root", type=Path, default=Path("."))
@@ -1024,21 +1186,24 @@ and add this block immediately before the final `print(root)`:
 
 ```bash
 cd "$(mktemp -d)"
-python3 /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis/scripts/init_analysis.py H-2026-001
+SKILL=/Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis
+python3 "$SKILL/scripts/init_analysis.py" H-2026-001
 test -f ideas.md && echo "ideas.md created"
 grep -q '| Rank | Idea | Rationale | Rough cost | Status |' ideas.md && echo "headers OK"
-python3 /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis/scripts/validate_analysis_config.py analyses/H-2026-001/config.json
+test -f analyses/H-2026-001/gate_status.json && echo "gate_status.json created"
+test -d analyses/H-2026-001/audits && echo "FAIL: audits still created" || echo "audits dropped OK"
+python3 "$SKILL/scripts/validate_analysis_config.py" analyses/H-2026-001/config.json
 ```
 
-Expected: `ideas.md created`, `headers OK`, and
-`PASS (no instruments recorded)`.
+Expected: `ideas.md created`, `headers OK`, `gate_status.json created`,
+`audits dropped OK`, and `PASS (no instruments recorded)`.
 
 - [ ] **Step 7: Commit**
 
 ```bash
 cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills
 git add scientific-research-data-analysis/scripts/
-git commit -m "Validate instrument chain and scaffold the project ideas list"
+git commit -m "Validate the instrument chain across config and gate_status"
 ```
 
 ---
@@ -1092,6 +1257,16 @@ grep -rniE '\b(should|prefer|try to|when possible|ideally)\b' SKILL.md reference
 
 echo "--- 5 and 5a. validator ---"
 python3 -m unittest discover -s scripts -p 'test_*.py' 2>&1 | tail -3
+
+echo "--- 5b. two-file split ---"
+grep -q 'gate_status.json' references/instrument-validation.md && echo OK
+grep -q 'instrument_status' references/instrument-validation.md && echo "observed key OK"
+
+echo "--- 5c. contract matches reality ---"
+grep -q 'gate_status.json' references/analysis-artifact-contract.md && echo OK
+grep -q 'final_report.md' references/analysis-artifact-contract.md && echo "report OK"
+grep -rq 'summary\.md' SKILL.md references/ && echo "FAIL: summary.md survives" || echo "rename complete"
+grep -q 'audits' scripts/init_analysis.py && echo "FAIL: audits survives" || echo "audits dropped"
 
 echo "--- 6. ideas list ---"
 grep -q '## Project Ideas List' references/analysis-artifact-contract.md && echo OK
