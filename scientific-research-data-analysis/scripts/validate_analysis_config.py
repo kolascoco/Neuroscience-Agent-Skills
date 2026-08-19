@@ -54,9 +54,15 @@ def sha256(path: Path) -> str:
 
 def parse_time(value: str, label: str) -> datetime:
     try:
-        return datetime.fromisoformat(value)
+        parsed = datetime.fromisoformat(value)
     except (TypeError, ValueError):
         raise SystemExit(f"{label} validated_at is not ISO-8601: {value!r}")
+    if parsed.tzinfo is None:
+        raise SystemExit(
+            f"{label} validated_at must include a UTC offset (e.g. +00:00), "
+            f"got {value!r}"
+        )
+    return parsed
 
 
 def check_entries(records, required, kind):
@@ -71,9 +77,14 @@ def check_entries(records, required, kind):
         missing = sorted(required - set(record))
         if missing:
             raise SystemExit(f"{label} missing keys: {', '.join(missing)}")
-        if record["stage"] in by_stage:
-            raise SystemExit(f"{kind} has duplicate stage name: {record['stage']}")
-        by_stage[record["stage"]] = record
+        stage_value = record["stage"]
+        if not isinstance(stage_value, str):
+            raise SystemExit(
+                f"{label} stage must be a string, got {stage_value!r}"
+            )
+        if stage_value in by_stage:
+            raise SystemExit(f"{kind} has duplicate stage name: {stage_value}")
+        by_stage[stage_value] = record
     return by_stage
 
 
@@ -93,17 +104,20 @@ def validate_instruments(declared: object, observed: object) -> None:
         return
 
     unobserved = sorted(set(declared_by_stage) - set(observed_by_stage))
-    if unobserved:
-        raise SystemExit(
-            "declared stages have no instrument_status entry in "
-            f"gate_status.json: {', '.join(unobserved)}"
-        )
     undeclared = sorted(set(observed_by_stage) - set(declared_by_stage))
-    if undeclared:
-        raise SystemExit(
-            "instrument_status records stages that config.json does not "
-            f"declare: {', '.join(undeclared)}"
-        )
+    if unobserved or undeclared:
+        parts = []
+        if unobserved:
+            parts.append(
+                "declared stages have no instrument_status entry in "
+                f"gate_status.json: {', '.join(unobserved)}"
+            )
+        if undeclared:
+            parts.append(
+                "instrument_status records stages that config.json does not "
+                f"declare: {', '.join(undeclared)}"
+            )
+        raise SystemExit("; ".join(parts))
 
     for stage_name, record in observed_by_stage.items():
         if record["status"] not in ALLOWED_STATUS:
@@ -112,6 +126,14 @@ def validate_instruments(declared: object, observed: object) -> None:
                 f"{sorted(ALLOWED_STATUS)}, got {record['status']!r}"
             )
         parse_time(record["validated_at"], f"instrument_status[{stage_name}]")
+
+    for record in declared:
+        position = record["position"]
+        if isinstance(position, bool) or not isinstance(position, int):
+            raise SystemExit(
+                f"stage {record['stage']!r} position must be an integer, "
+                f"got {position!r}"
+            )
 
     positions = sorted(record["position"] for record in declared)
     if positions != list(range(len(declared))):
@@ -140,6 +162,13 @@ def validate_instruments(declared: object, observed: object) -> None:
             raise SystemExit(
                 f"cycle: stage {record['stage']} consumes {upstream_name}, "
                 "which is not upstream of it"
+            )
+        if declared_by_stage[upstream_name]["position"] != record["position"] - 1:
+            raise SystemExit(
+                f"stage {record['stage']} consumes {upstream_name} at position "
+                f"{declared_by_stage[upstream_name]['position']}, but the chain "
+                f"is linear: consumes must name the immediate predecessor at "
+                f"position {record['position'] - 1}"
             )
 
     for record in ordered:
@@ -170,10 +199,28 @@ def main() -> None:
     parser.add_argument("--gate-status", type=Path, default=None)
     args = parser.parse_args()
 
-    config = json.loads(args.config.read_text(encoding="utf-8"))
+    try:
+        config = json.loads(args.config.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"{args.config} is not valid JSON: {exc}")
+
     missing = sorted(REQUIRED_TOP_LEVEL - set(config))
     if missing:
-        raise SystemExit(f"missing required config keys: {', '.join(missing)}")
+        remedies = []
+        if "instruments" in missing:
+            remedies.append(
+                'add "instruments": [] to config.json and create '
+                'gate_status.json containing {"instrument_status": []}'
+            )
+        if "family" in missing:
+            remedies.append(
+                'add "family": {"family_id": null, "parent_analysis": null, '
+                '"varies": []} to config.json'
+            )
+        detail = f"; {'; '.join(remedies)}" if remedies else ""
+        raise SystemExit(
+            f"missing required config keys: {', '.join(missing)}{detail}"
+        )
     if not isinstance(config["sources"], list):
         raise SystemExit("sources must be a list")
     if not isinstance(config["frozen_decisions"], dict):
@@ -191,7 +238,15 @@ def main() -> None:
             '{"instrument_status": []} and record one entry per declared stage'
         )
     if gate_path.is_file():
-        gate_status = json.loads(gate_path.read_text(encoding="utf-8"))
+        try:
+            gate_status = json.loads(gate_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise SystemExit(f"{gate_path} is not valid JSON: {exc}")
+        if not isinstance(gate_status, dict):
+            raise SystemExit(
+                f"{gate_path} must contain a JSON object at the top level, "
+                f"got {type(gate_status).__name__}"
+            )
         observed = gate_status.get("instrument_status", [])
     else:
         observed = []
@@ -227,7 +282,14 @@ def main() -> None:
 
     if declared:
         states = {record["status"] for record in observed}
-        chain = "PASS" if states == {"PASS"} else "INCOMPLETE"
+        if states == {"PASS"}:
+            chain = "PASS"
+        elif "FAIL" in states:
+            chain = "FAILED"
+        elif "STALE" in states:
+            chain = "STALE"
+        else:
+            chain = "INCOMPLETE"
         print(f"PASS (instrument chain: {chain}, {len(declared)} stages)")
     else:
         print("PASS (no instruments recorded)")
