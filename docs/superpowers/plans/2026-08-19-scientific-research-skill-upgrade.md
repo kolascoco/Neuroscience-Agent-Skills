@@ -1423,6 +1423,21 @@ Known hits from the spec-time survey, both already handled in earlier tasks —
 confirm they are gone: `analysis-artifact-contract.md:41` and
 `statistician-review.md:19`.
 
+- [ ] **Step 1b: Fix the cross-task `summary.md` leftover**
+
+`references/claim-discipline.md:49` reads "Numbers are not hand-carried between
+`summary.md`, a figure caption, and a manuscript." Task 2 wrote that line before
+the rename to `final_report.md` was decided, and Task 5 could not fix it because
+that file was outside its scope. Change `summary.md` to `final_report.md` there.
+
+After this, no occurrence of `summary.md` remains under
+`scientific-research-data-analysis/` — verify with:
+
+```bash
+cd /Users/nikolaj_syrov/Documents/GitHub/Neuroscience-Agent-Skills/scientific-research-data-analysis
+grep -rn 'summary\.md' SKILL.md references/ scripts/ && echo "FAIL: summary.md survives" || echo "rename complete"
+```
+
 - [ ] **Step 2: Verify every acceptance criterion from spec §11**
 
 ```bash
