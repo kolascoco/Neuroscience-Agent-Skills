@@ -87,6 +87,11 @@ value.
 **Purpose.** Creative output degrades under the conditions that demand it, so
 the file decouples idea generation from idea selection in time.
 
+**Relation to the theory document.** `theory.md` states the direction the
+project is committed to; `ideas.md` lists the directions an analysis could go
+instead. An entry moves from `ideas.md` into the theory only on evidence
+recorded in an artifact (see [theory-update.md](theory-update.md)).
+
 **Contents.** One line per idea, ranked by expected value, each with a
 one-line rationale and a rough cost. An idea names what it would test or
 change, not merely a topic. Columns: `Rank`, `Idea`, `Rationale`,

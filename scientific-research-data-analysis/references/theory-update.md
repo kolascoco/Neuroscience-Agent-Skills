@@ -40,6 +40,11 @@ Write the entry to `lab_journal_entry.md` per the canonical filename table in
   never accumulated. Its canonical filename is `theory.md`, at the project
   root above `analyses/` (see the canonical filename table in
   [analysis-artifact-contract.md](analysis-artifact-contract.md)).
+- The **theory document** states the direction the project is committed to.
+  The **project ideas list** (`ideas.md`) holds the directions it is not
+  committed to. A candidate stays in `ideas.md` until an artifact moves it
+  into the theory; a claim the theory no longer supports leaves the theory
+  and re-enters `ideas.md` as an open idea, or is dropped with its reason.
 - Appending a journal entry does not satisfy step 9. A theory update that
   leaves the theory document unchanged states why in the journal entry,
   naming the artifact that failed to move it.
