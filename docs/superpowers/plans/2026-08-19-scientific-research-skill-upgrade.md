@@ -348,8 +348,8 @@ In the Completion Standard, add this exact sentence:
 - [ ] **Step 4: Rewrite the gate's Rule section**
 
 In `references/common-understanding-gate.md`, replace the `## Rule` section per
-spec §5.2. Keep `## Compact Ledger Mode` and `## Reopening Choices` byte-for-byte
-unchanged. The new `## Rule` states:
+spec §5.2 and amend `## Compact Ledger Mode` per spec §5.3. Keep
+`## Reopening Choices` byte-for-byte unchanged. The new `## Rule` states:
 
 1. Common understanding remains mandatory, reached by proposal rather than
    interview. Confirmation is explicit — silence is not confirmation, and
@@ -387,7 +387,7 @@ grep -q '## Reopening Choices' references/common-understanding-gate.md && echo "
 grep -nE '\b[Ss]hould\b' SKILL.md references/common-understanding-gate.md
 ```
 
-Expected: seven `OK`/`preserved` lines, no `FAIL` line, final grep prints
+Expected: eight `OK`/`preserved` lines, no `FAIL` line, final grep prints
 nothing.
 
 - [ ] **Step 6: Verify SKILL.md links resolve**

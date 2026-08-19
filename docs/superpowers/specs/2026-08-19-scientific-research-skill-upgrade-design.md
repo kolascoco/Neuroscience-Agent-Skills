@@ -94,8 +94,12 @@ that applies at every step, not as a workflow step of its own.
 
 ### 5.2 `references/common-understanding-gate.md`
 
-The `## Rule` section is rewritten. `## Compact Ledger Mode` and
-`## Reopening Choices` are kept as-is.
+The `## Rule` section is rewritten. `## Reopening Choices` is kept as-is.
+`## Compact Ledger Mode` is amended (see 5.3).
+
+The freeze precondition keeps all three of its terms and its strength: plan,
+config, and data contract are **frozen** — not merely present — before analysis
+code is written or any outcome is inspected.
 
 **Common understanding remains mandatory.** The planning stage always ends in
 confirmed shared understanding. The mechanism changed; the requirement did not.
@@ -136,6 +140,33 @@ coherent proposal exists.
 
 This necessity test governs any grilling or interview procedure invoked on an
 analysis in this skill's scope, including `anthropic-skills:grilling`.
+
+### 5.3 `## Compact Ledger Mode` is amended, not preserved
+
+The section reads, in the version this upgrade inherits:
+
+> "For read-only planning or simple low-risk tasks, skip the round structure: a
+> single compact ledger may group related decisions. Label anything unresolved
+> and do not proceed to outcomes."
+
+"The round structure" named the three frontier rounds. With those gone, the
+phrase binds instead to the only mechanism `## Rule` now prescribes — the
+proposal and its confirmation — turning the section into a bypass. Two further
+properties make it load-bearing: its trigger is a disjunction that admits
+result-producing work an agent self-labels "simple low-risk", broader than the
+Operating Rule's read-only branch; and its backstop bars inspecting outcomes
+without barring the writing or running of analysis code.
+
+The section is therefore amended on both counts:
+
+- Its trigger narrows to match the Operating Rule's first branch exactly:
+  read-only discussion, brainstorming, or plan sketch. The separate
+  "simple low-risk tasks" clause is removed.
+- It states that the compact ledger changes how decisions are grouped for
+  presentation and never removes the explicit-confirmation requirement.
+
+What the section keeps: a compact ledger may group related decisions in one
+presentation, and anything unresolved is labeled.
 
 ## 6. Change 2 — New reference file: `references/instrument-validation.md`
 
