@@ -24,6 +24,8 @@ REQUIRED_TOP_LEVEL = {
 
 ALLOWED_STATUS = {"PASS", "PENDING", "FAIL", "STALE"}
 
+ALLOWED_TIERS = {"Required", "Shadow", "Diagnostic", "Fallback"}
+
 DECLARED_KEYS = {
     "stage",
     "position",
@@ -32,16 +34,20 @@ DECLARED_KEYS = {
     "version",
     "install_source",
     "parameters",
+    "tier",
 }
 
-OBSERVED_KEYS = {
-    "stage",
-    "status",
-    "validated_at",
-    "runtime_s",
-    "output_shape",
-    "input_ref",
-}
+# Always required on every observed entry, regardless of status.
+OBSERVED_KEYS_ALWAYS = {"stage", "status", "input_ref"}
+
+# Required (and non-null) only once a stage has actually run. A PENDING
+# stage describes a run that has not happened yet, so these three may be
+# omitted or null: inventing a validated_at/runtime_s/output_shape for a
+# run that never occurred is exactly the failure this schema exists to
+# prevent (C1).
+OBSERVED_KEYS_RUN = {"validated_at", "runtime_s", "output_shape"}
+
+OBSERVED_KEYS = OBSERVED_KEYS_ALWAYS | OBSERVED_KEYS_RUN
 
 
 def sha256(path: Path) -> str:
@@ -94,12 +100,52 @@ def check_entries(records, required, kind):
     return by_stage
 
 
+def check_observed_entries(records, kind="instrument_status"):
+    """Type-check the observed array and index it by stage name.
+
+    Unlike `check_entries`, the required-keys check here is conditional on
+    `status`: a PENDING entry describes a stage that has not run, so
+    `validated_at`, `runtime_s`, and `output_shape` may be omitted or null.
+    Any other status requires all three, present and non-null (C1).
+    """
+    if not isinstance(records, list):
+        raise SystemExit(f"{kind} must be a list")
+    by_stage = {}
+    for index, record in enumerate(records):
+        label = f"{kind}[{index}]"
+        if not isinstance(record, dict):
+            raise SystemExit(f"{label} must be an object")
+        missing = sorted(OBSERVED_KEYS_ALWAYS - set(record))
+        if missing:
+            raise SystemExit(f"{label} missing keys: {', '.join(missing)}")
+        stage_value = record["stage"]
+        if not isinstance(stage_value, str):
+            raise SystemExit(
+                f"{label} stage must be a string, got {stage_value!r}"
+            )
+        if stage_value in by_stage:
+            raise SystemExit(f"{kind} has duplicate stage name: {stage_value}")
+        status_value = record["status"]
+        if status_value != "PENDING":
+            unset = sorted(
+                key
+                for key in OBSERVED_KEYS_RUN
+                if record.get(key) is None
+            )
+            if unset:
+                raise SystemExit(
+                    f"{label} status is {status_value!r}, which requires "
+                    f"non-null {', '.join(unset)} (a stage that has run "
+                    "carries all three; PENDING may omit or null them)"
+                )
+        by_stage[stage_value] = record
+    return by_stage
+
+
 def validate_instruments(declared: object, observed: object) -> None:
     """Validate the declared chain and its observed status. Raises SystemExit."""
     declared_by_stage = check_entries(declared, DECLARED_KEYS, "instruments")
-    observed_by_stage = check_entries(
-        observed, OBSERVED_KEYS, "instrument_status"
-    )
+    observed_by_stage = check_observed_entries(observed, "instrument_status")
 
     if not declared_by_stage:
         if observed_by_stage:
@@ -131,7 +177,13 @@ def validate_instruments(declared: object, observed: object) -> None:
                 f"instrument_status[{stage_name}] status must be one of "
                 f"{sorted(ALLOWED_STATUS)}, got {record['status']!r}"
             )
-        parse_time(record["validated_at"], f"instrument_status[{stage_name}]")
+        # A PENDING stage may carry a null validated_at (no run has
+        # happened yet); check_observed_entries already guaranteed every
+        # other status has a non-null value here, so only parse when one
+        # is actually present.
+        validated_at = record.get("validated_at")
+        if validated_at is not None:
+            parse_time(validated_at, f"instrument_status[{stage_name}]")
 
     for record in declared:
         position = record["position"]
@@ -139,6 +191,12 @@ def validate_instruments(declared: object, observed: object) -> None:
             raise SystemExit(
                 f"stage {record['stage']!r} position must be an integer, "
                 f"got {position!r}"
+            )
+        tier = record["tier"]
+        if tier not in ALLOWED_TIERS:
+            raise SystemExit(
+                f"stage {record['stage']!r} tier must be one of "
+                f"{sorted(ALLOWED_TIERS)}, got {tier!r}"
             )
 
     positions = sorted(record["position"] for record in declared)
@@ -183,14 +241,22 @@ def validate_instruments(declared: object, observed: object) -> None:
             continue
         own = observed_by_stage[record["stage"]]
         up = observed_by_stage[upstream_name]
-        if parse_time(own["validated_at"], record["stage"]) < parse_time(
-            up["validated_at"], upstream_name
-        ):
-            raise SystemExit(
-                f"stage {record['stage']} is STALE: validated at "
-                f"{own['validated_at']} but upstream {upstream_name} was "
-                f"validated later at {up['validated_at']}"
-            )
+        own_validated_at = own.get("validated_at")
+        up_validated_at = up.get("validated_at")
+        # A PENDING stage (own or upstream) may have no validated_at at
+        # all: it describes a run that has not happened, so it is
+        # excluded from the staleness comparison rather than crashing it
+        # (C1). The PASS-requires-upstream-PASS check below still applies
+        # unconditionally: it needs only the two statuses, not a time.
+        if own_validated_at is not None and up_validated_at is not None:
+            if parse_time(own_validated_at, record["stage"]) < parse_time(
+                up_validated_at, upstream_name
+            ):
+                raise SystemExit(
+                    f"stage {record['stage']} is STALE: validated at "
+                    f"{own_validated_at} but upstream {upstream_name} was "
+                    f"validated later at {up_validated_at}"
+                )
         if own["status"] == "PASS" and up["status"] != "PASS":
             raise SystemExit(
                 f"stage {record['stage']} cannot be PASS while upstream "
@@ -286,6 +352,12 @@ def main() -> None:
             if expected and sha256(path) != expected:
                 raise SystemExit(f"source hash mismatch: {path}")
 
+    # I5: the leading word reports what this script actually checked — the
+    # config's schema and chain arithmetic — never the scientific validity
+    # of the chain itself. A reader (or an Adversary) grepping for "PASS"
+    # must not mistake schema validity for a passing instrument chain: a
+    # FAILED chain and a schema-valid config both exit 0, so the chain
+    # state is spelled out, unmistakably, in the same line.
     if declared:
         states = {record["status"] for record in observed}
         if states == {"PASS"}:
@@ -294,11 +366,19 @@ def main() -> None:
             chain = "FAILED"
         elif "STALE" in states:
             chain = "STALE"
+        elif states == {"PENDING"}:
+            # A freshly frozen chain that has not run yet is the expected,
+            # common state (C1) — distinct from INCOMPLETE, which covers a
+            # chain partway through validation.
+            chain = "PENDING"
         else:
             chain = "INCOMPLETE"
-        print(f"PASS (instrument chain: {chain}, {len(declared)} stages)")
+        print(
+            f"CONFIG VALID -- instrument chain: {chain} "
+            f"({len(declared)} stages)"
+        )
     else:
-        print("PASS (no instruments recorded)")
+        print("CONFIG VALID -- no instruments recorded")
 
 
 if __name__ == "__main__":

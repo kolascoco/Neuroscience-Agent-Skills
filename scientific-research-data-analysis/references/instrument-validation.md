@@ -88,7 +88,7 @@ are stored separately, and both must agree on the same set of stages.
 **Declared — frozen `config.json`, key `instruments`.** One entry per stage,
 in pipeline order. Frozen with the rest of the config; a change here is a
 dated, labeled plan amendment like any other frozen-decision change. These
-seven keys are required per entry; the validator rejects an entry missing any
+eight keys are required per entry; the validator rejects an entry missing any
 of them but does not reject extra keys:
 
 - `stage` — the chain-position identifier and the join key to the observed
@@ -101,15 +101,28 @@ of them but does not reject extra keys:
 - `name`, `version`, `install_source`, `parameters` — identify the tool. The
   same tool at two positions produces two entries with different `stage`
   values.
+- `tier` — one of `Required`, `Shadow`, `Diagnostic`, `Fallback` (see Method
+  Tiering below). Every instrument carries exactly one; the validator
+  rejects any other value.
 
 `stage`, `position`, and `consumes` together make the chain explicit so the
 cascade above is computable rather than remembered.
 
 **Observed — mutable `gate_status.json`, key `instrument_status`.** One entry
 per declared stage. Rewritten freely as work proceeds; it is a record of
-results, not a frozen decision. These six keys are required per entry; the
-validator rejects an entry missing any of them but does not reject extra
-keys:
+results, not a frozen decision. `stage`, `status`, and `input_ref` are
+required on every entry. `validated_at`, `runtime_s`, and `output_shape` are
+required, and must be non-null, on every entry whose `status` is not
+`PENDING`; a `PENDING` entry describes a stage that has not run yet, so these
+three may be omitted or left `null` on it. The declared chain is frozen at
+freeze time (SKILL.md step 4), long before any stage runs (step 6) — a
+freshly-frozen chain where every stage is `PENDING` with these three fields
+null is the single most common state of this file, and the validator accepts
+it. Inventing a `validated_at` or `runtime_s` for a run that has not happened
+is a claim-discipline violation
+([claim-discipline.md](claim-discipline.md): "N at every stage is read from
+the artifact at write time, never reconstructed from what the config
+commanded"), not a workaround.
 
 - `stage` — matches the declared `stage` it reports on.
 - `status` — one of `PASS`, `PENDING`, `FAIL`, `STALE`.
@@ -118,13 +131,21 @@ keys:
   offset). A naive timestamp is rejected, because a cascade ordered across
   machines with different local clocks cannot be trusted without an offset.
   A date with no time component is also rejected, since it parses as a
-  naive midnight.
-- `runtime_s` — wall time of that run.
+  naive midnight. Omitted or `null` when `status` is `PENDING`.
+- `runtime_s` — wall time of that run. Omitted or `null` when `status` is
+  `PENDING`.
 - `output_shape` — the parsed shape/units/range check from PASS condition 3.
+  Omitted or `null` when `status` is `PENDING`.
 - `input_ref` — identifies the input without requiring a rehash of large raw
   data: for the first stage it is the data-contract entry (which already
   carries a SHA-256 per [data-contract.md](data-contract.md)); for later
   stages it is the upstream stage name plus that stage's `validated_at`.
+
+A `PENDING` entry with no `validated_at` is excluded from the staleness
+comparison in Cascade Invalidation above rather than crashing it: there is no
+run to compare yet. It does not exempt the stage from the ordering rule that
+a stage cannot be `PASS` while its upstream is `PENDING`, `FAIL`, or `STALE`
+— that rule needs only the two statuses, not a timestamp.
 
 `gate_status.json` carries `instrument_status` at minimum. Other top-level
 keys recording gate outcomes are permitted and are not validated by this
@@ -156,9 +177,11 @@ chunk of a batch stage, confirm from its outputs — item counts, pass/fail
 counts, and one spot-checked example — that the stage ran as specified,
 before launching the rest.
 
-**Cheapest falsifying check first.** Before committing significant compute to
-a plan, run the fastest check that could kill it. A seconds-scale check that
-could invalidate a multi-hour run runs first.
+**Cheapest falsifying check first.** After the plan is confirmed, and before
+committing significant compute to it, run the fastest check that could kill
+it. A seconds-scale check that could invalidate a multi-hour run runs first.
+This does not license a first real-data run ahead of confirmation — that
+gate is unchanged (see the Operating Rule in SKILL.md).
 
 ## Method Tiering
 

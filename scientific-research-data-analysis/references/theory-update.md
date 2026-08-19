@@ -21,7 +21,8 @@ project maintains a living theory or lab journal.
 
 ## Changelog Entry
 
-Record:
+Write the entry to `lab_journal_entry.md` per the canonical filename table in
+[analysis-artifact-contract.md](analysis-artifact-contract.md). Record:
 
 - analysis id/result status;
 - what changed in belief;
@@ -36,7 +37,9 @@ Record:
   is written on every update and is not a decision aid.
 - The **theory document** is current-state and bounded. It is
   **re-derived**, not appended to: superseded claims are removed or marked,
-  never accumulated.
+  never accumulated. Its canonical filename is `theory.md`, at the project
+  root above `analyses/` (see the canonical filename table in
+  [analysis-artifact-contract.md](analysis-artifact-contract.md)).
 - Appending a journal entry does not satisfy step 9. A theory update that
   leaves the theory document unchanged states why in the journal entry,
   naming the artifact that failed to move it.

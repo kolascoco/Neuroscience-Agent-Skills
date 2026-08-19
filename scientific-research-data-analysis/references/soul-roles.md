@@ -95,6 +95,11 @@ SKILL.md); the Orchestrator does not resolve them on its own authority.
 
 ## Gates
 
-Human gates are for expensive or irreversible actions: confirmation split,
-first real-data compute, and long compute. Hypothesis exploration can be cheap
-and reversible, but it must remain labeled correctly.
+Human gates are for expensive or irreversible actions: shared-understanding
+confirmation, first real-data compute, and long compute (see the Operating
+Rule in SKILL.md and
+[common-understanding-gate.md](common-understanding-gate.md)). Confirmation
+is neither expensive nor irreversible on its own, but it gates everything
+expensive and irreversible that follows it, so it is a human gate in its own
+right, not an optional courtesy. Hypothesis exploration can be cheap and
+reversible, but it must remain labeled correctly.

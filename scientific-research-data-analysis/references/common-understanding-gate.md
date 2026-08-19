@@ -53,8 +53,15 @@ X, Y follows" — not re-asked. Confirming one decision shrinks the remaining
 question set; it never unlocks a new round of questions.
 
 **Mechanical check.** More than three questions surviving the necessity test
-is evidence that facts were not established. The agent returns to
-fact-finding and re-derives rather than presenting the list.
+is evidence that facts were not established — nothing more. The agent
+returns to fact-finding and re-derives whatever branch 1 can resolve. This
+check is never a reason to restate a scientific decision as a named default
+merely to bring the count under four: branch 1 does not apply to decisions
+requiring scientific judgment, and no amount of fact-finding reduces a
+genuine decision to a fact. When fact-finding is exhausted and more than
+three genuine decisions still survive, present all of them in the proposal
+and state why the count is high, rather than disguising any of them as a
+default.
 
 The frontier concept survives with a changed job: it no longer sequences
 questions to the user; it orders what the agent resolves for itself before a

@@ -17,7 +17,7 @@ from pathlib import Path
 SCRIPT = Path(__file__).resolve().parent / "validate_analysis_config.py"
 
 
-def declared(position, name, consumes):
+def declared(position, name, consumes, tier="Required"):
     """One well-formed entry for config.json's instruments array."""
     return {
         "stage": name,
@@ -27,6 +27,7 @@ def declared(position, name, consumes):
         "version": "1.0.0",
         "install_source": "pypi",
         "parameters": {},
+        "tier": tier,
     }
 
 
@@ -38,6 +39,19 @@ def observed(name, validated_at, status="PASS", consumes=None):
         "validated_at": validated_at,
         "runtime_s": 1.5,
         "output_shape": "[64, 1000]",
+        "input_ref": "sources[0]" if consumes is None else consumes,
+    }
+
+
+def pending(name, consumes=None):
+    """A freshly-frozen PENDING entry: no run has happened yet, so
+    validated_at/runtime_s/output_shape are null rather than invented."""
+    return {
+        "stage": name,
+        "status": "PENDING",
+        "validated_at": None,
+        "runtime_s": None,
+        "output_shape": None,
         "input_ref": "sources[0]" if consumes is None else consumes,
     }
 
@@ -118,7 +132,11 @@ class TestSchema(unittest.TestCase):
     def test_wellformed_chain_passes(self):
         result = run(config_with(DECLARED_CHAIN), OBSERVED_CHAIN)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("PASS", result.stdout)
+        # I5: the leading token is never bare "PASS" — it names what the
+        # script actually checked, with the chain state spelled out
+        # separately in the same line.
+        self.assertIn("CONFIG VALID", result.stdout)
+        self.assertIn("instrument chain: PASS", result.stdout)
 
     def test_declared_missing_key_fails(self):
         broken = [dict(DECLARED_CHAIN[0])]
@@ -169,6 +187,31 @@ class TestSchema(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("instruments", result.stderr)
         self.assertIn("list", result.stderr)
+
+    def test_declared_missing_tier_fails(self):
+        # I4: tier is mandatory ("Every instrument carries one tier,
+        # recorded with it") but had nowhere to be recorded; it must now
+        # be a required declared key like any other.
+        broken = dict(DECLARED_CHAIN[0])
+        del broken["tier"]
+        result = run(config_with([broken]), [OBSERVED_CHAIN[0]])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("tier", result.stderr)
+
+    def test_declared_invalid_tier_fails(self):
+        broken = dict(DECLARED_CHAIN[0])
+        broken["tier"] = "Primary"
+        result = run(config_with([broken]), [OBSERVED_CHAIN[0]])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("tier", result.stderr)
+        self.assertIn("Primary", result.stderr)
+
+    def test_declared_each_allowed_tier_passes(self):
+        for tier in ("Required", "Shadow", "Diagnostic", "Fallback"):
+            with self.subTest(tier=tier):
+                entry = declared(0, "filter", None, tier=tier)
+                result = run(config_with([entry]), [OBSERVED_CHAIN[0]])
+                self.assertEqual(result.returncode, 0, result.stderr)
 
 
 class TestTwoFileAgreement(unittest.TestCase):
@@ -372,11 +415,71 @@ class TestCascade(unittest.TestCase):
 
     def test_all_fail_chain_reports_failed_not_incomplete(self):
         # M8: an all-FAIL chain is not merely "not finished" — it failed.
+        # I5: the line must not lead with "PASS" next to a failed chain —
+        # a reader (or the Adversary) scanning for "PASS" must not read
+        # this line as a passing chain.
         broken = [observed("filter", "2026-08-19T10:00:00+00:00", status="FAIL")]
         result = run(config_with([DECLARED_CHAIN[0]]), broken)
         self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("CONFIG VALID", result.stdout)
         self.assertIn("FAILED", result.stdout)
         self.assertNotIn("INCOMPLETE", result.stdout)
+        self.assertFalse(result.stdout.startswith("PASS"))
+
+
+class TestPendingObservedState(unittest.TestCase):
+    """C1: a PENDING entry describes a stage that has not run yet. The
+    declared chain is frozen at config-freeze time (SKILL.md step 4), long
+    before any stage runs (step 6), so a freshly-frozen all-PENDING chain
+    is the single most common state of gate_status.json — it must be the
+    easy, passing path, not a failure with no documented remedy."""
+
+    def test_freshly_frozen_all_pending_chain_passes(self):
+        obs = [pending("filter"), pending("ica", consumes="filter")]
+        result = run(config_with(DECLARED_CHAIN[:2]), obs)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("CONFIG VALID", result.stdout)
+        # I5: distinct, non-alarming wording for the legitimate PENDING
+        # case, separate from a partially-worked-through INCOMPLETE chain.
+        self.assertIn("instrument chain: PENDING", result.stdout)
+        self.assertNotIn("INCOMPLETE", result.stdout)
+
+    def test_pending_may_omit_run_keys_entirely(self):
+        # "may omit or null" — omission, not just an explicit null, must
+        # also be accepted for a PENDING entry.
+        obs_entry = {
+            "stage": "filter",
+            "status": "PENDING",
+            "input_ref": "sources[0]",
+        }
+        result = run(config_with([DECLARED_CHAIN[0]]), [obs_entry])
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_pass_entry_with_null_validated_at_fails(self):
+        # Any status other than PENDING requires all three run keys,
+        # present and non-null — inventing a validated_at for a run that
+        # never happened is exactly the failure this schema prevents.
+        broken = dict(observed("filter", "2026-08-19T10:00:00+00:00"))
+        broken["validated_at"] = None
+        result = run(config_with([DECLARED_CHAIN[0]]), [broken])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("validated_at", result.stderr)
+        self.assertIn("PASS", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_pending_excluded_from_staleness_comparison_not_crashed(self):
+        # The upstream stage has genuinely run (PASS, real validated_at);
+        # the downstream stage is still PENDING with no validated_at at
+        # all. Comparing "is downstream stale relative to upstream" makes
+        # no sense when downstream has no run to date — it must be
+        # excluded from that comparison rather than crashing it.
+        obs = [
+            observed("filter", "2026-08-19T10:00:00+00:00", status="PASS"),
+            pending("ica", consumes="filter"),
+        ]
+        result = run(config_with(DECLARED_CHAIN[:2]), obs)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
 
 
 class TestValidatedAtDiscipline(unittest.TestCase):

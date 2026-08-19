@@ -3,7 +3,9 @@
 Use after an analysis produces results. Independent execution is required
 whenever your platform can provide it — see
 [soul-roles.md](soul-roles.md#executing-roles-as-one-agent) for the mechanics
-and the self-review fallback when it can't.
+and the self-review fallback when it can't. Write the review to
+`results/adversarial_review.md` per the canonical filename table in
+[analysis-artifact-contract.md](analysis-artifact-contract.md).
 
 ## Inputs
 

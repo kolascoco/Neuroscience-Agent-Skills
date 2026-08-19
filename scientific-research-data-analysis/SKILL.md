@@ -69,8 +69,8 @@ than advisory.
    [references/analysis-artifact-contract.md](references/analysis-artifact-contract.md).
 5. **Validate design.** *Role: Statistician.* For statistical plans or
    inference, read [references/statistician-review.md](references/statistician-review.md).
-6. **Implement minimally.** *Role: Analyst.* Before trusting any instrument
-   used for the first time in this project, complete
+6. **Implement minimally.** *Role: Analyst.* Before trusting the output of
+   any pipeline stage used for the first time in this project, complete
    [references/instrument-validation.md](references/instrument-validation.md).
    Keep code inside the analysis folder. Add positive, negative/null,
    boundary, and provenance controls before trusting results. Cache expensive

@@ -9,9 +9,11 @@ analysis root.
   multiplicity, controls, outputs, compute plan, interpretation limits.
 - `config.json`: machine-readable frozen choices and source paths/hashes.
   Carries the declared `instruments` array (see
-  [instrument-validation.md](instrument-validation.md)) and, for analyses that
-  belong to a family (see Analysis Families below), a `family` block.
+  [instrument-validation.md](instrument-validation.md)) and a `family` block
+  (see Analysis Families below), always present; null-valued for a
+  standalone analysis.
 - `code/`: implementation, validators, tests.
+- `tests/`: automated tests for `code/`.
 - `results/`: arrays, tables, figures, controls, summaries, manifests.
 - `log.md`: timestamps, commands, wall time, approvals, failures, fixes.
 - `result_manifest.json`: hashes for result/provenance files.
@@ -30,17 +32,20 @@ All of the above except `ideas.md` are Analyst-authored (see
 
 ## Canonical Filenames
 
+Unless a path is shown, the filename lives at the analysis folder root.
+
 | Artifact | Canonical filename |
 |---|---|
 | Data-contract audit (Scout) | `input_audit.md` / `input_audit.json` |
 | Statistician pre-analysis review | `statistician_review.md` |
 | Statistician post-result review | `statistician_post_result_review.md` |
-| Adversarial review (Adversary) | `adversarial_review.md` |
+| Adversarial review (Adversary) | `results/adversarial_review.md` |
 | Freeze record | `freeze_manifest.json` |
 | Gate outcomes and instrument status | `gate_status.json` |
 | Result hashes | `result_manifest.json` |
 | Final narrative | `final_report.md` |
 | Theory-update entry | `lab_journal_entry.md` |
+| Theory document | `theory.md`, project root, above `analyses/` |
 
 Two rules make the table binding:
 
@@ -60,6 +65,12 @@ Two rules make the table binding:
   its `family_id`, and names the changed parameters in `varies`.
 - Every family member's `final_report.md` records the family size at write
   time: configuration k of n tried.
+
+Analysis ids are unique: `init_analysis.py` exits non-zero on a duplicate id
+and on any id whose ordinal prefix is already taken by a sibling directory.
+An id is never reused; a variant of an earlier analysis takes its own new id
+and records that earlier analysis as its `parent_analysis` above, rather than
+reusing the parent's id.
 
 The interpretation consequence — when a family member may be labeled
 confirmatory versus selection-informed — is written in
