@@ -326,6 +326,9 @@ Standing rule, referenced from the Operating Rule. Applies at every step.
 1. **State only what you established.** Any factual claim in a summary, figure
    caption, or manuscript traces to an executed computation or a saved artifact
    that can be cited. "Verified" means a check was run and its output exists.
+   A claim carried forward from an earlier step is re-verified before it
+   appears in a later artifact; carrying it forward unchecked does not count as
+   re-verifying it.
 2. **Never write an identifier from memory.** Every DOI, PMID, accession,
    dataset id, URL, atlas coordinate, and citation is the literal output of a
    lookup executed in the same session that wrote it.
