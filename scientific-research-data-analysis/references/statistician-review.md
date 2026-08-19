@@ -16,12 +16,17 @@ Check:
 8. Missingness/exclusion rules are outcome-blind.
 9. Planned controls can detect implementation and null-model failures.
 
-Each finding should include severity, reason, and concrete fix.
+Each finding includes severity, reason, and concrete fix.
 
 ## Post-Result Review
 
 Check exact reporting, assumptions, N at every stage, p-value/interval
 calculation, skew/asymmetry diagnostics where relevant, multiplicity wording,
 and whether inference exceeded the frozen plan.
+
+A test that returns a constant, a filter that passes or fails everything, an
+exactly zero statistic, a perfect metric, or an all-NaN result is treated as
+a bug until investigated — see
+[instrument-validation.md](instrument-validation.md).
 
 Nulls and failed hypotheses deserve the same precision as positives.

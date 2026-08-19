@@ -21,11 +21,14 @@ treating any role as someone else's problem.
   null/exchangeability, and reporting before compute and after results; owns
   [statistician-review.md](statistician-review.md).
 - **Analyst:** writes frozen plan, config, code, controls, results, figures,
-  manifests, logs, and `summary.md`. Does not certify its own result.
+  manifests, logs, `gate_status.json`, and `final_report.md`; owns
+  [instrument-validation.md](instrument-validation.md). Does not certify its
+  own result.
 - **Adversary:** fresh-context methods reviewer; owns
   [adversarial-review.md](adversarial-review.md). Attacks plan adherence,
-  leakage, multiplicity, code, controls, confounds, and fragility, and performs
-  the reproducibility/rerun check — there is no separate "controller" role.
+  leakage, multiplicity, code, controls, confounds, and fragility; re-checks
+  the instrument record; and performs the reproducibility/rerun check — there
+  is no separate "controller" role.
 - **Theory-updater:** integrates positives, nulls, blocks, and risks into the
   living theory and proposes next stubs; owns
   [theory-update.md](theory-update.md).
@@ -37,7 +40,7 @@ treating any role as someone else's problem.
 | SKILL.md step | Role(s) | Independent execution |
 |---|---|---|
 | 1. Orient and scope | Orchestrator | Same context |
-| 2. Build shared understanding | Orchestrator + Theorist + Statistician judgment | Same context |
+| 2. Build shared understanding | Orchestrator drafts and defends the proposal | Same context |
 | 3. Audit the data contract | Scout | Same context |
 | 4. Freeze artifacts | Analyst writes, Orchestrator confirms | Same context |
 | 5. Validate design | Statistician | Recommended for confirmatory/high-stakes work |
